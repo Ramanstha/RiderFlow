@@ -1,0 +1,71 @@
+@extends('admin.layout.app')
+
+@section('title', 'Record Attendance - RiderFlow')
+
+@section('content')
+<div class="max-w-2xl">
+    <div class="mb-8">
+        <h2 class="font-display text-2xl font-bold">Record Attendance</h2>
+        <p class="text-[var(--fg-secondary)]">Log a rider's attendance for a given day</p>
+    </div>
+
+    <div class="card p-6">
+        <form action="{{ route('attendance.store') }}" method="POST" class="space-y-4">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Rider *</label>
+                    <select name="rider_id" class="input-field" required>
+                        <option value="">Select a rider</option>
+                        @foreach ($riders as $rider)
+                            <option value="{{ $rider->id }}" @selected((string) old('rider_id') === (string) $rider->id)>{{ $rider->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('rider_id') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Date *</label>
+                    <input type="date" name="date" value="{{ old('date', now()->toDateString()) }}" class="input-field" required>
+                    @error('date') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">Status *</label>
+                <select name="status" class="input-field" required>
+                    <option value="Present" @selected(old('status') === 'Present')>Present</option>
+                    <option value="Absent" @selected(old('status') === 'Absent')>Absent</option>
+                    <option value="Late" @selected(old('status') === 'Late')>Late</option>
+                    <option value="Half Day" @selected(old('status') === 'Half Day')>Half Day</option>
+                    <option value="Leave" @selected(old('status') === 'Leave')>Leave</option>
+                </select>
+                @error('status') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Check In</label>
+                    <input type="time" name="check_in" value="{{ old('check_in') }}" class="input-field">
+                    @error('check_in') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Check Out</label>
+                    <input type="time" name="check_out" value="{{ old('check_out') }}" class="input-field">
+                    @error('check_out') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">Remarks</label>
+                <input type="text" name="remarks" value="{{ old('remarks') }}" class="input-field">
+                @error('remarks') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="flex gap-5 pt-4">
+                <a href="{{ route('attendance.index') }}" class="btn-secondary text-center btn-sm">Cancel</a>
+                <button type="submit" class="btn-primary btn-sm">Save Attendance</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

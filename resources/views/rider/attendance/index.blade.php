@@ -1,0 +1,73 @@
+@extends('rider.layout.app')
+
+@section('title', 'My Attendance - Rider Portal')
+
+@section('content')
+<div class="mb-8">
+    <h2 class="font-display text-2xl font-bold mb-1">My Attendance</h2>
+    <p class="text-[var(--fg-secondary)] text-sm">Your check-in history and leave record</p>
+</div>
+
+<div class="mb-6">
+    @include('rider.partials.check-in-out', ['today' => $today])
+</div>
+
+<!-- Filters -->
+<div class="card p-3 mb-6">
+    <form method="GET" action="{{ route('rider.attendance.index') }}" class="flex flex-wrap gap-4">
+        <select name="status" class="input-field w-auto text-sm" onchange="this.form.submit()">
+            <option value="">All Status</option>
+            @foreach (\App\Enums\AttendanceStatus::cases() as $status)
+                <option value="{{ $status->value }}" @selected(request('status') === $status->value)>{{ $status->value }}</option>
+            @endforeach
+        </select>
+        <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field w-auto text-sm">
+        <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field w-auto text-sm">
+        <button type="submit" class="btn-secondary text-sm px-5">Filter</button>
+    </form>
+</div>
+
+<div class="card overflow-hidden">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($attendances as $attendance)
+                    <tr>
+                        <td><span class="text-sm">{{ $attendance->date->format('Y-m-d') }}</span></td>
+                        <td>
+                            <span class="badge badge-{{ $attendance->status->value === 'Present' ? 'success' : ($attendance->status->value === 'Absent' ? 'danger' : 'warning') }}">
+                                {{ $attendance->status->value }}
+                            </span>
+                        </td>
+                        <td><span class="text-sm">{{ $attendance->check_in ?: '-' }}</span></td>
+                        <td><span class="text-sm">{{ $attendance->check_out ?: '-' }}</span></td>
+                        <td><span class="text-sm text-[var(--fg-secondary)]">{{ $attendance->remarks ?: '-' }}</span></td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center text-[var(--fg-secondary)] py-8">No attendance records found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex items-center justify-between p-4 border-t border-[var(--border)]">
+        <p class="text-sm text-[var(--fg-secondary)]">
+            Showing {{ $attendances->firstItem() ?? 0 }}-{{ $attendances->lastItem() ?? 0 }} of {{ $attendances->total() }} records
+        </p>
+        <div class="flex gap-2">
+            {{ $attendances->links() }}
+        </div>
+    </div>
+</div>
+@endsection
