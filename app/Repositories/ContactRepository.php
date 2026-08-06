@@ -13,6 +13,11 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
         parent::__construct($model);
     }
 
+    public function primary(): ?Contact
+    {
+        return $this->query()->oldest()->first();
+    }
+
     protected function applyFilters(Builder $query, array $filters): Builder
     {
         return $query

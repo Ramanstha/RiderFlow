@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UI\HomeController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ContactController;
@@ -15,14 +13,16 @@ use App\Http\Controllers\Admin\RiderPerformanceController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\UI\HomeController;
+use Illuminate\Support\Facades\Route;
 
-//////////////////Frontend/////////////////////
+// ////////////////Frontend/////////////////////
 Route::get('/', [HomeController::class, 'Home'])->name('Home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'submitContact'])->name('contact.store');
 
-//////////////Admin//////////////////
+// ////////////Admin//////////////////
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard');
 

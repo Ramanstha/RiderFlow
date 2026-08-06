@@ -2,7 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Company;
+use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\ActsWithRoles;
 use Tests\TestCase;
@@ -20,15 +21,12 @@ class AuthorizationTest extends TestCase
             'status' => 'Active',
         ])->assertStatus(403);
 
-        $company = Company::factory()->create();
-
         $this->postJson('/api/v1/riders', [
             'name' => 'Allowed Rider',
             'email' => 'allowed@example.com',
             'phone' => '1234567890',
             'license_number' => 'LIC-9999',
             'status' => 'Active',
-            'company_id' => $company->id,
         ])->assertStatus(201);
     }
 
@@ -38,15 +36,12 @@ class AuthorizationTest extends TestCase
 
         $this->getJson('/api/v1/riders')->assertOk();
 
-        $company = Company::factory()->create();
-
         $this->postJson('/api/v1/riders', [
             'name' => 'Blocked Rider',
             'email' => 'blocked@example.com',
             'phone' => '1234567890',
             'license_number' => 'LIC-8888',
             'status' => 'Active',
-            'company_id' => $company->id,
         ])->assertStatus(403);
     }
 
@@ -62,9 +57,9 @@ class AuthorizationTest extends TestCase
 
     public function test_valid_login_redirects_to_dashboard(): void
     {
-        $this->seed(\Database\Seeders\RoleSeeder::class);
+        $this->seed(RoleSeeder::class);
 
-        $user = \App\Models\User::factory()->create(['password' => 'password']);
+        $user = User::factory()->create(['password' => 'password']);
         $user->assignRole('Super Admin');
 
         $response = $this->post('/login', [
@@ -78,9 +73,9 @@ class AuthorizationTest extends TestCase
 
     public function test_invalid_login_shows_error(): void
     {
-        $this->seed(\Database\Seeders\RoleSeeder::class);
+        $this->seed(RoleSeeder::class);
 
-        $user = \App\Models\User::factory()->create(['password' => 'password']);
+        $user = User::factory()->create(['password' => 'password']);
         $user->assignRole('Super Admin');
 
         $response = $this->from('/login')->post('/login', [

@@ -30,14 +30,14 @@ class RiderAttendanceController extends BaseApiController
 
         $attendance = $this->attendances->create($request->validated());
 
-        return $this->success(new RiderAttendanceResource($attendance->load('rider.company')), 'Attendance recorded successfully.', 201);
+        return $this->success(new RiderAttendanceResource($attendance->load('rider.companies')), 'Attendance recorded successfully.', 201);
     }
 
     public function show(RiderAttendance $attendance): JsonResponse
     {
         $this->authorize('attendances.view');
 
-        return $this->success(new RiderAttendanceResource($attendance->load('rider.company')));
+        return $this->success(new RiderAttendanceResource($attendance->load('rider.companies')));
     }
 
     public function update(UpdateAttendanceRequest $request, RiderAttendance $attendance): JsonResponse
@@ -46,7 +46,7 @@ class RiderAttendanceController extends BaseApiController
 
         $attendance = $this->attendances->update($attendance, $request->validated());
 
-        return $this->success(new RiderAttendanceResource($attendance->load('rider.company')), 'Attendance updated successfully.');
+        return $this->success(new RiderAttendanceResource($attendance->load('rider.companies')), 'Attendance updated successfully.');
     }
 
     public function destroy(RiderAttendance $attendance): JsonResponse

@@ -6,7 +6,7 @@
 <div class="max-w-2xl">
     <div class="mb-8">
         <h2 class="font-display text-2xl font-bold">New Assignment</h2>
-        <p class="text-[var(--fg-secondary)]">Assign a rider to a company for a zone/route and shift</p>
+        <p class="text-[var(--fg-secondary)]">Assign a rider to a company for a date range</p>
     </div>
 
     <div class="card p-6">
@@ -35,40 +35,15 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Zone</label>
-                    <input type="text" name="zone" value="{{ old('zone') }}" class="input-field" placeholder="e.g. North District">
-                    @error('zone') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Route</label>
-                    <input type="text" name="route" value="{{ old('route') }}" class="input-field" placeholder="e.g. Route 12">
-                    @error('route') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Shift</label>
-                    <select name="shift" class="input-field">
-                        <option value="">Unspecified</option>
-                        <option value="Morning" @selected(old('shift') === 'Morning')>Morning</option>
-                        <option value="Afternoon" @selected(old('shift') === 'Afternoon')>Afternoon</option>
-                        <option value="Evening" @selected(old('shift') === 'Evening')>Evening</option>
-                        <option value="Night" @selected(old('shift') === 'Night')>Night</option>
-                    </select>
-                    @error('shift') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Status *</label>
-                    <select name="status" class="input-field" required>
-                        <option value="Assigned" @selected(old('status', 'Assigned') === 'Assigned')>Assigned</option>
-                        <option value="Completed" @selected(old('status') === 'Completed')>Completed</option>
-                        <option value="Cancelled" @selected(old('status') === 'Cancelled')>Cancelled</option>
-                    </select>
-                    @error('status') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Assignment Type *</label>
+                <select name="type" class="input-field" required>
+                    <option value="">Select a type</option>
+                    @foreach (\App\Enums\AssignmentType::cases() as $type)
+                        <option value="{{ $type->value }}" @selected(old('type') === $type->value)>{{ $type->value }}</option>
+                    @endforeach
+                </select>
+                @error('type') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

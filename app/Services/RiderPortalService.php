@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Enums\AssignmentStatus;
 use App\Models\DailyParcelCount;
 use App\Models\Rider;
 use App\Models\RiderAssignment;
 use App\Models\RiderAttendance;
 use App\Models\RiderPerformance;
+use App\Support\AttendanceSummary;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 
@@ -50,26 +50,17 @@ class RiderPortalService
     }
 
     /**
-     * @return array{total_days: int, present_days: int, absent_days: int, leave_days: int, attendance_rate: float}
+     * @return array{total_days: int, present_days: int, absent_days: int, attendance_rate: float}
      */
     public function attendanceSummary(Rider $rider, string $from, string $to): array
     {
-        $records = RiderAttendance::query()
-            ->where('rider_id', $rider->id)
-            ->whereDate('date', '>=', $from)
-            ->whereDate('date', '<=', $to)
-            ->get();
-
-        $total = $records->count();
-        $present = $records->whereIn('status', ['Present', 'Late', 'Half Day'])->count();
-
-        return [
-            'total_days' => $total,
-            'present_days' => $present,
-            'absent_days' => $records->where('status', 'Absent')->count(),
-            'leave_days' => $records->where('status', 'Leave')->count(),
-            'attendance_rate' => $total > 0 ? round(($present / $total) * 100, 2) : 0.0,
-        ];
+        return AttendanceSummary::forRecords(
+            RiderAttendance::query()
+                ->where('rider_id', $rider->id)
+                ->whereDate('date', '>=', $from)
+                ->whereDate('date', '<=', $to)
+                ->get()
+        );
     }
 
     /**
@@ -100,7 +91,7 @@ class RiderPortalService
         return RiderAssignment::query()
             ->with('company')
             ->where('rider_id', $rider->id)
-            ->where('status', AssignmentStatus::Assigned)
+            ->active()
             ->orderByDesc('start_date')
             ->first();
     }

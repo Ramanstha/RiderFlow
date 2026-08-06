@@ -29,7 +29,7 @@ abstract class PortalController extends Controller
      */
     protected function scopedFilters(array $filters): array
     {
-        $riderIds = $this->company()->riders()->pluck('id');
+        $riderIds = $this->company()->riders()->pluck('riders.id');
 
         // A rider_id from another company would otherwise widen the scope.
         if (isset($filters['rider_id']) && ! $riderIds->contains((int) $filters['rider_id'])) {

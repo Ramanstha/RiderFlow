@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rider\StoreRiderRequest;
 use App\Http\Requests\Rider\UpdateRiderRequest;
-use App\Models\Company;
 use App\Models\Rider;
 use App\Services\RiderService;
 use Illuminate\Http\RedirectResponse;
@@ -29,9 +28,7 @@ class RiderController extends Controller
     {
         $this->authorize('riders.manage');
 
-        $companies = Company::query()->orderBy('name')->get();
-
-        return view('admin.rider.create', compact('companies'));
+        return view('admin.rider.create');
     }
 
     public function show(Rider $rider): RedirectResponse
@@ -54,9 +51,7 @@ class RiderController extends Controller
     {
         $this->authorize('riders.manage');
 
-        $companies = Company::query()->orderBy('name')->get();
-
-        return view('admin.rider.edit', compact('rider', 'companies'));
+        return view('admin.rider.edit', compact('rider'));
     }
 
     public function update(UpdateRiderRequest $request, Rider $rider): RedirectResponse

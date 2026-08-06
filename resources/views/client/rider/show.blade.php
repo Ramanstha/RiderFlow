@@ -87,23 +87,19 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="text-left text-[var(--fg-secondary)] border-b border-[var(--border)]">
-                        <th class="py-2 pr-4 font-medium">Zone / Route</th>
-                        <th class="py-2 pr-4 font-medium">Shift</th>
+                        <th class="py-2 pr-4 font-medium">Business</th>
+                        <th class="py-2 pr-4 font-medium">Type</th>
                         <th class="py-2 pr-4 font-medium">Start</th>
-                        <th class="py-2 font-medium">Status</th>
+                        <th class="py-2 font-medium">End</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($rider->assignments as $assignment)
                         <tr class="border-b border-[var(--border)] last:border-0">
-                            <td class="py-2 pr-4">{{ $assignment->zone }} / {{ $assignment->route }}</td>
-                            <td class="py-2 pr-4">{{ $assignment->shift->value ?? $assignment->shift }}</td>
+                            <td class="py-2 pr-4">{{ $assignment->company->name ?? '—' }}</td>
+                            <td class="py-2 pr-4">{{ $assignment->type->value }}</td>
                             <td class="py-2 pr-4">{{ $assignment->start_date?->format('d M Y') }}</td>
-                            <td class="py-2">
-                                <span class="badge badge-{{ $assignment->status->value === 'Completed' ? 'success' : ($assignment->status->value === 'Cancelled' ? 'danger' : 'warning') }}">
-                                    {{ $assignment->status->value }}
-                                </span>
-                            </td>
+                            <td class="py-2">{{ $assignment->end_date?->format('d M Y') ?? 'Ongoing' }}</td>
                         </tr>
                     @empty
                         <tr><td colspan="4" class="py-6 text-center text-[var(--fg-secondary)]">No assignments yet.</td></tr>

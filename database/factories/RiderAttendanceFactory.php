@@ -4,10 +4,11 @@ namespace Database\Factories;
 
 use App\Enums\AttendanceStatus;
 use App\Models\Rider;
+use App\Models\RiderAttendance;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\RiderAttendance>
+ * @extends Factory<RiderAttendance>
  */
 class RiderAttendanceFactory extends Factory
 {

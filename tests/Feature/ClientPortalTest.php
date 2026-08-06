@@ -39,7 +39,7 @@ class ClientPortalTest extends TestCase
     public function test_every_portal_page_renders(): void
     {
         $company = Company::factory()->create();
-        $rider = Rider::factory()->create(['company_id' => $company->id]);
+        $rider = Rider::factory()->forCompany($company)->create();
         DailyParcelCount::factory()->create(['rider_id' => $rider->id]);
         RiderAttendance::factory()->create(['rider_id' => $rider->id]);
         RiderPerformance::factory()->create(['rider_id' => $rider->id]);
@@ -69,8 +69,8 @@ class ClientPortalTest extends TestCase
         $company = Company::factory()->create();
         $other = Company::factory()->create();
 
-        $mine = Rider::factory()->create(['company_id' => $company->id, 'name' => 'My Rider']);
-        $theirs = Rider::factory()->create(['company_id' => $other->id, 'name' => 'Their Rider']);
+        $mine = Rider::factory()->forCompany($company)->create(['name' => 'My Rider']);
+        $theirs = Rider::factory()->forCompany($other)->create(['name' => 'Their Rider']);
 
         DailyParcelCount::factory()->create(['rider_id' => $mine->id, 'date' => now(), 'assigned' => 10, 'delivered' => 9]);
         DailyParcelCount::factory()->create(['rider_id' => $theirs->id, 'date' => now(), 'assigned' => 500, 'delivered' => 500]);
@@ -89,8 +89,8 @@ class ClientPortalTest extends TestCase
         $company = Company::factory()->create();
         $other = Company::factory()->create();
 
-        Rider::factory()->create(['company_id' => $company->id, 'name' => 'My Rider']);
-        Rider::factory()->create(['company_id' => $other->id, 'name' => 'Their Rider']);
+        Rider::factory()->forCompany($company)->create(['name' => 'My Rider']);
+        Rider::factory()->forCompany($other)->create(['name' => 'Their Rider']);
 
         $this->actingAs($company, 'client')
             ->get('/client-portal/rider')
@@ -102,7 +102,7 @@ class ClientPortalTest extends TestCase
     public function test_a_client_cannot_open_another_companys_rider(): void
     {
         $company = Company::factory()->create();
-        $theirRider = Rider::factory()->create(['company_id' => Company::factory()->create()->id]);
+        $theirRider = Rider::factory()->forCompany(Company::factory()->create())->create();
 
         $this->actingAs($company, 'client')
             ->get("/client-portal/rider/{$theirRider->id}")
@@ -114,7 +114,7 @@ class ClientPortalTest extends TestCase
         $company = Company::factory()->create();
         $other = Company::factory()->create();
 
-        $theirRider = Rider::factory()->create(['company_id' => $other->id, 'name' => 'Their Rider']);
+        $theirRider = Rider::factory()->forCompany($other)->create(['name' => 'Their Rider']);
         RiderAttendance::factory()->create(['rider_id' => $theirRider->id]);
         DailyParcelCount::factory()->create(['rider_id' => $theirRider->id]);
         RiderAssignment::factory()->create(['rider_id' => $theirRider->id, 'company_id' => $other->id]);
@@ -131,7 +131,7 @@ class ClientPortalTest extends TestCase
         $company = Company::factory()->create();
         $other = Company::factory()->create();
 
-        $theirRider = Rider::factory()->create(['company_id' => $other->id, 'name' => 'Their Rider']);
+        $theirRider = Rider::factory()->forCompany($other)->create(['name' => 'Their Rider']);
         RiderAttendance::factory()->create(['rider_id' => $theirRider->id]);
 
         // Both a spoofed company_id and a rider from another company must be ignored.
@@ -147,8 +147,8 @@ class ClientPortalTest extends TestCase
         $company = Company::factory()->create();
         $other = Company::factory()->create();
 
-        $mine = Rider::factory()->create(['company_id' => $company->id, 'name' => 'My Rider']);
-        $theirs = Rider::factory()->create(['company_id' => $other->id, 'name' => 'Their Rider']);
+        $mine = Rider::factory()->forCompany($company)->create(['name' => 'My Rider']);
+        $theirs = Rider::factory()->forCompany($other)->create(['name' => 'Their Rider']);
 
         RiderAttendance::factory()->create(['rider_id' => $mine->id]);
         RiderAttendance::factory()->create(['rider_id' => $theirs->id]);
@@ -167,7 +167,7 @@ class ClientPortalTest extends TestCase
     public function test_every_export_format_downloads(): void
     {
         $company = Company::factory()->create();
-        $rider = Rider::factory()->create(['company_id' => $company->id]);
+        $rider = Rider::factory()->forCompany($company)->create();
         RiderAttendance::factory()->create(['rider_id' => $rider->id]);
         DailyParcelCount::factory()->create(['rider_id' => $rider->id]);
         RiderPerformance::factory()->create(['rider_id' => $rider->id]);

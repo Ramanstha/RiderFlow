@@ -15,7 +15,7 @@ class ProfileController extends PortalController
     public function edit(): View
     {
         return view('rider.profile.edit', [
-            'rider' => $this->rider()->load('company'),
+            'rider' => $this->rider()->load('companies'),
         ]);
     }
 

@@ -66,7 +66,7 @@ class CompanyApiTest extends TestCase
     public function test_it_prevents_deleting_a_company_with_riders(): void
     {
         $company = Company::factory()->create();
-        Rider::factory()->create(['company_id' => $company->id]);
+        Rider::factory()->forCompany($company)->create();
 
         $response = $this->deleteJson("/api/v1/companies/{$company->id}");
 

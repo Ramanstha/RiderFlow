@@ -18,7 +18,7 @@
 <body class="pattern-bg min-h-screen">
     <!-- Mobile Menu Button -->
     <button id="mobileMenuBtn"
-        class="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
+        class="lg:hidden absolute top-4 left-4 z-50 p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -27,7 +27,7 @@
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         <aside id="sidebar"
-            class="sidebar fixed lg:sticky inset-y-0 lg:top-0 left-0 z-40 w-72 h-screen transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+            class="sidebar fixed lg:sticky inset-y-0 lg:top-0 left-0 z-40 w-60 h-screen transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <!-- Logo -->
             <div class="p-6 border-b border-[var(--border)]">
                 <div class="flex items-center gap-3">
@@ -60,7 +60,7 @@
                 @can('users.manage')
                 <div class="pt-4 mt-4 border-t border-[var(--border)]">
                     <p class="px-4 py-2 text-xs font-semibold text-[var(--fg-secondary)] uppercase tracking-wider">
-                        Admins/Roles Management</p>
+                        Admins/Roles</p>
 
                     <a href="{{ route('role.index') }}"
                         class="nav-item {{ request()->routeIs('role.*') ? 'active' : '' }}" data-page="Roles">
@@ -260,7 +260,7 @@
             </nav>
 
             <!-- User Profile -->
-            <div class="p-4 border-t border-[var(--border)]">
+            <div class="border-t border-[var(--border)]">
                 <div
                     class="flex items-center gap-3 p-3 rounded-xl hover:bg-[rgba(0,212,170,0.05)] cursor-pointer transition-all">
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}"

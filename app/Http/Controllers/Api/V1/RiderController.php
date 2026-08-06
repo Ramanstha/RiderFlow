@@ -30,14 +30,14 @@ class RiderController extends BaseApiController
 
         $rider = $this->riders->create($request->validated(), $request->file('photo'));
 
-        return $this->success(new RiderResource($rider->load('company')), 'Rider created successfully.', 201);
+        return $this->success(new RiderResource($rider->load('companies')), 'Rider created successfully.', 201);
     }
 
     public function show(Rider $rider): JsonResponse
     {
         $this->authorize('riders.view');
 
-        return $this->success(new RiderResource($rider->load('company')));
+        return $this->success(new RiderResource($rider->load('companies')));
     }
 
     public function update(UpdateRiderRequest $request, Rider $rider): JsonResponse
@@ -46,7 +46,7 @@ class RiderController extends BaseApiController
 
         $rider = $this->riders->update($rider, $request->validated(), $request->file('photo'));
 
-        return $this->success(new RiderResource($rider->load('company')), 'Rider updated successfully.');
+        return $this->success(new RiderResource($rider->load('companies')), 'Rider updated successfully.');
     }
 
     public function destroy(Rider $rider): JsonResponse

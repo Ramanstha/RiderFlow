@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\RiderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,8 +22,6 @@ class Rider extends Authenticatable
         'license_number',
         'password',
         'status',
-        'company_id',
-        'performance',
     ];
 
     /**
@@ -43,9 +41,14 @@ class Rider extends Authenticatable
         ];
     }
 
-    public function company(): BelongsTo
+    /**
+     * A rider has no company column of its own — the companies it works for are
+     * whichever ones hold an assignment against it.
+     */
+    public function companies(): BelongsToMany
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsToMany(Company::class, 'rider_assignments')
+            ->distinct('companies.id');
     }
 
     public function attendances(): HasMany

@@ -17,8 +17,7 @@ class RiderResource extends JsonResource
             'photo_url' => $this->photo ? asset('storage/'.$this->photo) : null,
             'license_number' => $this->license_number,
             'status' => $this->status->value,
-            'performance' => $this->performance,
-            'company' => new CompanyResource($this->whenLoaded('company')),
+            'companies' => CompanyResource::collection($this->whenLoaded('companies')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -23,6 +23,6 @@ class RiderAssignmentRepository extends BaseRepository implements RiderAssignmen
         return $query
             ->when($filters['rider_id'] ?? null, fn (Builder $query, $riderId) => $query->where('rider_id', $riderId))
             ->when($filters['company_id'] ?? null, fn (Builder $query, $companyId) => $query->where('company_id', $companyId))
-            ->when($filters['status'] ?? null, fn (Builder $query, string $status) => $query->where('status', $status));
+            ->when($filters['type'] ?? null, fn (Builder $query, string $type) => $query->where('type', $type));
     }
 }

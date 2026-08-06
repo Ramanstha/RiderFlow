@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Company;
 use App\Models\Rider;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
@@ -40,7 +39,6 @@ class AdminRiderCredentialsTest extends TestCase
             'phone' => '9800000000',
             'license_number' => 'LIC-0001',
             'status' => 'Active',
-            'company_id' => Company::factory()->create()->id,
         ], $overrides);
     }
 
@@ -128,7 +126,6 @@ class AdminRiderCredentialsTest extends TestCase
             'name' => 'Renamed Rider',
             'email' => $rider->email,
             'license_number' => $rider->license_number,
-            'company_id' => $rider->company_id,
             'password' => '',
             'password_confirmation' => '',
         ]))->assertRedirect(route('rider.index'));
@@ -149,7 +146,6 @@ class AdminRiderCredentialsTest extends TestCase
             'name' => $rider->name,
             'email' => $rider->email,
             'license_number' => $rider->license_number,
-            'company_id' => $rider->company_id,
             'password' => 'reset-secret-9',
             'password_confirmation' => 'reset-secret-9',
         ]))->assertRedirect(route('rider.index'));

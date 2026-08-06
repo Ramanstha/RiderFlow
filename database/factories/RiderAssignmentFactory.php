@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Enums\AssignmentShift;
-use App\Enums\AssignmentStatus;
+use App\Enums\AssignmentType;
 use App\Models\Company;
 use App\Models\Rider;
+use App\Models\RiderAssignment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\RiderAssignment>
+ * @extends Factory<RiderAssignment>
  */
 class RiderAssignmentFactory extends Factory
 {
@@ -18,12 +18,9 @@ class RiderAssignmentFactory extends Factory
         return [
             'rider_id' => Rider::factory(),
             'company_id' => Company::factory(),
-            'zone' => fake()->citySuffix(),
-            'route' => 'Route '.fake()->numberBetween(1, 50),
-            'shift' => fake()->randomElement(AssignmentShift::cases()),
+            'type' => fake()->randomElement(AssignmentType::cases()),
             'start_date' => now()->toDateString(),
             'end_date' => null,
-            'status' => AssignmentStatus::Assigned,
         ];
     }
 }

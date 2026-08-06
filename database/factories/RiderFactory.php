@@ -4,11 +4,13 @@ namespace Database\Factories;
 
 use App\Enums\RiderStatus;
 use App\Models\Company;
+use App\Models\Rider;
+use App\Models\RiderAssignment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * @extends Factory<\App\Models\Rider>
+ * @extends Factory<Rider>
  */
 class RiderFactory extends Factory
 {
@@ -27,9 +29,19 @@ class RiderFactory extends Factory
             'license_number' => strtoupper(fake()->bothify('??-####-????')),
             'password' => static::$password ??= Hash::make('password'),
             'status' => RiderStatus::Active,
-            'company_id' => Company::factory(),
-            'performance' => fake()->numberBetween(0, 100),
         ];
+    }
+
+    /**
+     * Put the rider on a company's roster. Riders carry no company column, so
+     * this is an assignment row rather than an attribute.
+     */
+    public function forCompany(Company $company): static
+    {
+        return $this->afterCreating(fn (Rider $rider) => RiderAssignment::factory()->create([
+            'rider_id' => $rider->id,
+            'company_id' => $company->id,
+        ]));
     }
 
     /**

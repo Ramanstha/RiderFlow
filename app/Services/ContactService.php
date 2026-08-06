@@ -23,7 +23,7 @@ class ContactService
 
     public function primary(): ?Contact
     {
-        return $this->contacts->all()->last();
+        return $this->contacts->primary();
     }
 
     public function find(int $id): Contact

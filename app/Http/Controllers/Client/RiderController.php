@@ -17,7 +17,7 @@ class RiderController extends PortalController
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
             ))
-            ->when($request->string('status')->trim()->value(), fn ($q, $status) => $q->where('status', $status))
+            ->when($request->string('status')->trim()->value(), fn ($q, $status) => $q->where('riders.status', $status))
             ->orderBy('name')
             ->paginate(15)
             ->withQueryString();
@@ -29,7 +29,7 @@ class RiderController extends PortalController
     {
         $this->authorizeRider($rider);
 
-        $rider->load(['assignments' => fn ($q) => $q->latest('start_date')->limit(10)]);
+        $rider->load(['assignments' => fn ($q) => $q->with('company')->latest('start_date')->limit(10)]);
 
         return view('client.rider.show', [
             'rider' => $rider,
@@ -45,7 +45,7 @@ class RiderController extends PortalController
      */
     protected function authorizeRider(Rider $rider): void
     {
-        if ($rider->company_id !== $this->company()->id) {
+        if (! $this->company()->riders()->whereKey($rider->getKey())->exists()) {
             throw new NotFoundHttpException('Rider not found.');
         }
     }

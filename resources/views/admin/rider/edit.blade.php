@@ -49,31 +49,14 @@
                 @error('license_number') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Status *</label>
-                    <select name="status" class="input-field" required>
-                        <option value="Active" @selected(old('status', $rider->status->value) === 'Active')>Active</option>
-                        <option value="Inactive" @selected(old('status', $rider->status->value) === 'Inactive')>Inactive</option>
-                        <option value="On Leave" @selected(old('status', $rider->status->value) === 'On Leave')>On Leave</option>
-                    </select>
-                    @error('status') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Performance Score (%)</label>
-                    <input type="number" name="performance" value="{{ old('performance', $rider->performance) }}" class="input-field" min="0" max="100">
-                    @error('performance') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
-
             <div>
-                <label class="block text-sm font-medium mb-2">Company *</label>
-                <select name="company_id" class="input-field" required>
-                    @foreach ($companies as $company)
-                        <option value="{{ $company->id }}" @selected((string) old('company_id', $rider->company_id) === (string) $company->id)>{{ $company->name }}</option>
+                <label class="block text-sm font-medium mb-2">Status *</label>
+                <select name="status" class="input-field" required>
+                    @foreach (\App\Enums\RiderStatus::cases() as $status)
+                        <option value="{{ $status->value }}" @selected(old('status', $rider->status->value) === $status->value)>{{ $status->value }}</option>
                     @endforeach
                 </select>
-                @error('company_id') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+                @error('status') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div class="pt-4 border-t border-[var(--border)]">

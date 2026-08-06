@@ -25,7 +25,7 @@ class ClientParcelAssignmentTest extends TestCase
         parent::setUp();
 
         $this->company = Company::factory()->create();
-        $this->rider = Rider::factory()->create(['company_id' => $this->company->id]);
+        $this->rider = Rider::factory()->forCompany($this->company)->create();
     }
 
     public function test_a_client_assigns_parcels_to_its_own_rider(): void
@@ -53,7 +53,7 @@ class ClientParcelAssignmentTest extends TestCase
 
     public function test_a_client_cannot_assign_to_another_companys_rider(): void
     {
-        $theirRider = Rider::factory()->create(['company_id' => Company::factory()->create()->id]);
+        $theirRider = Rider::factory()->forCompany(Company::factory()->create())->create();
 
         $this->actingAs($this->company, 'client')
             ->post(route('client.parcel-assignment.store'), [
@@ -129,7 +129,7 @@ class ClientParcelAssignmentTest extends TestCase
     public function test_a_client_cannot_touch_another_companys_assignment(): void
     {
         $other = Company::factory()->create();
-        $theirRider = Rider::factory()->create(['company_id' => $other->id]);
+        $theirRider = Rider::factory()->forCompany($other)->create();
         $theirs = DailyParcelCount::factory()->create([
             'rider_id' => $theirRider->id,
             'assigned_by_company_id' => $other->id,
@@ -175,7 +175,7 @@ class ClientParcelAssignmentTest extends TestCase
         $this->assignment(['assigned' => 30]);
 
         $other = Company::factory()->create();
-        $theirRider = Rider::factory()->create(['company_id' => $other->id, 'name' => 'Their Rider']);
+        $theirRider = Rider::factory()->forCompany($other)->create(['name' => 'Their Rider']);
         DailyParcelCount::factory()->create([
             'rider_id' => $theirRider->id,
             'assigned_by_company_id' => $other->id,

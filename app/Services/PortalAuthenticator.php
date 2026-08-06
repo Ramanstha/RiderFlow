@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Rider;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -86,7 +87,7 @@ class PortalAuthenticator
         $match = null;
 
         foreach (self::PORTALS as $guard => $portal) {
-            /** @var class-string<\Illuminate\Database\Eloquent\Model> $model */
+            /** @var class-string<Model> $model */
             $model = $portal['model'];
 
             $account = $model::query()->where('email', $credentials['email'])->first();

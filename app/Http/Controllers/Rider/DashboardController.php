@@ -11,7 +11,7 @@ class DashboardController extends PortalController
 
     public function index(): View
     {
-        $rider = $this->rider()->load('company');
+        $rider = $this->rider()->load('companies');
 
         return view('rider.dashboard.index', [
             'rider' => $rider,

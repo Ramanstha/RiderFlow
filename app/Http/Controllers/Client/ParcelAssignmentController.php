@@ -91,6 +91,6 @@ class ParcelAssignmentController extends PortalController
 
     protected function activeRiders()
     {
-        return $this->company()->riders()->orderBy('name')->get(['id', 'name', 'status']);
+        return $this->company()->riders()->orderBy('name')->get(['riders.id', 'riders.name', 'riders.status']);
     }
 }

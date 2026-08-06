@@ -37,11 +37,9 @@
             </select>
             <select name="status" class="input-field w-auto text-sm" onchange="this.form.submit()">
                 <option value="">All Status</option>
-                <option value="Present" @selected(request('status') === 'Present')>Present</option>
-                <option value="Absent" @selected(request('status') === 'Absent')>Absent</option>
-                <option value="Late" @selected(request('status') === 'Late')>Late</option>
-                <option value="Half Day" @selected(request('status') === 'Half Day')>Half Day</option>
-                <option value="Leave" @selected(request('status') === 'Leave')>Leave</option>
+                @foreach (\App\Enums\AttendanceStatus::cases() as $status)
+                    <option value="{{ $status->value }}" @selected(request('status') === $status->value)>{{ $status->value }}</option>
+                @endforeach
             </select>
             <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field w-auto text-sm">
             <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field w-auto text-sm">
@@ -68,7 +66,7 @@
                     @forelse ($attendances as $attendance)
                         <tr>
                             <td><p class="font-medium">{{ $attendance->rider->name }}</p></td>
-                            <td><span class="text-sm">{{ $attendance->rider->company->name }}</span></td>
+                            <td><span class="text-sm">{{ $attendance->rider->companies->pluck('name')->join(', ') ?: '—' }}</span></td>
                             <td><span class="text-sm">{{ $attendance->date->format('Y-m-d') }}</span></td>
                             <td>
                                 <span class="badge badge-{{ $attendance->status->value === 'Present' ? 'success' : ($attendance->status->value === 'Absent' ? 'danger' : 'warning') }}">{{ $attendance->status->value }}</span>

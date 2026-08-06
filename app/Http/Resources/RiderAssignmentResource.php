@@ -13,12 +13,9 @@ class RiderAssignmentResource extends JsonResource
             'id' => $this->id,
             'rider' => new RiderResource($this->whenLoaded('rider')),
             'company' => new CompanyResource($this->whenLoaded('company')),
-            'zone' => $this->zone,
-            'route' => $this->route,
-            'shift' => $this->shift?->value,
+            'type' => $this->type->value,
             'start_date' => $this->start_date->toDateString(),
             'end_date' => $this->end_date?->toDateString(),
-            'status' => $this->status->value,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

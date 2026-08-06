@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\{User, Post, Category, Tag};
+use App\Models\Company;
+use App\Models\Rider;
+use App\Models\RiderAttendance;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard.index');
+        $ridersCount = Rider::count();
+        $clientsCount = Company::count();
+        $attendancesCount = RiderAttendance::count();
+
+        return view('admin.dashboard.index', compact('ridersCount', 'clientsCount', 'attendancesCount'));
     }
 }

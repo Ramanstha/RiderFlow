@@ -15,15 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rider_id')->constrained('riders')->cascadeOnDelete();
             $table->foreignId('company_id')->constrained('companies')->restrictOnDelete();
-            $table->string('zone')->nullable();
-            $table->string('route')->nullable();
-            $table->enum('shift', ['Morning', 'Afternoon', 'Evening', 'Night'])->nullable();
+            $table->enum('type', ['Subscription basis', 'Parcel basis', 'Last mile', 'Temporary']);
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->enum('status', ['Assigned', 'Completed', 'Cancelled'])->default('Assigned');
             $table->timestamps();
 
-            $table->index(['rider_id', 'status']);
+            $table->index(['rider_id', 'start_date']);
         });
     }
 

@@ -28,20 +28,21 @@ class HomeController extends Controller
         $riders = $this->riders->list();
         $testimonial = $this->testimonial->list();
 
-        return view('ui.content.home', compact('banner','riders','contact','testimonial'));
+        return view('ui.content.home', compact('banner', 'riders', 'contact', 'testimonial'));
     }
 
     public function about(): View
     {
         $riders = $this->riders->list();
 
-        return view('ui.content.about',compact('riders'));
+        return view('ui.content.about', compact('riders'));
     }
 
     public function contact(): View
     {
         $contact = $this->contact->primary();
-        return view('ui.content.contact',compact('contact'));
+
+        return view('ui.content.contact', compact('contact'));
     }
 
     public function submitContact(StoreContactMessageRequest $request): RedirectResponse

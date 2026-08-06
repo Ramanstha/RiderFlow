@@ -26,7 +26,7 @@ class BannerService
 
     public function activeHeroBanner(): ?Banner
     {
-        return $this->banners->all(['is_active' => true])->first();
+        return $this->banners->first(['is_active' => true]);
     }
 
     public function find(int $id): Banner

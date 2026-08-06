@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('photo')->nullable();
             $table->string('license_number')->unique();
-            $table->enum('status', ['Active', 'Inactive', 'On Leave'])->default('Active');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
         });
     }

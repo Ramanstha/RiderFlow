@@ -17,6 +17,14 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->applyFilters($this->query(), $filters)->latest()->get();
     }
 
+    /**
+     * The newest record matching the filters, without hydrating the rest.
+     */
+    public function first(array $filters = []): ?Model
+    {
+        return $this->applyFilters($this->query(), $filters)->latest()->first();
+    }
+
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
         return $this->applyFilters($this->query(), $filters)

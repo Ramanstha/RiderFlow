@@ -59,7 +59,7 @@
         <p class="text-xl font-bold font-display mb-1">{{ $stats['today']['present'] }}</p>
         <p class="text-[var(--fg-secondary)] text-sm">
             Present Today
-            <span class="text-xs">/ {{ $stats['today']['absent'] }} absent, {{ $stats['today']['on_leave'] }} on leave</span>
+            <span class="text-xs">/ {{ $stats['today']['absent'] }} absent</span>
         </p>
     </div>
 

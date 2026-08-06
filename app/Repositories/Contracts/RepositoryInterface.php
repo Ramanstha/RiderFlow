@@ -10,6 +10,8 @@ interface RepositoryInterface
 {
     public function all(array $filters = []): Collection;
 
+    public function first(array $filters = []): ?Model;
+
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator;
 
     public function find(int $id): ?Model;

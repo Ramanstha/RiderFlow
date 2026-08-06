@@ -30,14 +30,14 @@ class ParcelCountController extends BaseApiController
 
         $parcelCount = $this->parcelCounts->create($request->validated());
 
-        return $this->success(new DailyParcelCountResource($parcelCount->load('rider.company')), 'Parcel count recorded successfully.', 201);
+        return $this->success(new DailyParcelCountResource($parcelCount->load('rider.companies')), 'Parcel count recorded successfully.', 201);
     }
 
     public function show(DailyParcelCount $parcelCount): JsonResponse
     {
         $this->authorize('parcels.view');
 
-        return $this->success(new DailyParcelCountResource($parcelCount->load('rider.company')));
+        return $this->success(new DailyParcelCountResource($parcelCount->load('rider.companies')));
     }
 
     public function update(UpdateParcelCountRequest $request, DailyParcelCount $parcelCount): JsonResponse
@@ -46,7 +46,7 @@ class ParcelCountController extends BaseApiController
 
         $parcelCount = $this->parcelCounts->update($parcelCount, $request->validated());
 
-        return $this->success(new DailyParcelCountResource($parcelCount->load('rider.company')), 'Parcel count updated successfully.');
+        return $this->success(new DailyParcelCountResource($parcelCount->load('rider.companies')), 'Parcel count updated successfully.');
     }
 
     public function destroy(DailyParcelCount $parcelCount): JsonResponse

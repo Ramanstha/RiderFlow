@@ -113,20 +113,12 @@
                         <span class="font-medium">{{ $assignment->company->name }}</span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="text-[var(--fg-secondary)]">Zone</span>
-                        <span class="font-medium">{{ $assignment->zone ?: '-' }}</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-[var(--fg-secondary)]">Route</span>
-                        <span class="font-medium">{{ $assignment->route ?: '-' }}</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-[var(--fg-secondary)]">Shift</span>
-                        <span class="font-medium">{{ $assignment->shift?->value ?: '-' }}</span>
-                    </div>
-                    <div class="flex items-center justify-between">
                         <span class="text-[var(--fg-secondary)]">Started</span>
                         <span class="font-medium">{{ $assignment->start_date->format('Y-m-d') }}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-[var(--fg-secondary)]">Ends</span>
+                        <span class="font-medium">{{ $assignment->end_date?->format('Y-m-d') ?: 'Ongoing' }}</span>
                     </div>
                 </div>
                 <a href="{{ route('rider.assignment.index') }}"
@@ -155,10 +147,6 @@
                 <div class="flex items-center justify-between">
                     <span class="text-[var(--fg-secondary)]">Absences</span>
                     <span class="font-medium">{{ $stats['attendance']['absent_days'] }}</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-[var(--fg-secondary)]">Leave taken</span>
-                    <span class="font-medium">{{ $stats['attendance']['leave_days'] }}</span>
                 </div>
             </div>
             <a href="{{ route('rider.parcel.create') }}" class="btn-primary btn-sm w-full text-center mt-5 block">

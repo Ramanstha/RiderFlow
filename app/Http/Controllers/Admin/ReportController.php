@@ -127,11 +127,11 @@ class ReportController extends Controller
         return [
             'title' => 'Attendance Report',
             'filename' => 'attendance-report',
-            'headings' => ['Rider', 'Company', 'Total Days', 'Present Days', 'Absent Days', 'Leave Days', 'Attendance Rate (%)'],
+            'headings' => ['Rider', 'Company', 'Total Days', 'Present Days', 'Absent Days', 'Attendance Rate (%)'],
             'rows' => $this->reports->attendanceSummary($request->validated()),
             'mapRow' => fn ($row) => [
                 $row['rider_name'], $row['company_name'], $row['total_days'], $row['present_days'],
-                $row['absent_days'], $row['leave_days'], $row['attendance_rate'],
+                $row['absent_days'], $row['attendance_rate'],
             ],
         ];
     }

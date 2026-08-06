@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Rider;
+use App\Models\RiderPerformance;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\RiderPerformance>
+ * @extends Factory<RiderPerformance>
  */
 class RiderPerformanceFactory extends Factory
 {

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\AssignmentShift;
-use App\Enums\AssignmentStatus;
+use App\Enums\AssignmentType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,21 +15,17 @@ class RiderAssignment extends Model
     protected $fillable = [
         'rider_id',
         'company_id',
-        'zone',
-        'route',
-        'shift',
+        'type',
         'start_date',
         'end_date',
-        'status',
     ];
 
     protected function casts(): array
     {
         return [
+            'type' => AssignmentType::class,
             'start_date' => 'date',
             'end_date' => 'date',
-            'shift' => AssignmentShift::class,
-            'status' => AssignmentStatus::class,
         ];
     }
 
@@ -41,5 +37,18 @@ class RiderAssignment extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Assignments running on a given date (today by default). With no status
+     * column, an assignment is active purely by its date range.
+     */
+    public function scopeActive(Builder $query, ?string $on = null): Builder
+    {
+        $on ??= now()->toDateString();
+
+        return $query
+            ->whereDate('start_date', '<=', $on)
+            ->where(fn (Builder $query) => $query->whereNull('end_date')->orWhereDate('end_date', '>=', $on));
     }
 }

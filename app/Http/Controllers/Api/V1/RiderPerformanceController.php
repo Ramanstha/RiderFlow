@@ -30,14 +30,14 @@ class RiderPerformanceController extends BaseApiController
 
         $performance = $this->performances->create($request->validated());
 
-        return $this->success(new RiderPerformanceResource($performance->load('rider.company')), 'Performance record created successfully.', 201);
+        return $this->success(new RiderPerformanceResource($performance->load('rider.companies')), 'Performance record created successfully.', 201);
     }
 
     public function show(RiderPerformance $performance): JsonResponse
     {
         $this->authorize('performances.view');
 
-        return $this->success(new RiderPerformanceResource($performance->load('rider.company')));
+        return $this->success(new RiderPerformanceResource($performance->load('rider.companies')));
     }
 
     public function update(UpdatePerformanceRequest $request, RiderPerformance $performance): JsonResponse
@@ -46,7 +46,7 @@ class RiderPerformanceController extends BaseApiController
 
         $performance = $this->performances->update($performance, $request->validated());
 
-        return $this->success(new RiderPerformanceResource($performance->load('rider.company')), 'Performance record updated successfully.');
+        return $this->success(new RiderPerformanceResource($performance->load('rider.companies')), 'Performance record updated successfully.');
     }
 
     public function destroy(RiderPerformance $performance): JsonResponse

@@ -51,7 +51,6 @@
                     <th>Total Days</th>
                     <th>Present</th>
                     <th>Absent</th>
-                    <th>Leave</th>
                     <th>Attendance Rate</th>
                 </tr>
             </thead>
@@ -63,7 +62,6 @@
                         <td><span class="text-sm">{{ $row['total_days'] }}</span></td>
                         <td><span class="text-sm">{{ $row['present_days'] }}</span></td>
                         <td><span class="text-sm">{{ $row['absent_days'] }}</span></td>
-                        <td><span class="text-sm">{{ $row['leave_days'] }}</span></td>
                         <td>
                             <span class="badge badge-{{ $row['attendance_rate'] >= 80 ? 'success' : ($row['attendance_rate'] >= 50 ? 'warning' : 'danger') }}">{{ $row['attendance_rate'] }}%</span>
                         </td>

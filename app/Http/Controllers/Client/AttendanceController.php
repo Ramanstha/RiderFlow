@@ -14,7 +14,7 @@ class AttendanceController extends PortalController
 
         $records = RiderAttendance::query()
             ->with('rider:id,name')
-            ->whereIn('rider_id', $company->riders()->select('id'))
+            ->whereIn('rider_id', $company->riders()->select('riders.id'))
             ->when($request->integer('rider_id'), fn ($q, $id) => $q->where('rider_id', $id))
             ->when($request->string('status')->trim()->value(), fn ($q, $status) => $q->where('status', $status))
             ->when($request->date('date_from'), fn ($q, $date) => $q->whereDate('date', '>=', $date))
@@ -25,7 +25,7 @@ class AttendanceController extends PortalController
 
         return view('client.attendance.index', [
             'records' => $records,
-            'riders' => $company->riders()->orderBy('name')->get(['id', 'name']),
+            'riders' => $company->riders()->orderBy('name')->get(['riders.id', 'riders.name']),
         ]);
     }
 }

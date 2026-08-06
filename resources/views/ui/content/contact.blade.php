@@ -132,10 +132,12 @@
 </section>
 
 <!-- Google Map Section -->
+@if ($contact?->map)
 <div class="map-container">
     <iframe
-        src="{{$contact->map}}"
+        src="{{ $contact->map }}"
         title="RiderFlow office location on Google Maps" width="100%" height="100%" style="border:0;" allowfullscreen=""
         loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 </div>
+@endif
 @endsection

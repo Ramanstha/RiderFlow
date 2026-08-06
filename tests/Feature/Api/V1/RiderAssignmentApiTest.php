@@ -28,14 +28,14 @@ class RiderAssignmentApiTest extends TestCase
         $response = $this->postJson('/api/v1/assignments', [
             'rider_id' => $rider->id,
             'company_id' => $company->id,
+            'type' => 'Parcel basis',
             'start_date' => '2026-07-01',
-            'status' => 'Assigned',
         ]);
 
-        $response->assertCreated()->assertJsonPath('data.status', 'Assigned');
+        $response->assertCreated()->assertJsonPath('data.type', 'Parcel basis');
     }
 
-    public function test_it_rejects_overlapping_active_assignments_for_the_same_rider(): void
+    public function test_it_rejects_overlapping_assignments_for_the_same_rider(): void
     {
         $rider = Rider::factory()->create();
         $company = Company::factory()->create();
@@ -45,14 +45,13 @@ class RiderAssignmentApiTest extends TestCase
             'company_id' => $company->id,
             'start_date' => '2026-07-01',
             'end_date' => null,
-            'status' => 'Assigned',
         ]);
 
         $response = $this->postJson('/api/v1/assignments', [
             'rider_id' => $rider->id,
             'company_id' => $company->id,
+            'type' => 'Subscription basis',
             'start_date' => '2026-07-10',
-            'status' => 'Assigned',
         ]);
 
         $response->assertStatus(422)->assertJsonValidationErrors(['start_date']);

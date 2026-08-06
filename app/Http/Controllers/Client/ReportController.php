@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Exports\ReportExport;
 use App\Http\Requests\Report\ReportFilterRequest;
+use App\Models\Rider;
 use App\Services\ReportService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Closure;
@@ -103,11 +104,11 @@ class ReportController extends PortalController
         return [
             'title' => $this->company()->name.' — Attendance Report',
             'filename' => 'attendance-report',
-            'headings' => ['Rider', 'Total Days', 'Present Days', 'Absent Days', 'Leave Days', 'Attendance Rate (%)'],
+            'headings' => ['Rider', 'Total Days', 'Present Days', 'Absent Days', 'Attendance Rate (%)'],
             'rows' => $this->reports->attendanceSummary($this->scopedFilters($request->validated())),
             'mapRow' => fn ($row) => [
                 $row['rider_name'], $row['total_days'], $row['present_days'],
-                $row['absent_days'], $row['leave_days'], $row['attendance_rate'],
+                $row['absent_days'], $row['attendance_rate'],
             ],
         ];
     }
@@ -141,11 +142,11 @@ class ReportController extends PortalController
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rider>
+     * @return \Illuminate\Database\Eloquent\Collection<int, Rider>
      */
     protected function riderOptions()
     {
-        return $this->company()->riders()->orderBy('name')->get(['id', 'name']);
+        return $this->company()->riders()->orderBy('name')->get(['riders.id', 'riders.name']);
     }
 
     protected function streamCsv(array $spec): StreamedResponse

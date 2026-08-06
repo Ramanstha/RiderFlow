@@ -12,9 +12,6 @@ use Illuminate\Validation\ValidationException;
 
 class RiderAttendanceService
 {
-    /** Self check-ins after this time are recorded as Late. */
-    protected const LATE_AFTER = '09:15';
-
     public function __construct(protected RiderAttendanceRepositoryInterface $attendances) {}
 
     public function list(array $filters = []): Collection
@@ -66,7 +63,7 @@ class RiderAttendanceService
     }
 
     /**
-     * Self check-in from the rider portal. Late once past the grace time.
+     * Self check-in from the rider portal.
      */
     public function checkIn(Rider $rider): RiderAttendance
     {
@@ -81,9 +78,7 @@ class RiderAttendanceService
         return $this->attendances->create([
             'rider_id' => $rider->id,
             'date' => $now->toDateString(),
-            'status' => $now->format('H:i') > self::LATE_AFTER
-                ? AttendanceStatus::Late
-                : AttendanceStatus::Present,
+            'status' => AttendanceStatus::Present,
             'check_in' => $now->format('H:i:s'),
         ]);
     }

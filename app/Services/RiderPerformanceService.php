@@ -6,6 +6,7 @@ use App\Models\Rider;
 use App\Models\RiderPerformance;
 use App\Repositories\Contracts\RiderAttendanceRepositoryInterface;
 use App\Repositories\Contracts\RiderPerformanceRepositoryInterface;
+use App\Support\AttendanceSummary;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -63,13 +64,10 @@ class RiderPerformanceService
             'date_to' => $period->copy()->endOfMonth()->toDateString(),
         ]);
 
-        if ($records->isEmpty()) {
-            return 0.0;
-        }
-
-        $present = $records->whereIn('status', ['Present', 'Late', 'Half Day'])->count();
-
-        return round(($present / $records->count()) * 100, 2);
+        return AttendanceSummary::rate(
+            AttendanceSummary::countPresent($records),
+            $records->count()
+        );
     }
 
     protected function guardDuplicatePeriod(int $riderId, string $period, ?int $ignoreId = null): void

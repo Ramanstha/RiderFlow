@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Banner;
 use App\Models\Rider;
 use App\Models\Testimonial;
+use App\Repositories\Contracts\TestimonialRepositoryInterface;
+use App\Services\TestimonialService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -165,7 +167,6 @@ class MediaReplacementTest extends TestCase
             'phone' => $rider->phone,
             'license_number' => $rider->license_number,
             'status' => $rider->status->value,
-            'company_id' => $rider->company_id,
             'photo' => UploadedFile::fake()->image('replacement.jpg'),
         ])->assertRedirect();
 
@@ -187,10 +188,10 @@ class MediaReplacementTest extends TestCase
 
         $oldPath = $testimonial->image;
 
-        $repository = $this->mock(\App\Repositories\Contracts\TestimonialRepositoryInterface::class);
+        $repository = $this->mock(TestimonialRepositoryInterface::class);
         $repository->shouldReceive('update')->once()->andThrow(new \RuntimeException('db down'));
 
-        $service = new \App\Services\TestimonialService($repository);
+        $service = new TestimonialService($repository);
 
         try {
             $service->update($testimonial, [

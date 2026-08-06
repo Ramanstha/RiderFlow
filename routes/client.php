@@ -6,12 +6,12 @@ use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\ParcelAssignmentController;
 use App\Http\Controllers\Client\ParcelController;
 use App\Http\Controllers\Client\PerformanceController;
+use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\ReportController;
 use App\Http\Controllers\Client\RiderController;
-use App\Http\Controllers\Client\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-//////////////Client Portal//////////////////
+// ////////////Client Portal//////////////////
 // Companies are the clients of the fleet. The admin panel already owns the
 // "/company" URIs via Route::resource('company'), so the portal lives under
 // "/client-portal". Clients sign in at /login like everyone else.

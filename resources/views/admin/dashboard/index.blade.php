@@ -32,7 +32,7 @@
                     +12%
                 </span>
             </div>
-            <p class="text-xl font-bold font-display mb-1">248</p>
+            <p class="text-l font-bold font-display mb-1">{{$ridersCount}}</p>
             <p class="text-[var(--fg-secondary)] text-sm">Total Riders</p>
         </div>
 
@@ -54,7 +54,7 @@
                     +8%
                 </span>
             </div>
-            <p class="text-xl font-bold font-display mb-1">215</p>
+            <p class="text-l font-bold font-display mb-1">215</p>
             <p class="text-[var(--fg-secondary)] text-sm">Active Riders</p>
         </div>
 
@@ -76,7 +76,7 @@
                     +3
                 </span>
             </div>
-            <p class="text-xl font-bold font-display mb-1">42</p>
+            <p class="text-l font-bold font-display mb-1">{{$clientsCount}}</p>
             <p class="text-[var(--fg-secondary)] text-sm">Partner Businesses</p>
         </div>
 
@@ -86,7 +86,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-indigo-400" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                     </svg>
                 </div>
                 <span class="text-sm text-green-400 font-semibold flex items-center gap-1">
@@ -98,7 +98,7 @@
                     +24%
                 </span>
             </div>
-            <p class="text-xl font-bold font-display mb-1">12,847</p>
+            <p class="text-l font-bold font-display mb-1">12,847</p>
             <p class="text-[var(--fg-secondary)] text-sm">Delivered This Month</p>
         </div>
     </div>

@@ -15,7 +15,7 @@ class RiderRepository extends BaseRepository implements RiderRepositoryInterface
 
     protected function query(): Builder
     {
-        return $this->model->newQuery()->with('company');
+        return $this->model->newQuery()->with('companies');
     }
 
     protected function applyFilters(Builder $query, array $filters): Builder
@@ -29,6 +29,6 @@ class RiderRepository extends BaseRepository implements RiderRepositoryInterface
                 });
             })
             ->when($filters['status'] ?? null, fn (Builder $query, string $status) => $query->where('status', $status))
-            ->when($filters['company_id'] ?? null, fn (Builder $query, $companyId) => $query->where('company_id', $companyId));
+            ->when($filters['company_id'] ?? null, fn (Builder $query, $companyId) => $query->whereHas('assignments', fn (Builder $q) => $q->where('company_id', $companyId)));
     }
 }

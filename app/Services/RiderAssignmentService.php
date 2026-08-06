@@ -29,11 +29,7 @@ class RiderAssignmentService
 
     public function create(array $data): RiderAssignment
     {
-        $data['status'] ??= 'Assigned';
-
-        if ($data['status'] === 'Assigned') {
-            $this->guardOverlap($data['rider_id'], $data['start_date'], $data['end_date'] ?? null);
-        }
+        $this->guardOverlap($data['rider_id'], $data['start_date'], $data['end_date'] ?? null);
 
         return $this->assignments->create($data);
     }
@@ -43,11 +39,8 @@ class RiderAssignmentService
         $riderId = $data['rider_id'] ?? $assignment->rider_id;
         $startDate = $data['start_date'] ?? $assignment->start_date->toDateString();
         $endDate = $data['end_date'] ?? $assignment->end_date?->toDateString();
-        $status = $data['status'] ?? $assignment->status->value;
 
-        if ($status === 'Assigned') {
-            $this->guardOverlap($riderId, $startDate, $endDate, $assignment->id);
-        }
+        $this->guardOverlap($riderId, $startDate, $endDate, $assignment->id);
 
         return $this->assignments->update($assignment, $data);
     }
@@ -61,9 +54,8 @@ class RiderAssignmentService
     {
         $overlaps = RiderAssignment::query()
             ->where('rider_id', $riderId)
-            ->where('status', 'Assigned')
             ->when($ignoreId, fn ($query, $ignoreId) => $query->whereKeyNot($ignoreId))
-            ->where(function ($query) use ($startDate, $endDate) {
+            ->where(function ($query) use ($startDate) {
                 $query->whereNull('end_date')->orWhere('end_date', '>=', $startDate);
             })
             ->when($endDate, fn ($query, $endDate) => $query->where('start_date', '<=', $endDate))
@@ -71,7 +63,7 @@ class RiderAssignmentService
 
         if ($overlaps) {
             throw ValidationException::withMessages([
-                'start_date' => 'This rider already has an active assignment that overlaps this date range.',
+                'start_date' => 'This rider already has an assignment that overlaps this date range.',
             ]);
         }
     }

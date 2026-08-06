@@ -21,7 +21,7 @@ class RiderAssignmentController extends Controller
     {
         $this->authorize('assignments.view');
 
-        $assignments = $this->assignments->paginate($request->only(['rider_id', 'company_id', 'status']));
+        $assignments = $this->assignments->paginate($request->only(['rider_id', 'company_id', 'type']));
         $riders = Rider::query()->orderBy('name')->get();
         $companies = Company::query()->orderBy('name')->get();
 

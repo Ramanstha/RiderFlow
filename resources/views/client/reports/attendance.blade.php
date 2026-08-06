@@ -22,7 +22,6 @@
                     <th class="py-3 pr-4 font-medium text-right">Total Days</th>
                     <th class="py-3 pr-4 font-medium text-right">Present</th>
                     <th class="py-3 pr-4 font-medium text-right">Absent</th>
-                    <th class="py-3 pr-4 font-medium text-right">Leave</th>
                     <th class="py-3 font-medium text-right">Rate</th>
                 </tr>
             </thead>
@@ -33,7 +32,6 @@
                         <td class="py-3 pr-4 text-right">{{ $row['total_days'] }}</td>
                         <td class="py-3 pr-4 text-right text-green-400">{{ $row['present_days'] }}</td>
                         <td class="py-3 pr-4 text-right text-red-400">{{ $row['absent_days'] }}</td>
-                        <td class="py-3 pr-4 text-right text-yellow-400">{{ $row['leave_days'] }}</td>
                         <td class="py-3 text-right">
                             <span class="badge badge-{{ $row['attendance_rate'] >= 90 ? 'success' : ($row['attendance_rate'] >= 75 ? 'warning' : 'danger') }}">
                                 {{ $row['attendance_rate'] }}%

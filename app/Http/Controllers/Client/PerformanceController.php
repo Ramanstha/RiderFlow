@@ -16,7 +16,7 @@ class PerformanceController extends PortalController
 
         return view('client.performance.index', [
             'summary' => $this->reports->performanceSummary($this->scopedFilters($request->validated())),
-            'riders' => $company->riders()->orderBy('name')->get(['id', 'name']),
+            'riders' => $company->riders()->orderBy('name')->get(['riders.id', 'riders.name']),
         ]);
     }
 }

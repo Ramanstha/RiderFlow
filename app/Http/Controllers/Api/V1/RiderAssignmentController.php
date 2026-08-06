@@ -19,7 +19,7 @@ class RiderAssignmentController extends BaseApiController
     {
         $this->authorize('assignments.view');
 
-        $assignments = $this->assignments->paginate($request->only(['rider_id', 'company_id', 'status']));
+        $assignments = $this->assignments->paginate($request->only(['rider_id', 'company_id', 'type']));
 
         return $this->success(RiderAssignmentResource::collection($assignments));
     }

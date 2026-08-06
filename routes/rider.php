@@ -8,7 +8,7 @@ use App\Http\Controllers\Rider\PerformanceController;
 use App\Http\Controllers\Rider\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-//////////////Rider Portal//////////////////
+// ////////////Rider Portal//////////////////
 // Note: the admin panel already owns the "/rider" URIs via Route::resource('rider'),
 // so the portal lives under "/rider-portal". Route names stay under "rider." —
 // none of them collide with the admin resource's index/create/show/edit/... names.

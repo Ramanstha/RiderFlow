@@ -33,11 +33,9 @@
             <div>
                 <label class="block text-sm font-medium mb-2">Status *</label>
                 <select name="status" class="input-field" required>
-                    <option value="Present" @selected(old('status') === 'Present')>Present</option>
-                    <option value="Absent" @selected(old('status') === 'Absent')>Absent</option>
-                    <option value="Late" @selected(old('status') === 'Late')>Late</option>
-                    <option value="Half Day" @selected(old('status') === 'Half Day')>Half Day</option>
-                    <option value="Leave" @selected(old('status') === 'Leave')>Leave</option>
+                    @foreach (\App\Enums\AttendanceStatus::cases() as $status)
+                        <option value="{{ $status->value }}" @selected(old('status') === $status->value)>{{ $status->value }}</option>
+                    @endforeach
                 </select>
                 @error('status') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
             </div>

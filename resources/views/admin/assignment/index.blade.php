@@ -7,7 +7,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
             <h2 class="font-display text-2xl font-bold mb-1">Rider Assignments</h2>
-            <p class="text-[var(--fg-secondary)] text-sm">Assign riders to companies, zones and shifts</p>
+            <p class="text-[var(--fg-secondary)] text-sm">Assign riders to companies</p>
         </div>
         @can('assignments.manage')
         <a href="{{ route('assignment.create') }}" class="btn-primary flex items-center gap-2">
@@ -40,11 +40,11 @@
                     <option value="{{ $company->id }}" @selected((string) request('company_id') === (string) $company->id)>{{ $company->name }}</option>
                 @endforeach
             </select>
-            <select name="status" class="input-field w-auto text-sm" onchange="this.form.submit()">
-                <option value="">All Status</option>
-                <option value="Assigned" @selected(request('status') === 'Assigned')>Assigned</option>
-                <option value="Completed" @selected(request('status') === 'Completed')>Completed</option>
-                <option value="Cancelled" @selected(request('status') === 'Cancelled')>Cancelled</option>
+            <select name="type" class="input-field w-auto text-sm" onchange="this.form.submit()">
+                <option value="">All Types</option>
+                @foreach (\App\Enums\AssignmentType::cases() as $type)
+                    <option value="{{ $type->value }}" @selected(request('type') === $type->value)>{{ $type->value }}</option>
+                @endforeach
             </select>
             <button type="submit" class="btn-secondary text-sm px-5">Filter</button>
         </form>
@@ -57,24 +57,26 @@
                     <tr>
                         <th>Rider</th>
                         <th>Company</th>
-                        <th>Zone / Route</th>
-                        <th>Shift</th>
+                        <th>Type</th>
                         <th>Dates</th>
-                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($assignments as $assignment)
                         <tr>
-                            <td><p class="font-medium">{{ $assignment->rider->name }}</p></td>
-                            <td><span class="text-sm">{{ $assignment->company->name }}</span></td>
-                            <td><span class="text-sm">{{ $assignment->zone ?: '-' }} / {{ $assignment->route ?: '-' }}</span></td>
-                            <td><span class="text-sm">{{ $assignment->shift?->value ?: '-' }}</span></td>
-                            <td><span class="text-sm">{{ $assignment->start_date->format('Y-m-d') }} &rarr; {{ $assignment->end_date?->format('Y-m-d') ?? 'Ongoing' }}</span></td>
                             <td>
-                                <span class="badge badge-{{ $assignment->status->value === 'Assigned' ? 'success' : ($assignment->status->value === 'Cancelled' ? 'danger' : 'warning') }}">{{ $assignment->status->value }}</span>
+                                <p class="font-medium">{{ $assignment->rider->name }}</p>
+                                <p class="text-xs text-[var(--fg-secondary)]">{{ $assignment->rider->email ?: '-' }}</p>
+                                <p class="text-xs text-[var(--fg-secondary)]">{{ $assignment->rider->phone ?: '-' }}</p>
                             </td>
+                            <td>
+                                <p class="font-medium">{{ $assignment->company->name }}</p>
+                                <p class="text-xs text-[var(--fg-secondary)]">{{ $assignment->company->email ?: '-' }}</p>
+                                <p class="text-xs text-[var(--fg-secondary)]">{{ $assignment->company->phone ?: '-' }}</p>
+                            </td>
+                            <td><span class="badge badge-info">{{ $assignment->type->value }}</span></td>
+                            <td><span class="text-sm">{{ $assignment->start_date->format('Y-m-d') }} &rarr; {{ $assignment->end_date?->format('Y-m-d') ?? 'Ongoing' }}</span></td>
                             <td>
                                 @can('assignments.manage')
                                 <div class="flex items-center gap-1">
@@ -100,7 +102,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-[var(--fg-secondary)] py-8">No assignments found.</td>
+                            <td colspan="5" class="text-center text-[var(--fg-secondary)] py-8">No assignments found.</td>
                         </tr>
                     @endforelse
                 </tbody>

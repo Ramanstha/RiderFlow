@@ -15,7 +15,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
             <div>
                 <p class="text-[var(--fg-secondary)] mb-1">Business</p>
-                <p class="font-medium">{{ $rider->company?->name ?? '-' }}</p>
+                <p class="font-medium">{{ $rider->companies->pluck('name')->join(', ') ?: '-' }}</p>
             </div>
             <div>
                 <p class="text-[var(--fg-secondary)] mb-1">License Number</p>

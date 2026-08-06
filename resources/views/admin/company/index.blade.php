@@ -53,7 +53,7 @@
                 <thead>
                     <tr>
                         <th>Company</th>
-                        <th>Contact</th>
+                        <th>Contact Person</th>
                         <th>Phone</th>
                         <th>Riders</th>
                         <th>Status</th>

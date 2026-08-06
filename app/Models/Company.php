@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\CompanyStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,9 +45,16 @@ class Company extends Authenticatable
         ];
     }
 
-    public function riders(): HasMany
+    /**
+     * The company's roster: every rider it holds an assignment against. Riders
+     * carry no company column, so rider_assignments is the pivot. Queries built
+     * off this relation must qualify any column name the pivot also has
+     * (id, timestamps) or the join makes it ambiguous.
+     */
+    public function riders(): BelongsToMany
     {
-        return $this->hasMany(Rider::class);
+        return $this->belongsToMany(Rider::class, 'rider_assignments')
+            ->distinct('riders.id');
     }
 
     public function assignments(): HasMany
@@ -56,17 +64,27 @@ class Company extends Authenticatable
 
     public function attendances(): HasManyThrough
     {
-        return $this->hasManyThrough(RiderAttendance::class, Rider::class);
+        return $this->throughAssignments(RiderAttendance::class, 'rider_attendances');
     }
 
     public function performances(): HasManyThrough
     {
-        return $this->hasManyThrough(RiderPerformance::class, Rider::class);
+        return $this->throughAssignments(RiderPerformance::class, 'rider_performances');
     }
 
     public function parcelCounts(): HasManyThrough
     {
-        return $this->hasManyThrough(DailyParcelCount::class, Rider::class);
+        return $this->throughAssignments(DailyParcelCount::class, 'daily_parcel_counts');
+    }
+
+    /**
+     * Reach a rider-owned table by hopping companies -> rider_assignments ->
+     * <table>, deduped so a rider assigned twice does not double its rows.
+     */
+    protected function throughAssignments(string $related, string $table): HasManyThrough
+    {
+        return $this->hasManyThrough($related, RiderAssignment::class, 'company_id', 'rider_id', 'id', 'rider_id')
+            ->distinct($table.'.id');
     }
 
     /**

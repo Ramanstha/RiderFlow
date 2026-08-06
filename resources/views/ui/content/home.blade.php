@@ -125,7 +125,7 @@
                 <div class="service-card">
                     <div>
                         <div class="icon-box icon-pink">
-                            <i class="fa-solid fa-shapes"></i>
+                            <i class="fa-solid fa-credit-card"></i>
                         </div>
                         <h3 class="card-title-custom">Subscription Basis</h3>
                         <p class="card-text-custom">
@@ -142,7 +142,7 @@
                 <div class="service-card">
                     <div>
                         <div class="icon-box icon-green">
-                            <i class="fa-solid fa-code"></i>
+                            <i class="fa-solid fa-shapes"></i>
                         </div>
                         <h3 class="card-title-custom">Parcel Basis</h3>
                         <p class="card-text-custom">

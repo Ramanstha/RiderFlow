@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Enums\AssignmentStatus;
 use App\Enums\RiderStatus;
 use App\Models\Company;
 use App\Models\DailyParcelCount;
 use App\Models\RiderAttendance;
+use App\Support\AttendanceSummary;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -26,7 +26,7 @@ class ClientPortalService
             'today' => $this->today($company),
             'month' => $this->parcelTotals($company, $monthStart, $monthEnd),
             'attendance' => $this->attendanceTotals($company, $monthStart, $monthEnd),
-            'active_assignments' => $company->assignments()->where('status', AssignmentStatus::Assigned)->count(),
+            'active_assignments' => $company->assignments()->active()->count(),
             'top_riders' => $this->topRiders($company, $monthStart, $monthEnd),
             'recent_activity' => $this->recentActivity($company),
         ];
@@ -38,8 +38,8 @@ class ClientPortalService
     public function riderCounts(Company $company): array
     {
         $byStatus = $company->riders()
-            ->selectRaw('status, COUNT(*) as total')
-            ->groupBy('status')
+            ->selectRaw('riders.status, COUNT(DISTINCT riders.id) as total')
+            ->groupBy('riders.status')
             ->pluck('total', 'status');
 
         $active = (int) $byStatus->get(RiderStatus::Active->value, 0);
@@ -52,7 +52,7 @@ class ClientPortalService
     }
 
     /**
-     * @return array{present: int, absent: int, on_leave: int, parcels: array<string, int|float>}
+     * @return array{present: int, absent: int, parcels: array<string, int|float>}
      */
     public function today(Company $company): array
     {
@@ -63,9 +63,8 @@ class ClientPortalService
             ->get();
 
         return [
-            'present' => $attendance->whereIn('status', ['Present', 'Late', 'Half Day'])->count(),
-            'absent' => $attendance->where('status', 'Absent')->count(),
-            'on_leave' => $attendance->where('status', 'Leave')->count(),
+            'present' => AttendanceSummary::countPresent($attendance),
+            'absent' => AttendanceSummary::countAbsent($attendance),
             'parcels' => $this->parcelTotals($company, $date, $date),
         ];
     }
@@ -97,25 +96,16 @@ class ClientPortalService
     }
 
     /**
-     * @return array{total_days: int, present_days: int, absent_days: int, leave_days: int, attendance_rate: float}
+     * @return array{total_days: int, present_days: int, absent_days: int, attendance_rate: float}
      */
     public function attendanceTotals(Company $company, string $from, string $to): array
     {
-        $records = $this->companyAttendance($company)
-            ->whereDate('rider_attendances.date', '>=', $from)
-            ->whereDate('rider_attendances.date', '<=', $to)
-            ->get();
-
-        $total = $records->count();
-        $present = $records->whereIn('status', ['Present', 'Late', 'Half Day'])->count();
-
-        return [
-            'total_days' => $total,
-            'present_days' => $present,
-            'absent_days' => $records->where('status', 'Absent')->count(),
-            'leave_days' => $records->where('status', 'Leave')->count(),
-            'attendance_rate' => $total > 0 ? round(($present / $total) * 100, 2) : 0.0,
-        ];
+        return AttendanceSummary::forRecords(
+            $this->companyAttendance($company)
+                ->whereDate('rider_attendances.date', '>=', $from)
+                ->whereDate('rider_attendances.date', '<=', $to)
+                ->get()
+        );
     }
 
     /**
@@ -150,7 +140,7 @@ class ClientPortalService
     {
         return DailyParcelCount::query()
             ->with('rider:id,name')
-            ->whereIn('rider_id', $company->riders()->select('id'))
+            ->whereIn('rider_id', $company->riders()->select('riders.id'))
             ->orderByDesc('date')
             ->orderByDesc('id')
             ->limit($limit)
@@ -160,12 +150,12 @@ class ClientPortalService
     protected function companyAttendance(Company $company): Builder
     {
         return RiderAttendance::query()
-            ->whereIn('rider_id', $company->riders()->select('id'));
+            ->whereIn('rider_id', $company->riders()->select('riders.id'));
     }
 
     protected function companyParcels(Company $company): Builder
     {
         return DailyParcelCount::query()
-            ->whereIn('rider_id', $company->riders()->select('id'));
+            ->whereIn('rider_id', $company->riders()->select('riders.id'));
     }
 }

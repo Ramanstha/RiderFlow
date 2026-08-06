@@ -46,9 +46,9 @@
                 <div>
                     <label class="block text-sm font-medium mb-2">Status *</label>
                     <select name="status" class="input-field" required>
-                        <option value="Active" @selected(old('status')==='Active' )>Active</option>
-                        <option value="Inactive" @selected(old('status')==='Inactive' )>Inactive</option>
-                        <option value="On Leave" @selected(old('status')==='On Leave' )>On Leave</option>
+                        @foreach (\App\Enums\RiderStatus::cases() as $status)
+                            <option value="{{ $status->value }}" @selected(old('status') === $status->value)>{{ $status->value }}</option>
+                        @endforeach
                     </select>
                     @error('status') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
@@ -56,24 +56,6 @@
                     <label class="block text-sm font-medium mb-2">Photo</label>
                     <input type="file" name="photo" accept="image/*" class="input-field">
                     @error('photo') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Company *</label>
-                    <select name="company_id" class="input-field" required>
-                        <option value="">Select a business</option>
-                        @foreach ($companies as $company)
-                            <option value="{{ $company->id }}" @selected((string) old('company_id') === (string) $company->id)>{{ $company->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('company_id') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Performance Score (%)</label>
-                    <input type="number" name="performance" value="{{ old('performance') }}" class="input-field" min="0" max="100">
-                    @error('performance') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>
 

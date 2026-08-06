@@ -35,40 +35,14 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Zone</label>
-                    <input type="text" name="zone" value="{{ old('zone', $assignment->zone) }}" class="input-field">
-                    @error('zone') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Route</label>
-                    <input type="text" name="route" value="{{ old('route', $assignment->route) }}" class="input-field">
-                    @error('route') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Shift</label>
-                    <select name="shift" class="input-field">
-                        <option value="">Unspecified</option>
-                        <option value="Morning" @selected(old('shift', $assignment->shift?->value) === 'Morning')>Morning</option>
-                        <option value="Afternoon" @selected(old('shift', $assignment->shift?->value) === 'Afternoon')>Afternoon</option>
-                        <option value="Evening" @selected(old('shift', $assignment->shift?->value) === 'Evening')>Evening</option>
-                        <option value="Night" @selected(old('shift', $assignment->shift?->value) === 'Night')>Night</option>
-                    </select>
-                    @error('shift') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Status *</label>
-                    <select name="status" class="input-field" required>
-                        <option value="Assigned" @selected(old('status', $assignment->status->value) === 'Assigned')>Assigned</option>
-                        <option value="Completed" @selected(old('status', $assignment->status->value) === 'Completed')>Completed</option>
-                        <option value="Cancelled" @selected(old('status', $assignment->status->value) === 'Cancelled')>Cancelled</option>
-                    </select>
-                    @error('status') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Assignment Type *</label>
+                <select name="type" class="input-field" required>
+                    @foreach (\App\Enums\AssignmentType::cases() as $type)
+                        <option value="{{ $type->value }}" @selected(old('type', $assignment->type->value) === $type->value)>{{ $type->value }}</option>
+                    @endforeach
+                </select>
+                @error('type') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

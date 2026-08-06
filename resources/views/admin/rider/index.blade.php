@@ -33,9 +33,9 @@
                 class="input-field flex-1 min-w-[200px]">
             <select name="status" class="input-field w-auto text-sm" onchange="this.form.submit()">
                 <option value="">All Status</option>
-                <option value="Active" @selected(request('status') === 'Active')>Active</option>
-                <option value="Inactive" @selected(request('status') === 'Inactive')>Inactive</option>
-                <option value="On Leave" @selected(request('status') === 'On Leave')>On Leave</option>
+                @foreach (\App\Enums\RiderStatus::cases() as $status)
+                    <option value="{{ $status->value }}" @selected(request('status') === $status->value)>{{ $status->value }}</option>
+                @endforeach
             </select>
             <select name="company_id" class="input-field w-auto text-sm" onchange="this.form.submit()">
                 <option value="">All Companies</option>
@@ -58,7 +58,6 @@
                         <th>License</th>
                         <th>Status</th>
                         <th>Assigned To</th>
-                        <!-- <th>Performance</th> -->
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -82,22 +81,11 @@
                                 <span class="text-sm">{{ $rider->license_number }}</span>
                             </td>
                             <td>
-                                <span class="badge badge-{{ $rider->status->value === 'Active' ? 'success' : ($rider->status->value === 'On Leave' ? 'warning' : 'danger') }}">{{ $rider->status->value }}</span>
+                                <span class="badge badge-{{ $rider->status === \App\Enums\RiderStatus::Active ? 'success' : 'danger' }}">{{ $rider->status->value }}</span>
                             </td>
                             <td>
-                                <span class="text-sm">{{ $rider->company->name }}</span>
+                                <span class="text-sm">{{ $rider->companies->pluck('name')->join(', ') ?: '—' }}</span>
                             </td>
-                            <!-- <td>
-                                <div class="w-24">
-                                    <div class="flex items-center justify-between text-xs mb-1">
-                                        <span class="text-[var(--fg-secondary)]">Score</span>
-                                        <span class="font-semibold">{{ $rider->performance }}%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: {{ $rider->performance }}%"></div>
-                                    </div>
-                                </div>
-                            </td> -->
                             <td>
                                 @can('riders.manage')
                                 <div class="flex items-center gap-1">
@@ -123,7 +111,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-[var(--fg-secondary)] py-8">No riders found.</td>
+                            <td colspan="6" class="text-center text-[var(--fg-secondary)] py-8">No riders found.</td>
                         </tr>
                     @endforelse
                 </tbody>

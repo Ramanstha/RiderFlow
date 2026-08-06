@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::table('riders', function (Blueprint $table) {
             $table->string('password')->nullable()->after('license_number');
-            $table->timestamp('last_login_at')->nullable()->after('performance');
+            $table->timestamp('last_login_at')->nullable()->after('status');
             $table->rememberToken();
         });
     }

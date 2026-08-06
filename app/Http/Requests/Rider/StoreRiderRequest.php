@@ -23,8 +23,6 @@ class StoreRiderRequest extends FormRequest
             'photo' => ['nullable', 'image', 'max:2048'],
             'license_number' => ['required', 'string', 'max:255', 'unique:riders,license_number'],
             'status' => ['required', Rule::enum(RiderStatus::class)],
-            'company_id' => ['required', 'integer', 'exists:companies,id'],
-            'performance' => ['nullable', 'integer', 'min:0', 'max:100'],
             // Optional: leaving it blank simply means the rider cannot sign in
             // to the rider portal yet.
             'password' => ['nullable', 'string', 'confirmed', Password::defaults()],

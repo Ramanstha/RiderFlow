@@ -14,14 +14,14 @@ class AssignmentController extends PortalController
         $assignments = $company->assignments()
             ->with('rider:id,name')
             ->when($request->integer('rider_id'), fn ($q, $id) => $q->where('rider_id', $id))
-            ->when($request->string('status')->trim()->value(), fn ($q, $status) => $q->where('status', $status))
+            ->when($request->string('type')->trim()->value(), fn ($q, $type) => $q->where('type', $type))
             ->latest('start_date')
             ->paginate(20)
             ->withQueryString();
 
         return view('client.assignment.index', [
             'assignments' => $assignments,
-            'riders' => $company->riders()->orderBy('name')->get(['id', 'name']),
+            'riders' => $company->riders()->orderBy('name')->get(['riders.id', 'riders.name']),
         ]);
     }
 }

@@ -57,7 +57,7 @@
                     @forelse ($performances as $performance)
                         <tr>
                             <td><p class="font-medium">{{ $performance->rider->name }}</p></td>
-                            <td><span class="text-sm">{{ $performance->rider->company->name }}</span></td>
+                            <td><span class="text-sm">{{ $performance->rider->companies->pluck('name')->join(', ') ?: '—' }}</span></td>
                             <td><span class="text-sm">{{ $performance->period->format('Y-m') }}</span></td>
                             <td>
                                 <div class="w-24">

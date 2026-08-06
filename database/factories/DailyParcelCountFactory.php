@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\DailyParcelCount;
 use App\Models\Rider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\DailyParcelCount>
+ * @extends Factory<DailyParcelCount>
  */
 class DailyParcelCountFactory extends Factory
 {
