@@ -42,9 +42,7 @@
                         href="{{ route('contact') }}">CONTACT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link search-icon" href="#" aria-label="Search">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </a>
+                    <a class="nav-link rounded-pill btn-sm fw-bold" style="background-color: rgb(255,238,242); color: #ff0066;" href="{{route('login')}}" target="_blank">Sign In</a>
                 </li>
             </ul>
         </div>

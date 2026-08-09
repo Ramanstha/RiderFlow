@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ParcelCountController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RiderAssignmentController;
@@ -28,6 +29,10 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('rider', RiderController::class);
     Route::resource('company', CompanyController::class);
+    // Declared ahead of the resource so `attendance/riders` is not swallowed by
+    // the `attendance/{attendance}` show route.
+    Route::get('attendance/riders', [RiderAttendanceController::class, 'riders'])->name('attendance.riders');
+    Route::get('attendance/riders/{rider}', [RiderAttendanceController::class, 'calendar'])->name('attendance.riders.show');
     Route::resource('attendance', RiderAttendanceController::class);
     Route::resource('performance', RiderPerformanceController::class);
     Route::resource('assignment', RiderAssignmentController::class);
@@ -37,6 +42,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('banner', BannerController::class)->except(['show']);
     Route::resource('contact-info', ContactController::class)->except(['show'])->parameters(['contact-info' => 'contactInfo']);
     Route::resource('testimonial', TestimonialController::class)->except(['show']);
+
+    Route::prefix('notifications')->name('notification.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::post('read-all', [NotificationController::class, 'readAll'])->name('readAll');
+        Route::post('{notification}/read', [NotificationController::class, 'read'])->name('read');
+        Route::delete('{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+    });
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');

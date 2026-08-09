@@ -9,6 +9,15 @@
             <h2 class="font-display text-2xl font-bold mb-1">Rider Attendance</h2>
             <p class="text-[var(--fg-secondary)] text-sm">Track daily check-in/check-out and leave status</p>
         </div>
+        <div class="flex flex-wrap items-center gap-3">
+        <a href="{{ route('attendance.riders') }}" class="btn-secondary flex items-center gap-2 text-sm px-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Attendance by Rider
+        </a>
         @can('attendances.manage')
         <a href="{{ route('attendance.create') }}" class="btn-primary flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
@@ -18,6 +27,7 @@
             Record Attendance
         </a>
         @endcan
+        </div>
     </div>
 
     @if (session('success'))
@@ -65,7 +75,10 @@
                 <tbody>
                     @forelse ($attendances as $attendance)
                         <tr>
-                            <td><p class="font-medium">{{ $attendance->rider->name }}</p></td>
+                            <td>
+                                <a href="{{ route('attendance.riders.show', [$attendance->rider, 'month' => $attendance->date->format('Y-m')]) }}"
+                                    class="font-medium hover:text-[var(--accent)] transition-all">{{ $attendance->rider->name }}</a>
+                            </td>
                             <td><span class="text-sm">{{ $attendance->rider->companies->pluck('name')->join(', ') ?: '—' }}</span></td>
                             <td><span class="text-sm">{{ $attendance->date->format('Y-m-d') }}</span></td>
                             <td>

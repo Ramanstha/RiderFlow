@@ -26,6 +26,32 @@ class RiderAttendanceController extends Controller
         return view('admin.attendance.index', compact('attendances', 'riders'));
     }
 
+    /**
+     * Riders that have been marked at least once — the entry point into the
+     * per-rider attendance calendars.
+     */
+    public function riders(Request $request): View
+    {
+        $this->authorize('attendances.view');
+
+        $search = trim((string) $request->query('search')) ?: null;
+        $riders = $this->attendances->ridersWithAttendance($search);
+
+        return view('admin.attendance.riders', compact('riders', 'search'));
+    }
+
+    /**
+     * One rider's attendance for a single month, as a calendar.
+     */
+    public function calendar(Request $request, Rider $rider): View
+    {
+        $this->authorize('attendances.view');
+
+        $calendar = $this->attendances->monthlyCalendar($rider, $request->query('month'));
+
+        return view('admin.attendance.calendar', array_merge($calendar, ['rider' => $rider]));
+    }
+
     public function create(): View
     {
         $this->authorize('attendances.manage');

@@ -1,3 +1,6 @@
+@php
+    $unreadNotificationsCount = auth()->user()?->unreadNotifications()->count() ?? 0;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,13 +34,7 @@
             <!-- Logo -->
             <div class="p-6 border-b border-[var(--border)]">
                 <div class="flex items-center gap-3">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--accent)] to-cyan-400 flex items-center justify-center glow-accent">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-900" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
+                    <img src="{{ asset('logo.png') }}" alt="RiderFlow Logo" class="w-10 h-10 rounded-full">
                     <div>
                         <h1 class="font-display text-xl font-bold">RiderFlow</h1>
                         <p class="text-xs text-[var(--fg-secondary)]">Delivery Solutions</p>
@@ -202,8 +199,7 @@
                     </a>
 
                     <a href="{{ route('testimonial.index') }}"
-                        class="nav-item {{ request()->routeIs('testimonial.*') ? 'active' : '' }}"
-                        data-page="contacts">
+                        class="nav-item {{ request()->routeIs('testimonial.*') ? 'active' : '' }}" data-page="contacts">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -215,7 +211,7 @@
 
                 </div>
 
-                <div class="pt-4 mt-4 border-t border-[var(--border)]">
+                <!-- <div class="pt-4 mt-4 border-t border-[var(--border)]">
                     <p class="px-4 py-2 text-xs font-semibold text-[var(--fg-secondary)] uppercase tracking-wider">
                         Settings</p>
 
@@ -243,7 +239,7 @@
                         </button>
                     </form>
 
-                    <div class="nav-item" id="themeToggle">
+                    <button type="button" class="nav-item theme-toggle w-full text-left" aria-pressed="false">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 dark-icon" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -254,28 +250,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
-                        <span>Dark Mode</span>
-                    </div>
-                </div>
+                        <span class="theme-label">Dark Mode</span>
+                    </button>
+                </div> -->
             </nav>
-
-            <!-- User Profile -->
-            <div class="border-t border-[var(--border)]">
-                <div
-                    class="flex items-center gap-3 p-3 rounded-xl hover:bg-[rgba(0,212,170,0.05)] cursor-pointer transition-all">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}"
-                        alt="{{ auth()->user()->name }}" class="avatar">
-                    <div class="flex-1 min-w-0">
-                        <p class="font-semibold truncate">{{ auth()->user()->name }}</p>
-                        <p class="text-sm text-[var(--fg-secondary)]">
-                            {{ auth()->user()->getRoleNames()->first() ?? 'No role' }}</p>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[var(--fg-secondary)]" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                    </svg>
-                </div>
-            </div>
         </aside>
 
         <!-- Main Content -->
@@ -298,20 +276,83 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
-                        <button class="relative p-3 rounded-xl hover:bg-[var(--bg-card)] transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+
+                        <button type="button"
+                            class="theme-toggle relative p-3 rounded-xl hover:bg-[var(--bg-card)] transition-all"
+                            aria-label="Toggle theme" aria-pressed="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 dark-icon" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 light-icon hidden" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </button>
+
+                        <a href="{{ route('notification.index') }}"
+                            class="relative p-3 rounded-xl hover:bg-[var(--bg-card)] transition-all {{ request()->routeIs('notification.*') ? 'bg-[var(--bg-card)] text-[var(--accent)]' : '' }}"
+                            aria-label="Notifications{{ $unreadNotificationsCount ? " ({$unreadNotificationsCount} unread)" : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
-                            <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
-                        <select class="input-field hidden sm:block w-auto py-3 px-4 rounded-xl text-sm">
-                            <option>Last 7 days</option>
-                            <option>Last 30 days</option>
-                            <option>This Month</option>
-                            <option>Last Quarter</option>
-                        </select>
+                            @if ($unreadNotificationsCount > 0)
+                                <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                            @endif
+                        </a>
+
+                        <div class="profile relative">
+                            <button type="button" id="profileMenuBtn" aria-haspopup="true" aria-expanded="false"
+                                class="flex items-center gap-2 p-1 rounded-xl hover:bg-[var(--bg-card)] transition-all">
+                                <img class="avatar-up"
+                                    src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
+                                    alt="{{ auth()->user()->name }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[var(--fg-secondary)]"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <div id="profileMenu"
+                                class="hidden absolute right-0 mt-2 w-56 rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-xl overflow-hidden z-50">
+                                <div class="px-4 py-3 border-b border-[var(--border)] text-center">
+                                    <img class="avatar-down text-center mx-auto mb-2"
+                                        src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}"
+                                        alt="{{ auth()->user()->name }}">
+                                    <p class="font-semibold truncate">{{ auth()->user()->name }}</p>
+                                    <p class="text-sm text-[var(--fg-secondary)]">
+                                        {{ auth()->user()->getRoleNames()->first() ?? 'No role' }}</p>
+                                    <p class="text-sm text-[var(--fg-secondary)] truncate">{{ auth()->user()->email }}
+                                    </p>
+                                </div>
+                                <a href="{{ route('user.edit', auth()->id()) }}"
+                                    class="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[rgba(0,212,170,0.1)] hover:text-[var(--accent)] transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    <span>Profile Settings</span>
+                                </a>
+                                <form action="{{ route('logout') }}" method="POST"
+                                    class="border-t border-[var(--border)]">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full flex items-center gap-3 px-4 py-3 text-sm text-left text-red-500 hover:bg-red-500/10 transition-all">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                        </svg>
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -355,31 +396,29 @@
         }
         // ==================== THEME ====================
         function initializeTheme() {
-            const themeToggle = document.getElementById('themeToggle');
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                updateThemeIcons(true);
-            }
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-mode');
-                const isLight = document.body.classList.contains('light-mode');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                updateThemeIcons(isLight);
-                if (typeof updateChartsColors === 'function') updateChartsColors();
+            const themeToggles = document.querySelectorAll('.theme-toggle');
+            const isLight = localStorage.getItem('theme') === 'light';
+            document.body.classList.toggle('light-mode', isLight);
+            updateThemeIcons(isLight);
+            themeToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const nowLight = document.body.classList.toggle('light-mode');
+                    localStorage.setItem('theme', nowLight ? 'light' : 'dark');
+                    updateThemeIcons(nowLight);
+                    if (typeof updateChartsColors === 'function') updateChartsColors();
+                });
             });
         }
 
         function updateThemeIcons(isLight) {
-            const darkIcon = document.querySelector('.dark-icon');
-            const lightIcon = document.querySelector('.light-icon');
-            if (isLight) {
-                darkIcon.classList.add('hidden');
-                lightIcon.classList.remove('hidden');
-            } else {
-                darkIcon.classList.remove('hidden');
-                lightIcon.classList.add('hidden');
-            }
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.classList.toggle('hidden', isLight));
+            document.querySelectorAll('.light-icon').forEach(icon => icon.classList.toggle('hidden', !isLight));
+            document.querySelectorAll('.theme-label').forEach(label => {
+                label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+            });
+            document.querySelectorAll('.theme-toggle').forEach(toggle => {
+                toggle.setAttribute('aria-pressed', String(isLight));
+            });
         }
         // ==================== MOBILE MENU ====================
         function initializeMobileMenu() {
@@ -392,6 +431,30 @@
                 if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
                     closeMobileMenu();
                 }
+            });
+        }
+        // ==================== PROFILE DROPDOWN ====================
+        function initializeProfileMenu() {
+            const btn = document.getElementById('profileMenuBtn');
+            const menu = document.getElementById('profileMenu');
+            if (!btn || !menu) return;
+            const closeProfileMenu = () => {
+                menu.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            };
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = !menu.classList.contains('hidden');
+                menu.classList.toggle('hidden', isOpen);
+                btn.setAttribute('aria-expanded', String(!isOpen));
+            });
+            document.addEventListener('click', (e) => {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                    closeProfileMenu();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeProfileMenu();
             });
         }
 
@@ -415,6 +478,7 @@
             initializeNavigation();
             initializeTheme();
             initializeMobileMenu();
+            initializeProfileMenu();
             document.querySelectorAll('.modal-overlay').forEach(modal => {
                 modal.addEventListener('click', (e) => {
                     if (e.target === modal) {

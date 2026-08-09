@@ -217,10 +217,18 @@ tr:hover td {
     color: #00d4aa;
 }
 
-.avatar {
+.avatar-up {
     width: 40px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: 50px;
+    object-fit: cover;
+    border: 2px solid var(--border);
+}
+
+.avatar-down {
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
     object-fit: cover;
     border: 2px solid var(--border);
 }
@@ -459,4 +467,113 @@ select.input-field {
 .calendar-day.leave {
     background: rgba(148, 163, 184, 0.2);
     color: #94a3b8;
+}
+
+/* ---- Rider attendance calendar (attendance/riders/{rider}) ---- */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.calendar-weekday {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-secondary);
+    padding: 6px 0;
+}
+
+.calendar-grid + .calendar-grid {
+    margin-top: 8px;
+}
+
+.calendar-cell {
+    min-height: 78px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.calendar-cell-empty {
+    border-color: transparent;
+    background: transparent;
+}
+
+.calendar-date {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.calendar-status {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.calendar-time {
+    font-size: 10px;
+    color: var(--fg-secondary);
+}
+
+.calendar-cell.is-present {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.45);
+    color: #10b981;
+}
+
+.calendar-cell.is-absent {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.45);
+    color: #ef4444;
+}
+
+.calendar-cell.is-today {
+    box-shadow: 0 0 0 2px var(--accent);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    display: inline-block;
+    border: 1px solid var(--border);
+}
+
+.legend-present {
+    background: rgba(16, 185, 129, 0.35);
+    border-color: rgba(16, 185, 129, 0.6);
+}
+
+.legend-absent {
+    background: rgba(239, 68, 68, 0.35);
+    border-color: rgba(239, 68, 68, 0.6);
+}
+
+.legend-empty {
+    background: transparent;
+}
+
+@media (max-width: 640px) {
+    .calendar-grid {
+        gap: 4px;
+    }
+
+    .calendar-cell {
+        min-height: 56px;
+        padding: 5px;
+    }
+
+    .calendar-status,
+    .calendar-time {
+        display: none;
+    }
 }
