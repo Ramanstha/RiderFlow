@@ -135,24 +135,10 @@
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                        <span class="text-sm">Half Day</span>
-                    </div>
-                    <span class="font-semibold">18</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
                         <div class="w-3 h-3 rounded-full bg-red-400"></div>
                         <span class="text-sm">Absent</span>
                     </div>
                     <span class="font-semibold">8</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-3 h-3 rounded-full bg-gray-400"></div>
-                        <span class="text-sm">On Leave</span>
-                    </div>
-                    <span class="font-semibold">3</span>
                 </div>
             </div>
 
@@ -333,24 +319,16 @@
                     <span class="text-sm">Present</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded bg-yellow-400"></div>
-                    <span class="text-sm">Half Day</span>
-                </div>
-                <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded bg-red-400"></div>
                     <span class="text-sm">Absent</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded bg-gray-400"></div>
-                    <span class="text-sm">Leave</span>
                 </div>
             </div>
         </div>
 
         <!-- Today's Attendance -->
         <div class="card p-6">
-            <h3 class="font-display text-lg font-semibold mb-4">Today's Check-ins</h3>
-            <div class="space-y-3" id="todayCheckins">
+            <h3 class="font-display text-lg font-semibold mb-4">Today's Attendance</h3>
+            <div class="space-y-3" id="todayAttendance">
                 <!-- Populated by JS -->
             </div>
         </div>
@@ -374,7 +352,7 @@
     </div>
 
     <!-- Parcel Stats -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         <div class="card p-5">
             <p class="text-sm text-[var(--fg-secondary)] mb-1">Today Assigned</p>
             <p class="text-2xl font-bold font-display">1,247</p>
@@ -384,12 +362,8 @@
             <p class="text-2xl font-bold font-display text-green-400">1,089</p>
         </div>
         <div class="card p-5">
-            <p class="text-sm text-[var(--fg-secondary)] mb-1">Failed</p>
-            <p class="text-2xl font-bold font-display text-red-400">89</p>
-        </div>
-        <div class="card p-5">
-            <p class="text-sm text-[var(--fg-secondary)] mb-1">Returned</p>
-            <p class="text-2xl font-bold font-display text-yellow-400">69</p>
+            <p class="text-sm text-[var(--fg-secondary)] mb-1">Success Rate</p>
+            <p class="text-2xl font-bold font-display">87.3%</p>
         </div>
     </div>
 
@@ -404,8 +378,6 @@
                         <th>Business</th>
                         <th>Assigned</th>
                         <th>Delivered</th>
-                        <th>Failed</th>
-                        <th>Returned</th>
                         <th>Success Rate</th>
                     </tr>
                 </thead>
@@ -826,7 +798,7 @@
         populateBusinessesGrid();
         populateAssignments();
         populateAttendanceCalendar();
-        populateTodayCheckins();
+        populateTodayAttendance();
         populateParcelsTable();
         populatePerformanceLeaderboard();
         populateReports();
@@ -874,7 +846,7 @@
             },
             {
                 type: "attendance",
-                message: "Morning check-in: 186 present",
+                message: "186 riders marked present today",
                 time: "2 hours ago",
                 icon: "clock"
             },
@@ -1150,10 +1122,6 @@
                 statusClass = 'present ring-2 ring-[var(--accent)]';
             } else if (random > 0.9) {
                 statusClass = 'absent';
-            } else if (random > 0.82) {
-                statusClass = 'half-day';
-            } else if (random > 0.78) {
-                statusClass = 'leave';
             } else {
                 statusClass = 'present';
             }
@@ -1162,47 +1130,49 @@
         calendar.innerHTML = html;
     }
 
-    function populateTodayCheckins() {
-        const container = document.getElementById('todayCheckins');
-        const checkins = [{
+    function populateTodayAttendance() {
+        const container = document.getElementById('todayAttendance');
+        // Attendance follows the parcel load: a rider with parcels on the books
+        // for the day is Present, anyone left without is Absent.
+        const attendance = [{
                 name: "Marcus Johnson",
                 avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-                time: "07:32 AM",
-                status: "checked-in"
+                parcels: 42,
+                status: "Present"
             },
             {
                 name: "Elena Rodriguez",
                 avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
-                time: "07:45 AM",
-                status: "checked-in"
+                parcels: 35,
+                status: "Present"
             },
             {
                 name: "David Kim",
                 avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
-                time: "08:01 AM",
-                status: "checked-in"
+                parcels: 28,
+                status: "Present"
             },
             {
                 name: "Sarah Chen",
                 avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
-                time: "08:15 AM",
-                status: "late"
+                parcels: 0,
+                status: "Absent"
             },
             {
                 name: "Priya Patel",
                 avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face",
-                time: "07:28 AM",
-                status: "checked-in"
+                parcels: 31,
+                status: "Present"
             }
         ];
-        container.innerHTML = checkins.map(c => `
+        container.innerHTML = attendance.map(a => `
             <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-[var(--bg-secondary)] transition-all">
-                <img src="${c.avatar}" alt="${c.name}" class="avatar">
+                <img src="${a.avatar}" alt="${a.name}" class="avatar">
                 <div class="flex-1 min-w-0">
-                    <p class="font-medium text-sm">${c.name}</p>
-                    <p class="text-xs text-[var(--fg-secondary)]">${c.time}</p>
+                    <p class="font-medium text-sm">${a.name}</p>
+                    <p class="text-xs text-[var(--fg-secondary)]">${a.parcels > 0 ? a.parcels + ' parcels' : 'No parcels'}</p>
                 </div>
-                <span class="badge badge-${c.status === 'late' ? 'warning' : 'success'} text-xs">${c.status === 'late' ? 'Late' : 'Present'}</span>
+                <span class="badge badge-${a.status === 'Present' ? 'success' : 'danger'} text-xs">${a.status}</span>
             </div>
         `).join('');
     }
@@ -1214,54 +1184,42 @@
                 rider: "Marcus Johnson",
                 business: "QuickDeliver Co.",
                 assigned: 42,
-                delivered: 39,
-                failed: 2,
-                returned: 1
+                delivered: 39
             },
             {
                 date: "Jan 22, 2025",
                 rider: "Elena Rodriguez",
                 business: "FreshMart",
                 assigned: 35,
-                delivered: 33,
-                failed: 1,
-                returned: 1
+                delivered: 33
             },
             {
                 date: "Jan 22, 2025",
                 rider: "David Kim",
                 business: "MediExpress",
                 assigned: 28,
-                delivered: 27,
-                failed: 1,
-                returned: 0
+                delivered: 27
             },
             {
                 date: "Jan 21, 2025",
                 rider: "Sarah Chen",
                 business: "Speedy Courier",
                 assigned: 52,
-                delivered: 50,
-                failed: 1,
-                returned: 1
+                delivered: 50
             },
             {
                 date: "Jan 21, 2025",
                 rider: "Priya Patel",
                 business: "QuickDeliver Co.",
                 assigned: 38,
-                delivered: 36,
-                failed: 1,
-                returned: 1
+                delivered: 36
             },
             {
                 date: "Jan 21, 2025",
                 rider: "Lisa Anderson",
                 business: "FreshMart",
                 assigned: 45,
-                delivered: 44,
-                failed: 0,
-                returned: 1
+                delivered: 44
             }
         ];
         tbody.innerHTML = parcels.map(p => {
@@ -1273,8 +1231,6 @@
                     <td>${p.business}</td>
                     <td class="font-semibold">${p.assigned}</td>
                     <td class="text-green-400 font-semibold">${p.delivered}</td>
-                    <td class="text-red-400">${p.failed}</td>
-                    <td class="text-yellow-400">${p.returned}</td>
                     <td>
                         <div class="flex items-center gap-2">
                             <div class="progress-bar w-16">
@@ -1431,19 +1387,6 @@
                     pointBorderWidth: 2,
                     pointRadius: 5,
                     pointHoverRadius: 7
-                }, {
-                    label: 'Failed',
-                    data: [85, 92, 78, 105, 88, 120, 95],
-                    borderColor: '#ef4444',
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#ef4444',
-                    pointBorderColor: isLight ? '#ffffff' : '#0a0f1a',
-                    pointBorderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6
                 }]
             },
             options: {
@@ -1522,10 +1465,10 @@
         attendanceChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Present', 'Half Day', 'Absent', 'Leave'],
+                labels: ['Present', 'Absent'],
                 datasets: [{
-                    data: [186, 18, 8, 3],
-                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444', '#94a3b8'],
+                    data: [186, 8],
+                    backgroundColor: ['#10b981', '#ef4444'],
                     borderWidth: 0,
                     hoverOffset: 8
                 }]

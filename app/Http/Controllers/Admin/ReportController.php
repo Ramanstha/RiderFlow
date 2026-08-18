@@ -141,11 +141,11 @@ class ReportController extends Controller
         return [
             'title' => 'Parcel Report',
             'filename' => 'parcel-report',
-            'headings' => ['Rider', 'Company', 'Assigned', 'Delivered', 'Failed', 'Returned', 'Success Rate (%)'],
+            'headings' => ['Rider', 'Company', 'Assigned', 'Delivered', 'Success Rate (%)'],
             'rows' => $this->reports->parcelSummary($request->validated()),
             'mapRow' => fn ($row) => [
                 $row['rider_name'], $row['company_name'], $row['assigned'], $row['delivered'],
-                $row['failed'], $row['returned'], $row['success_rate'],
+                $row['success_rate'],
             ],
         ];
     }

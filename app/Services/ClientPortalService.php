@@ -70,7 +70,7 @@ class ClientPortalService
     }
 
     /**
-     * @return array{assigned: int, delivered: int, failed: int, returned: int, success_rate: float}
+     * @return array{assigned: int, delivered: int, success_rate: float}
      */
     public function parcelTotals(Company $company, string $from, string $to): array
     {
@@ -79,8 +79,6 @@ class ClientPortalService
             ->whereDate('daily_parcel_counts.date', '<=', $to)
             ->selectRaw('COALESCE(SUM(assigned), 0) as assigned')
             ->selectRaw('COALESCE(SUM(delivered), 0) as delivered')
-            ->selectRaw('COALESCE(SUM(failed), 0) as failed')
-            ->selectRaw('COALESCE(SUM(`returned`), 0) as returned')
             ->first();
 
         $assigned = (int) ($totals->assigned ?? 0);
@@ -89,8 +87,6 @@ class ClientPortalService
         return [
             'assigned' => $assigned,
             'delivered' => $delivered,
-            'failed' => (int) ($totals->failed ?? 0),
-            'returned' => (int) ($totals->returned ?? 0),
             'success_rate' => $assigned > 0 ? round(($delivered / $assigned) * 100, 2) : 0.0,
         ];
     }

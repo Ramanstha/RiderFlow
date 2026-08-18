@@ -23,7 +23,6 @@ class RiderPortalService
         $monthEnd = now()->endOfMonth()->toDateString();
 
         return [
-            'today_attendance' => $this->todayAttendance($rider),
             'today_parcels' => $this->todayParcels($rider),
             'attendance' => $this->attendanceSummary($rider, $monthStart, $monthEnd),
             'parcels' => $this->parcelSummary($rider, $monthStart, $monthEnd),
@@ -31,14 +30,6 @@ class RiderPortalService
             'latest_performance' => $this->latestPerformance($rider),
             'recent_parcels' => $this->recentParcels($rider),
         ];
-    }
-
-    public function todayAttendance(Rider $rider): ?RiderAttendance
-    {
-        return RiderAttendance::query()
-            ->where('rider_id', $rider->id)
-            ->whereDate('date', now()->toDateString())
-            ->first();
     }
 
     public function todayParcels(Rider $rider): ?DailyParcelCount
@@ -64,7 +55,7 @@ class RiderPortalService
     }
 
     /**
-     * @return array{assigned: int, delivered: int, failed: int, returned: int, success_rate: float}
+     * @return array{assigned: int, delivered: int, success_rate: float}
      */
     public function parcelSummary(Rider $rider, string $from, string $to): array
     {
@@ -80,8 +71,6 @@ class RiderPortalService
         return [
             'assigned' => $assigned,
             'delivered' => $delivered,
-            'failed' => (int) $records->sum('failed'),
-            'returned' => (int) $records->sum('returned'),
             'success_rate' => $assigned > 0 ? round(($delivered / $assigned) * 100, 2) : 0.0,
         ];
     }
@@ -108,7 +97,7 @@ class RiderPortalService
      * Last seven days of parcel counts, oldest first, with gaps filled in
      * so the dashboard chart always plots a full week.
      *
-     * @return \Illuminate\Support\Collection<int, array{date: string, label: string, delivered: int, failed: int, assigned: int}>
+     * @return \Illuminate\Support\Collection<int, array{date: string, label: string, delivered: int, assigned: int}>
      */
     public function recentParcels(Rider $rider, int $days = 7): \Illuminate\Support\Collection
     {
@@ -130,7 +119,6 @@ class RiderPortalService
                 'label' => $day->format('D'),
                 'assigned' => (int) ($record->assigned ?? 0),
                 'delivered' => (int) ($record->delivered ?? 0),
-                'failed' => (int) ($record->failed ?? 0),
             ];
         });
     }

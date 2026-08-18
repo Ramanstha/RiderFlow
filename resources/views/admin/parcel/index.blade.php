@@ -49,8 +49,6 @@
                         <th>Date</th>
                         <th>Assigned</th>
                         <th>Delivered</th>
-                        <th>Failed</th>
-                        <th>Returned</th>
                         <th>Success Rate</th>
                         <th>Actions</th>
                     </tr>
@@ -68,8 +66,6 @@
                                 @endif
                             </td>
                             <td><span class="text-sm">{{ $parcelCount->delivered }}</span></td>
-                            <td><span class="text-sm">{{ $parcelCount->failed }}</span></td>
-                            <td><span class="text-sm">{{ $parcelCount->returned }}</span></td>
                             <td>
                                 <span class="badge badge-{{ $parcelCount->success_rate >= 80 ? 'success' : ($parcelCount->success_rate >= 50 ? 'warning' : 'danger') }}">{{ $parcelCount->success_rate }}%</span>
                             </td>
@@ -98,7 +94,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center text-[var(--fg-secondary)] py-8">No parcel counts found.</td>
+                            <td colspan="6" class="text-center text-[var(--fg-secondary)] py-8">No parcel counts found.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -54,7 +54,7 @@
         <div class="row gx-5 align-items-center">
             <div class="col-lg-6 order-lg-2">
                 <div class="p-3"><img class="img-fluid rounded-circle" loading="lazy" decoding="async"
-                        src="{{ asset('frontend/img/01.jpg') }}" alt="..." /></div>
+                        src="{{ asset('frontend/img/about1.png') }}" alt="..." /></div>
             </div>
             <div class="col-lg-6 order-lg-1">
                 <div class="p-3 p-lg-5">
@@ -72,7 +72,7 @@
         <div class="row gx-5 align-items-center">
             <div class="col-lg-6">
                 <div class="p-3"><img class="img-fluid rounded-circle" loading="lazy" decoding="async"
-                        src="{{ asset('frontend/img/02.jpg') }}" alt="..." /></div>
+                        src="{{ asset('frontend/img/about2.png') }}" alt="..." /></div>
             </div>
             <div class="col-lg-6">
                 <div class="p-3 p-lg-5">
@@ -121,7 +121,7 @@
         <div class="row g-4 mb-5">
 
             <!-- Card 1 -->
-            <div class="col-12 col-sm-6 col-lg-4">
+            <div class="col-12 col-sm-6 col-lg-3">
                 <div class="service-card">
                     <div>
                         <div class="icon-box icon-pink">
@@ -138,11 +138,11 @@
             </div>
 
             <!-- Card 2 -->
-            <div class="col-12 col-sm-6 col-lg-4">
+            <div class="col-12 col-sm-6 col-lg-3">
                 <div class="service-card">
                     <div>
                         <div class="icon-box icon-green">
-                            <i class="fa-solid fa-shapes"></i>
+                            <i class="fa-solid fa-box-open"></i>
                         </div>
                         <h3 class="card-title-custom">Parcel Basis</h3>
                         <p class="card-text-custom">
@@ -155,22 +155,7 @@
             </div>
 
             <!-- Card 3 -->
-            <!-- <div class="col-12 col-sm-6 col-lg-4">
-                <div class="service-card">
-                    <div>
-                        <div class="icon-box icon-blue">
-                            <i class="fa-solid fa-cubes"></i>
-                        </div>
-                        <h3 class="card-title-custom">Title Goes Here</h3>
-                        <p class="card-text-custom">
-                            Tailored to meet individual needs perfectly balanced.
-                        </p>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- Card 4 -->
-            <div class="col-12 col-sm-6 col-lg-4">
+            <div class="col-12 col-sm-6 col-lg-3">
                 <div class="service-card">
                     <div>
                         <div class="icon-box icon-orange">
@@ -181,6 +166,22 @@
                             Deliver the final mile with confidence. Our last-mile delivery service provides reliable
                             riders and efficient logistics to ensure every order reaches your customers quickly, safely,
                             and on time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="service-card">
+                    <div>
+                        <div class="icon-box icon-blue">
+                            <i class="fa-solid fa-cubes"></i>
+                        </div>
+                        <h3 class="card-title-custom">Temporary</h3>
+                        <p class="card-text-custom">
+                            Flexible, reliable rider outsourcing for seasonal peaks, promotions, and short-term delivery
+                            needs. Get verified and trained riders on demand—without the commitment of permanent hiring.
                         </p>
                     </div>
                 </div>

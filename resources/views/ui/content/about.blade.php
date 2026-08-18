@@ -18,8 +18,8 @@
                 About <span class="highlight-text">Us</span>
             </h2>
             <p class="section-description">
-                Our team brings together data nerds and creative visionaries, united by an obsession with getting
-                results. Get to know the people who will be working on your projects:
+                We connect businesses with skilled delivery riders to meet their logistics and last-mile delivery needs.
+                Our commitment to reliability, flexibility, and quality helps your business deliver with confidence.
             </p>
         </div>
     </div>
@@ -27,16 +27,16 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-5 align-items-center">
             <div class="col-lg-6 order-lg-2">
-                <div class="p-3 p-lg-5"><img class="img-fluid rounded-circle" loading="lazy" decoding="async"
-                        src="{{ asset('frontend/img/01.jpg') }}" alt="..." />
-                </div>
+                <div class="p-3"><img class="img-fluid rounded-circle" loading="lazy" decoding="async"
+                        src="{{ asset('frontend/img/about1.png') }}" alt="..." /></div>
             </div>
             <div class="col-lg-6 order-lg-1">
                 <div class="p-3 p-lg-5">
-                    <h2 class="display-4">For those about to rock...</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam
-                        sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione
-                        voluptatum molestiae adipisci, beatae obcaecati.</p>
+                    <h2 class="display-4">Our Goal...</h2>
+                    <p>Our goal is to provide businesses with reliable and professional rider outsourcing solutions that
+                        improve delivery efficiency. We strive to build long-term partnerships through dependable
+                        service, skilled riders, and consistent operational excellence. By supporting businesses of all
+                        sizes, we aim to make last-mile delivery faster, safer, and more efficient.</p>
                 </div>
             </div>
         </div>
@@ -45,31 +45,31 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-5 align-items-center">
             <div class="col-lg-6">
-                <div class="p-3 p-lg-5"><img class="img-fluid rounded-circle" loading="lazy" decoding="async"
-                        src="{{ asset('frontend/img/02.jpg') }}" alt="..." />
-                </div>
+                <div class="p-3"><img class="img-fluid rounded-circle" loading="lazy" decoding="async"
+                        src="{{ asset('frontend/img/about2.png') }}" alt="..." /></div>
             </div>
             <div class="col-lg-6">
                 <div class="p-3 p-lg-5">
-                    <h2 class="display-4">We salute you!</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam
-                        sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione
-                        voluptatum molestiae adipisci, beatae obcaecati.</p>
+                    <h2 class="display-4">Our Mission !!!</h2>
+                    <p>Our mission is to connect businesses with trained and dedicated delivery riders who ensure timely
+                        and secure deliveries. We are committed to maintaining high standards of professionalism,
+                        customer satisfaction, and operational reliability. Through flexible workforce solutions and
+                        continuous improvement, we help our clients grow while delivering exceptional service every day.
+                    </p>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
 
     <div class="container px-4 px-lg-5">
         <div class="row gx-5 align-items-center">
             <div class="col-lg-6 order-lg-2">
-                <div class="p-3 p-lg-5"><img class="img-fluid rounded-circle" loading="lazy" decoding="async"
-                        src="{{ asset('frontend/img/03.jpg') }}" alt="..." />
-                </div>
+                <div class="p-3"><img class="img-fluid rounded-circle" loading="lazy" decoding="async"
+                        src="{{ asset('frontend/img/03.jpg') }}" alt="..." /></div>
             </div>
             <div class="col-lg-6 order-lg-1">
                 <div class="p-3 p-lg-5">
-                    <h2 class="display-4">Let there be rock!</h2>
+                    <h2 class="display-4">Let there be rock !!!</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam
                         sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione
                         voluptatum molestiae adipisci, beatae obcaecati.</p>
@@ -95,81 +95,52 @@
         <div class="row g-4 mb-5">
 
             <!-- Card 1 -->
-            <div class="col-12 col-sm-6 col-lg-3">
+            <div class="col-12 col-sm-6 col-lg-4">
                 <div class="service-card">
                     <div>
                         <div class="icon-box icon-pink">
-                            <i class="fa-solid fa-shapes"></i>
+                            <i class="fa-solid fa-credit-card"></i>
                         </div>
-                        <h3 class="card-title-custom">Title Goes Here</h3>
+                        <h3 class="card-title-custom">Subscription Basis</h3>
                         <p class="card-text-custom">
-                            Tailored to meet individual needs perfectly balanced.
+                            Empower your business with reliable subscription-based delivery riders. We provide trained
+                            professionals, flexible plans, and seamless rider management to ensure efficient and timely
+                            deliveries.
                         </p>
-                    </div>
-                    <div>
-                        <a href="#" class="read-more-link text-pink">
-                            Read more <i class="fa-solid fa-arrow-right-long fs-6"></i>
-                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- Card 2 -->
-            <div class="col-12 col-sm-6 col-lg-3">
+            <div class="col-12 col-sm-6 col-lg-4">
                 <div class="service-card">
                     <div>
                         <div class="icon-box icon-green">
-                            <i class="fa-solid fa-code"></i>
+                            <i class="fa-solid fa-shapes"></i>
                         </div>
-                        <h3 class="card-title-custom">Title Goes Here</h3>
+                        <h3 class="card-title-custom">Parcel Basis</h3>
                         <p class="card-text-custom">
-                            Tailored to meet individual needs perfectly balanced.
+                            Our parcel-based delivery service provides professional riders for fast, secure, and
+                            reliable deliveries. Pay only per parcel while we ensure efficient and timely service for
+                            your business.
                         </p>
-                    </div>
-                    <div>
-                        <a href="#" class="read-more-link text-green">
-                            Read more <i class="fa-solid fa-arrow-right-long fs-6"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="col-12 col-sm-6 col-lg-3">
-                <div class="service-card">
-                    <div>
-                        <div class="icon-box icon-blue">
-                            <i class="fa-solid fa-cubes"></i>
-                        </div>
-                        <h3 class="card-title-custom">Title Goes Here</h3>
-                        <p class="card-text-custom">
-                            Tailored to meet individual needs perfectly balanced.
-                        </p>
-                    </div>
-                    <div>
-                        <a href="#" class="read-more-link text-blue">
-                            Read more <i class="fa-solid fa-arrow-right-long fs-6"></i>
-                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- Card 4 -->
-            <div class="col-12 col-sm-6 col-lg-3">
+            <div class="col-12 col-sm-6 col-lg-4">
                 <div class="service-card">
                     <div>
                         <div class="icon-box icon-orange">
                             <i class="fa-solid fa-chart-pie"></i>
                         </div>
-                        <h3 class="card-title-custom">Title Goes Here</h3>
+                        <h3 class="card-title-custom">Last Mile</h3>
                         <p class="card-text-custom">
-                            Tailored to meet individual needs perfectly balanced.
+                            Deliver the final mile with confidence. Our last-mile delivery service provides reliable
+                            riders and efficient logistics to ensure every order reaches your customers quickly, safely,
+                            and on time.
                         </p>
-                    </div>
-                    <div>
-                        <a href="#" class="read-more-link text-orange">
-                            Read more <i class="fa-solid fa-arrow-right-long fs-6"></i>
-                        </a>
                     </div>
                 </div>
             </div>

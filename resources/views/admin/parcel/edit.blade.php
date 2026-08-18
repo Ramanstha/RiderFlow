@@ -44,19 +44,6 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Failed *</label>
-                    <input type="number" name="failed" value="{{ old('failed', $parcelCount->failed) }}" class="input-field" min="0" required>
-                    @error('failed') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Returned *</label>
-                    <input type="number" name="returned" value="{{ old('returned', $parcelCount->returned) }}" class="input-field" min="0" required>
-                    @error('returned') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
-
             <div class="flex gap-3 pt-4">
                 <a href="{{ route('parcel.index') }}" class="btn-secondary flex-1 text-center">Cancel</a>
                 <button type="submit" class="btn-primary flex-1">Save Changes</button>

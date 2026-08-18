@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ParcelCountController;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 // ////////////////Frontend/////////////////////
 Route::get('/', [HomeController::class, 'Home'])->name('Home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/services', [HomeController::class, 'service'])->name('service');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'submitContact'])->name('contact.store');
 
@@ -42,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('banner', BannerController::class)->except(['show']);
     Route::resource('contact-info', ContactController::class)->except(['show'])->parameters(['contact-info' => 'contactInfo']);
     Route::resource('testimonial', TestimonialController::class)->except(['show']);
+    Route::resource('contact-message', ContactMessageController::class)
+        ->only(['index', 'show', 'destroy'])
+        ->parameters(['contact-message' => 'contactMessage']);
 
     Route::prefix('notifications')->name('notification.')->group(function () {
         Route::get('/', [NotificationController::class, 'index'])->name('index');

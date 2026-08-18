@@ -40,25 +40,6 @@
                 @error('status') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Check In</label>
-                    <input type="time" name="check_in" value="{{ old('check_in') }}" class="input-field">
-                    @error('check_in') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Check Out</label>
-                    <input type="time" name="check_out" value="{{ old('check_out') }}" class="input-field">
-                    @error('check_out') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-2">Remarks</label>
-                <input type="text" name="remarks" value="{{ old('remarks') }}" class="input-field">
-                @error('remarks') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
-            </div>
-
             <div class="flex gap-5 pt-4">
                 <a href="{{ route('attendance.index') }}" class="btn-secondary text-center btn-sm">Cancel</a>
                 <button type="submit" class="btn-primary btn-sm">Save Attendance</button>

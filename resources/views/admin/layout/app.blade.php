@@ -1,5 +1,5 @@
 @php
-    $unreadNotificationsCount = auth()->user()?->unreadNotifications()->count() ?? 0;
+$unreadNotificationsCount = auth()->user()?->unreadNotifications()->count() ?? 0;
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -179,10 +179,9 @@
                     @can('site.manage')
                     <a href="{{ route('banner.index') }}"
                         class="nav-item {{ request()->routeIs('banner.*') ? 'active' : '' }}" data-page="banners">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+                            <path fill="currentColor"
+                                d="M9 15H7v-2h2zm3-5.618a1 1 0 0 1-.553.894l-3 1.5a1 1 0 0 1-.894 0l-3-1.5A1 1 0 0 1 4 9.382V4h8zM12 1a1 1 0 1 1 0 2H4a1 1 0 0 1 0-2z" />
                         </svg>
                         <span>Banner</span>
                     </a>
@@ -200,59 +199,28 @@
 
                     <a href="{{ route('testimonial.index') }}"
                         class="nav-item {{ request()->routeIs('testimonial.*') ? 'active' : '' }}" data-page="contacts">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
+                            <path fill="currentColor"
+                                d="M16 24a8 8 0 1 0 0-16a8 8 0 0 0 0 16m18 0a6 6 0 1 0 0-12a6 6 0 0 0 0 12M6.75 27A3.75 3.75 0 0 0 3 30.75V32s0 9 13 9s13-9 13-9v-1.25A3.75 3.75 0 0 0 25.25 27zm21.924 11.089c1.376.558 3.119.911 5.325.911c10.5 0 10.5-8 10.5-8v-.25A3.75 3.75 0 0 0 40.75 27H29.607a5.73 5.73 0 0 1 1.391 3.75v1.295l-.001.057l-.006.15q-.008.173-.035.43a10 10 0 0 1-.24 1.325a10.7 10.7 0 0 1-2.042 4.082" />
                         </svg>
                         <span>Testimonial</span>
+                    </a>
+
+                    <a href="{{ route('contact-message.index') }}"
+                        class="nav-item {{ request()->routeIs('contact-message.*') ? 'active' : '' }}"
+                        data-page="contacts">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M16.5 0a7.65 7.65 0 0 0-6.16 3a1 1 0 1 0 1.6 1.19A5.67 5.67 0 0 1 16.5 2A5.27 5.27 0 0 1 22 7a5 5 0 0 1-3.36 4.61a1 1 0 0 0-.32.19c-.2.19-2.07 1.78-2.32 2v-.85a1 1 0 0 0-.86-1a5 5 0 0 1-.79-.17a1 1 0 1 0-.55 1.93l.2.05V16a1 1 0 0 0 .62.92a1 1 0 0 0 1.09-.21c.26-.27 3.54-3.06 3.82-3.31A7 7 0 0 0 24 7a7.27 7.27 0 0 0-7.5-7" />
+                            <path fill="currentColor"
+                                d="M12.12 6.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0m3.25 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0m3.25 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0M7.5 16A7.5 7.5 0 0 0 0 23.5a.5.5 0 0 0 .5.5h14a.5.5 0 0 0 .5-.5A7.5 7.5 0 0 0 7.5 16m-4.75-5.25a4.75 4.75 0 1 0 9.5 0a4.75 4.75 0 1 0-9.5 0" />
+                        </svg>
+                        <span>Contact Message</span>
                     </a>
                     @endcan
 
                 </div>
 
-                <!-- <div class="pt-4 mt-4 border-t border-[var(--border)]">
-                    <p class="px-4 py-2 text-xs font-semibold text-[var(--fg-secondary)] uppercase tracking-wider">
-                        Settings</p>
-
-                    <div class="nav-item" data-page="notifications">
-                        <div class="relative">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                            </svg>
-                            <span class="notification-badge">5</span>
-                        </div>
-                        <span>Notifications</span>
-                    </div>
-
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="nav-item w-full text-left">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            <span>Logout</span>
-                        </button>
-                    </form>
-
-                    <button type="button" class="nav-item theme-toggle w-full text-left" aria-pressed="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 dark-icon" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 light-icon hidden" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        <span class="theme-label">Dark Mode</span>
-                    </button>
-                </div> -->
             </nav>
         </aside>
 
@@ -260,7 +228,7 @@
         <main class="flex-1 lg:ml-0 min-h-screen overflow-x-hidden">
             <!-- Header -->
             <header
-                class="sticky top-0 z-30 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-b border-[var(--border)] px-4 lg:px-8 py-4">
+                class="sticky top-0 z-30 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-b border-[var(--border)] px-4 py-3 ">
                 <div class="flex items-center justify-between gap-4">
                     <div class="lg:hidden w-10"></div>
                     <div class="flex-1 max-w-xl">
@@ -272,7 +240,7 @@
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                             <input type="text" placeholder="Search riders, businesses, parcels..."
-                                class="input-field pl-12 pr-4 py-3 rounded-xl">
+                                class="input-field pl-12 pr-4 rounded-xl">
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
@@ -301,7 +269,7 @@
                                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
                             @if ($unreadNotificationsCount > 0)
-                                <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                            <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
                             @endif
                         </a>
 

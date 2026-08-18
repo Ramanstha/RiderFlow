@@ -15,9 +15,7 @@
         <div class="card p-4 mb-6 border-l-4 border-l-[var(--accent)]">
             <p class="text-sm">
                 This rider has already reported
-                <span class="font-semibold">{{ number_format($assignment->delivered) }}</span> delivered,
-                <span class="font-semibold">{{ number_format($assignment->failed) }}</span> failed and
-                <span class="font-semibold">{{ number_format($assignment->returned) }}</span> returned.
+                <span class="font-semibold">{{ number_format($assignment->delivered) }}</span> delivered.
                 The assignment cannot be set below what they have reported.
             </p>
         </div>

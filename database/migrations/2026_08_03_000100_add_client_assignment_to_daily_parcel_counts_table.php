@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * A client company can assign a day's parcel load to one of its riders.
      * When it does, these columns record who assigned it and when — the rider
-     * then reports delivered / failed / returned against that figure.
+     * then reports delivered against that figure.
      *
      * Null means the rider logged the whole row themselves, which stays valid.
      */

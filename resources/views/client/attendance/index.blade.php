@@ -51,9 +51,6 @@
                     <th class="py-3 pr-4 font-medium">Date</th>
                     <th class="py-3 pr-4 font-medium">Rider</th>
                     <th class="py-3 pr-4 font-medium">Status</th>
-                    <th class="py-3 pr-4 font-medium">Check In</th>
-                    <th class="py-3 pr-4 font-medium">Check Out</th>
-                    <th class="py-3 font-medium">Remarks</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,17 +59,14 @@
                         <td class="py-3 pr-4">{{ $record->date->format('d M Y') }}</td>
                         <td class="py-3 pr-4">{{ $record->rider->name ?? '—' }}</td>
                         <td class="py-3 pr-4">
-                            <span class="badge badge-{{ $record->status->value === 'Present' ? 'success' : ($record->status->value === 'Absent' ? 'danger' : 'warning') }}">
+                            <span class="badge badge-{{ $record->status->value === 'Present' ? 'success' : 'danger' }}">
                                 {{ $record->status->value }}
                             </span>
                         </td>
-                        <td class="py-3 pr-4">{{ $record->check_in ?? '—' }}</td>
-                        <td class="py-3 pr-4">{{ $record->check_out ?? '—' }}</td>
-                        <td class="py-3 text-[var(--fg-secondary)]">{{ $record->remarks ?? '—' }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="py-8 text-center text-[var(--fg-secondary)]">No attendance records found.</td>
+                        <td colspan="3" class="py-8 text-center text-[var(--fg-secondary)]">No attendance records found.</td>
                     </tr>
                 @endforelse
             </tbody>

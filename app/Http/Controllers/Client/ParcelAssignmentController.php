@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Clients assign a day's parcel load to their own riders. The rider then
- * reports delivered / failed / returned against that figure.
+ * reports delivered against that figure.
  */
 class ParcelAssignmentController extends PortalController
 {

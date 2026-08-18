@@ -28,8 +28,6 @@ class ParcelCountApiTest extends TestCase
             'date' => '2026-07-01',
             'assigned' => 20,
             'delivered' => 18,
-            'failed' => 1,
-            'returned' => 1,
         ]);
 
         $response->assertCreated()->assertJsonPath('data.success_rate', 90);
@@ -45,8 +43,6 @@ class ParcelCountApiTest extends TestCase
             'date' => '2026-07-01',
             'assigned' => 10,
             'delivered' => 10,
-            'failed' => 0,
-            'returned' => 0,
         ]);
 
         $response->assertStatus(422)->assertJsonValidationErrors(['date']);

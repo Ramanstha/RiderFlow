@@ -34,8 +34,6 @@
                     <th>Date</th>
                     <th>Assigned</th>
                     <th>Delivered</th>
-                    <th>Failed</th>
-                    <th>Returned</th>
                     <th>Success Rate</th>
                     <th>Actions</th>
                 </tr>
@@ -53,8 +51,6 @@
                             @endif
                         </td>
                         <td><span class="text-sm text-[var(--accent)]">{{ number_format($parcelCount->delivered) }}</span></td>
-                        <td><span class="text-sm text-red-400">{{ number_format($parcelCount->failed) }}</span></td>
-                        <td><span class="text-sm text-yellow-400">{{ number_format($parcelCount->returned) }}</span></td>
                         <td>
                             <span class="badge badge-{{ $parcelCount->success_rate >= 90 ? 'success' : ($parcelCount->success_rate >= 70 ? 'warning' : 'danger') }}">
                                 {{ $parcelCount->success_rate }}%
@@ -73,7 +69,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center text-[var(--fg-secondary)] py-8">No parcel counts submitted yet.</td>
+                        <td colspan="5" class="text-center text-[var(--fg-secondary)] py-8">No parcel counts submitted yet.</td>
                     </tr>
                 @endforelse
             </tbody>

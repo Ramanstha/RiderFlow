@@ -51,8 +51,6 @@ class ClientParcelAssignmentService
             'assigned' => (int) $data['assigned'],
             'assigned_at' => now(),
             'delivered' => 0,
-            'failed' => 0,
-            'returned' => 0,
         ]);
     }
 
@@ -142,7 +140,7 @@ class ClientParcelAssignmentService
      */
     protected function guardBelowReported(DailyParcelCount $assignment, int $assigned): void
     {
-        $reported = max($assignment->delivered, $assignment->failed, $assignment->returned);
+        $reported = (int) $assignment->delivered;
 
         if ($assigned < $reported) {
             throw ValidationException::withMessages([

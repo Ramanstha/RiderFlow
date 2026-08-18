@@ -50,8 +50,6 @@
                     <th>Company</th>
                     <th>Assigned</th>
                     <th>Delivered</th>
-                    <th>Failed</th>
-                    <th>Returned</th>
                     <th>Success Rate</th>
                 </tr>
             </thead>
@@ -62,15 +60,13 @@
                         <td><span class="text-sm">{{ $row['company_name'] }}</span></td>
                         <td><span class="text-sm">{{ $row['assigned'] }}</span></td>
                         <td><span class="text-sm">{{ $row['delivered'] }}</span></td>
-                        <td><span class="text-sm">{{ $row['failed'] }}</span></td>
-                        <td><span class="text-sm">{{ $row['returned'] }}</span></td>
                         <td>
                             <span class="badge badge-{{ $row['success_rate'] >= 80 ? 'success' : ($row['success_rate'] >= 50 ? 'warning' : 'danger') }}">{{ $row['success_rate'] }}%</span>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center text-[var(--fg-secondary)] py-8">No parcel data for the selected filters.</td>
+                        <td colspan="5" class="text-center text-[var(--fg-secondary)] py-8">No parcel data for the selected filters.</td>
                     </tr>
                 @endforelse
             </tbody>

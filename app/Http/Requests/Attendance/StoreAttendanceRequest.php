@@ -19,9 +19,6 @@ class StoreAttendanceRequest extends FormRequest
             'rider_id' => ['required', 'integer', 'exists:riders,id'],
             'date' => ['required', 'date'],
             'status' => ['required', Rule::enum(AttendanceStatus::class)],
-            'check_in' => ['nullable', 'date_format:H:i'],
-            'check_out' => ['nullable', 'date_format:H:i', 'after:check_in'],
-            'remarks' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

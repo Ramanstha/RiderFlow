@@ -38,6 +38,14 @@ class HomeController extends Controller
         return view('ui.content.about', compact('riders'));
     }
 
+    public function service(): View
+    {
+        $riders = $this->riders->list();
+        $testimonial = $this->testimonial->list();
+
+        return view('ui.content.services', compact('riders', 'testimonial'));
+    }
+
     public function contact(): View
     {
         $contact = $this->contact->primary();

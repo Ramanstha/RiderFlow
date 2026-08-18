@@ -28,8 +28,6 @@ class ParcelDrivenAttendanceTest extends TestCase
             'date' => '2026-08-03',
             'assigned' => 12,
             'delivered' => 0,
-            'failed' => 0,
-            'returned' => 0,
         ]);
 
         $this->assertMarked($rider, '2026-08-03', AttendanceStatus::Present);
@@ -44,8 +42,6 @@ class ParcelDrivenAttendanceTest extends TestCase
             'date' => '2026-08-03',
             'assigned' => 5,
             'delivered' => 0,
-            'failed' => 0,
-            'returned' => 0,
         ]);
 
         app(ParcelCountService::class)->update($parcels, ['assigned' => 0]);
@@ -77,8 +73,6 @@ class ParcelDrivenAttendanceTest extends TestCase
             'date' => '2026-08-03',
             'assigned' => 4,
             'delivered' => 0,
-            'failed' => 0,
-            'returned' => 0,
         ]);
 
         app(ParcelCountService::class)->update($parcels, ['date' => '2026-08-04']);
@@ -106,28 +100,6 @@ class ParcelDrivenAttendanceTest extends TestCase
         $this->assertMarked($rider, '2026-08-05', AttendanceStatus::Present);
     }
 
-    public function test_a_self_check_in_is_not_overwritten_when_parcels_disappear(): void
-    {
-        $rider = Rider::factory()->create();
-
-        RiderAttendance::factory()->create([
-            'rider_id' => $rider->id,
-            'date' => '2026-08-03',
-            'status' => AttendanceStatus::Present,
-            'check_in' => '08:30:00',
-        ]);
-
-        $parcels = DailyParcelCount::factory()->create([
-            'rider_id' => $rider->id,
-            'date' => '2026-08-03',
-            'assigned' => 6,
-        ]);
-
-        app(ParcelCountService::class)->delete($parcels);
-
-        $this->assertMarked($rider, '2026-08-03', AttendanceStatus::Present);
-    }
-
     public function test_an_empty_parcel_row_marks_the_rider_absent(): void
     {
         $rider = Rider::factory()->create();
@@ -137,8 +109,6 @@ class ParcelDrivenAttendanceTest extends TestCase
             'date' => '2026-08-03',
             'assigned' => 0,
             'delivered' => 0,
-            'failed' => 0,
-            'returned' => 0,
         ]);
 
         $this->assertMarked($rider, '2026-08-03', AttendanceStatus::Absent);

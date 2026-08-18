@@ -13,7 +13,7 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     @php($cards = [
         ['route' => 'client.reports.attendance', 'title' => 'Attendance Report', 'body' => 'Present, absent and leave days per rider, with attendance rate.'],
-        ['route' => 'client.reports.parcels', 'title' => 'Parcel Report', 'body' => 'Assigned, delivered, failed and returned totals with success rate.'],
+        ['route' => 'client.reports.parcels', 'title' => 'Parcel Report', 'body' => 'Assigned and delivered totals with success rate.'],
         ['route' => 'client.reports.performance', 'title' => 'Performance Report', 'body' => 'Average scores and delivery totals over any period.'],
     ])
 

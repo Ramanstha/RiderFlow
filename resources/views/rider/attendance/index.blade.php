@@ -5,11 +5,7 @@
 @section('content')
 <div class="mb-8">
     <h2 class="font-display text-2xl font-bold mb-1">My Attendance</h2>
-    <p class="text-[var(--fg-secondary)] text-sm">Your check-in history and leave record</p>
-</div>
-
-<div class="mb-6">
-    @include('rider.partials.check-in-out', ['today' => $today])
+    <p class="text-[var(--fg-secondary)] text-sm">Your attendance record</p>
 </div>
 
 <!-- Filters -->
@@ -34,9 +30,6 @@
                 <tr>
                     <th>Date</th>
                     <th>Status</th>
-                    <th>Check In</th>
-                    <th>Check Out</th>
-                    <th>Remarks</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,17 +37,14 @@
                     <tr>
                         <td><span class="text-sm">{{ $attendance->date->format('Y-m-d') }}</span></td>
                         <td>
-                            <span class="badge badge-{{ $attendance->status->value === 'Present' ? 'success' : ($attendance->status->value === 'Absent' ? 'danger' : 'warning') }}">
+                            <span class="badge badge-{{ $attendance->status->value === 'Present' ? 'success' : 'danger' }}">
                                 {{ $attendance->status->value }}
                             </span>
                         </td>
-                        <td><span class="text-sm">{{ $attendance->check_in ?: '-' }}</span></td>
-                        <td><span class="text-sm">{{ $attendance->check_out ?: '-' }}</span></td>
-                        <td><span class="text-sm text-[var(--fg-secondary)]">{{ $attendance->remarks ?: '-' }}</span></td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center text-[var(--fg-secondary)] py-8">No attendance records found.</td>
+                        <td colspan="2" class="text-center text-[var(--fg-secondary)] py-8">No attendance records found.</td>
                     </tr>
                 @endforelse
             </tbody>

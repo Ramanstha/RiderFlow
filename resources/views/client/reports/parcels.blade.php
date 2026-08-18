@@ -21,8 +21,6 @@
                     <th class="py-3 pr-4 font-medium">Rider</th>
                     <th class="py-3 pr-4 font-medium text-right">Assigned</th>
                     <th class="py-3 pr-4 font-medium text-right">Delivered</th>
-                    <th class="py-3 pr-4 font-medium text-right">Failed</th>
-                    <th class="py-3 pr-4 font-medium text-right">Returned</th>
                     <th class="py-3 font-medium text-right">Success</th>
                 </tr>
             </thead>
@@ -32,8 +30,6 @@
                         <td class="py-3 pr-4">{{ $row['rider_name'] }}</td>
                         <td class="py-3 pr-4 text-right">{{ number_format($row['assigned']) }}</td>
                         <td class="py-3 pr-4 text-right text-green-400">{{ number_format($row['delivered']) }}</td>
-                        <td class="py-3 pr-4 text-right text-red-400">{{ number_format($row['failed']) }}</td>
-                        <td class="py-3 pr-4 text-right text-yellow-400">{{ number_format($row['returned']) }}</td>
                         <td class="py-3 text-right">
                             <span class="badge badge-{{ $row['success_rate'] >= 90 ? 'success' : ($row['success_rate'] >= 70 ? 'warning' : 'danger') }}">
                                 {{ $row['success_rate'] }}%
@@ -42,7 +38,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="py-8 text-center text-[var(--fg-secondary)]">No records for this period.</td>
+                        <td colspan="4" class="py-8 text-center text-[var(--fg-secondary)]">No records for this period.</td>
                     </tr>
                 @endforelse
             </tbody>

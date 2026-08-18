@@ -12898,7 +12898,7 @@ video.bg-video {
   border-radius: 20px 20px 20px 20px;
   /* Distinct top-left corner notch effect */
   border-top-left-radius: 0px;
-  padding: 35px 25px 30px;
+  padding: 35px 25px 0px 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
   position: relative;
   height: 100%;
@@ -12958,7 +12958,6 @@ video.bg-video {
   color: #6c757d;
   font-size: 1rem;
   line-height: 1.5;
-  margin-bottom: 30px;
 }
 
 /* Read More Links */

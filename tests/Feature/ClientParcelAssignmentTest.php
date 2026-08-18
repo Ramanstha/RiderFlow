@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 /**
  * A client company assigns a day's parcel load to one of its own riders; the
- * rider then reports delivered / failed / returned against that figure.
+ * rider then reports delivered against that figure.
  */
 class ClientParcelAssignmentTest extends TestCase
 {
@@ -46,8 +46,6 @@ class ClientParcelAssignmentTest extends TestCase
 
         // The rider starts with nothing reported.
         $this->assertSame(0, $assignment->delivered);
-        $this->assertSame(0, $assignment->failed);
-        $this->assertSame(0, $assignment->returned);
         $this->assertSame(40, $assignment->outstanding);
     }
 
@@ -87,8 +85,6 @@ class ClientParcelAssignmentTest extends TestCase
             'date' => '2026-08-03',
             'assigned' => 10,
             'delivered' => 8,
-            'failed' => 1,
-            'returned' => 1,
         ]);
 
         $this->actingAs($this->company, 'client')
@@ -209,8 +205,6 @@ class ClientParcelAssignmentTest extends TestCase
                 'date' => $assignment->date->toDateString(),
                 'assigned' => 30,
                 'delivered' => 25,
-                'failed' => 3,
-                'returned' => 2,
             ])->assertRedirect(route('rider.parcel.index'));
 
         $assignment->refresh();
@@ -230,8 +224,6 @@ class ClientParcelAssignmentTest extends TestCase
                 // Both are spoofed and must be ignored.
                 'assigned' => 999,
                 'delivered' => 10,
-                'failed' => 0,
-                'returned' => 0,
             ])->assertRedirect(route('rider.parcel.index'));
 
         $assignment->refresh();
@@ -249,8 +241,6 @@ class ClientParcelAssignmentTest extends TestCase
                 'date' => '2026-07-01',
                 'assigned' => 30,
                 'delivered' => 5,
-                'failed' => 0,
-                'returned' => 0,
             ])->assertRedirect(route('rider.parcel.index'));
 
         $this->assertSame('2026-08-03', $assignment->fresh()->date->toDateString());
@@ -269,8 +259,6 @@ class ClientParcelAssignmentTest extends TestCase
                 'date' => $own->date->toDateString(),
                 'assigned' => 22,
                 'delivered' => 20,
-                'failed' => 1,
-                'returned' => 1,
             ])->assertRedirect(route('rider.parcel.index'));
 
         $this->assertSame(22, $own->fresh()->assigned);
@@ -286,8 +274,6 @@ class ClientParcelAssignmentTest extends TestCase
                 'date' => $assignment->date->toDateString(),
                 'assigned' => 30,
                 'delivered' => 45,
-                'failed' => 0,
-                'returned' => 0,
             ])->assertSessionHasErrors('delivered');
 
         $this->assertSame(0, $assignment->fresh()->delivered);
@@ -323,8 +309,6 @@ class ClientParcelAssignmentTest extends TestCase
             'assigned_at' => now(),
             'date' => now()->toDateString(),
             'delivered' => 0,
-            'failed' => 0,
-            'returned' => 0,
             ...$attributes,
         ]);
     }

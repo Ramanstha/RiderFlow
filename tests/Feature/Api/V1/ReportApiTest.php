@@ -34,7 +34,7 @@ class ReportApiTest extends TestCase
     public function test_it_returns_parcel_summary(): void
     {
         $rider = Rider::factory()->create();
-        DailyParcelCount::factory()->create(['rider_id' => $rider->id, 'assigned' => 10, 'delivered' => 8, 'failed' => 1, 'returned' => 1]);
+        DailyParcelCount::factory()->create(['rider_id' => $rider->id, 'assigned' => 10, 'delivered' => 8]);
 
         $response = $this->getJson('/api/v1/reports/parcels');
 

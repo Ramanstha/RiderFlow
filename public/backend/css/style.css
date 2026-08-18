@@ -179,7 +179,7 @@ th {
 }
 
 td {
-    padding: 14px 16px;
+    padding: 6px 16px;
     border-bottom: 1px solid var(--border);
     color: var(--fg-primary);
 }
@@ -217,9 +217,27 @@ tr:hover td {
     color: #00d4aa;
 }
 
+/* The default 40px box sits in :where() so it carries no specificity — call sites
+   that pass their own size (`avatar w-14 h-14`) always win, whatever order the
+   Tailwind CDN happens to inject its utilities in. */
+:where(.avatar) {
+    width: 50px;
+    height: auto;
+}
+
+.avatar {
+    /* Photos are uploaded at arbitrary dimensions: cover crops them to the box
+       instead of stretching, and no-shrink keeps the box round when a long name
+       or email shares its flex row. */
+    flex-shrink: 0;
+    object-fit: cover;
+    /* border-radius: 50px; */
+    border: 2px solid var(--border);
+}
+
 .avatar-up {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: auto;
     border-radius: 50px;
     object-fit: cover;
     border: 2px solid var(--border);
@@ -459,16 +477,6 @@ select.input-field {
     color: #ef4444;
 }
 
-.calendar-day.half-day {
-    background: rgba(245, 158, 11, 0.2);
-    color: #f59e0b;
-}
-
-.calendar-day.leave {
-    background: rgba(148, 163, 184, 0.2);
-    color: #94a3b8;
-}
-
 /* ---- Rider attendance calendar (attendance/riders/{rider}) ---- */
 .calendar-grid {
     display: grid;
@@ -478,7 +486,7 @@ select.input-field {
 
 .calendar-weekday {
     text-align: center;
-    font-size: 11px;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -517,11 +525,6 @@ select.input-field {
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-}
-
-.calendar-time {
-    font-size: 10px;
-    color: var(--fg-secondary);
 }
 
 .calendar-cell.is-present {
@@ -572,8 +575,7 @@ select.input-field {
         padding: 5px;
     }
 
-    .calendar-status,
-    .calendar-time {
+    .calendar-status {
         display: none;
     }
 }

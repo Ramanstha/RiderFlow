@@ -43,8 +43,6 @@
                     <th class="py-3 pr-4 font-medium">Rider</th>
                     <th class="py-3 pr-4 font-medium text-right">Assigned</th>
                     <th class="py-3 pr-4 font-medium text-right">Delivered</th>
-                    <th class="py-3 pr-4 font-medium text-right">Failed</th>
-                    <th class="py-3 pr-4 font-medium text-right">Returned</th>
                     <th class="py-3 font-medium text-right">Success</th>
                 </tr>
             </thead>
@@ -61,8 +59,6 @@
                             @endif
                         </td>
                         <td class="py-3 pr-4 text-right text-green-400">{{ number_format($record->delivered) }}</td>
-                        <td class="py-3 pr-4 text-right text-red-400">{{ number_format($record->failed) }}</td>
-                        <td class="py-3 pr-4 text-right text-yellow-400">{{ number_format($record->returned) }}</td>
                         <td class="py-3 text-right">
                             <span class="badge badge-{{ $rate >= 90 ? 'success' : ($rate >= 70 ? 'warning' : 'danger') }}">
                                 {{ $rate }}%
@@ -71,7 +67,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="py-8 text-center text-[var(--fg-secondary)]">No parcel records found.</td>
+                        <td colspan="5" class="py-8 text-center text-[var(--fg-secondary)]">No parcel records found.</td>
                     </tr>
                 @endforelse
             </tbody>

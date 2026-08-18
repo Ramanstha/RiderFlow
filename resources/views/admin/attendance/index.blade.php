@@ -7,7 +7,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
             <h2 class="font-display text-2xl font-bold mb-1">Rider Attendance</h2>
-            <p class="text-[var(--fg-secondary)] text-sm">Track daily check-in/check-out and leave status</p>
+            <p class="text-[var(--fg-secondary)] text-sm">Track daily present and absent status</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
         <a href="{{ route('attendance.riders') }}" class="btn-secondary flex items-center gap-2 text-sm px-5">
@@ -67,8 +67,6 @@
                         <th>Company</th>
                         <th>Date</th>
                         <th>Status</th>
-                        <th>Check In</th>
-                        <th>Check Out</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -82,10 +80,8 @@
                             <td><span class="text-sm">{{ $attendance->rider->companies->pluck('name')->join(', ') ?: '—' }}</span></td>
                             <td><span class="text-sm">{{ $attendance->date->format('Y-m-d') }}</span></td>
                             <td>
-                                <span class="badge badge-{{ $attendance->status->value === 'Present' ? 'success' : ($attendance->status->value === 'Absent' ? 'danger' : 'warning') }}">{{ $attendance->status->value }}</span>
+                                <span class="badge badge-{{ $attendance->status->value === 'Present' ? 'success' : 'danger' }}">{{ $attendance->status->value }}</span>
                             </td>
-                            <td><span class="text-sm">{{ $attendance->check_in ?: '-' }}</span></td>
-                            <td><span class="text-sm">{{ $attendance->check_out ?: '-' }}</span></td>
                             <td>
                                 @can('attendances.manage')
                                 <div class="flex items-center gap-1">
@@ -111,7 +107,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-[var(--fg-secondary)] py-8">No attendance records found.</td>
+                            <td colspan="5" class="text-center text-[var(--fg-secondary)] py-8">No attendance records found.</td>
                         </tr>
                     @endforelse
                 </tbody>

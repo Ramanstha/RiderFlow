@@ -15,8 +15,6 @@ class DailyParcelCountResource extends JsonResource
             'date' => $this->date->toDateString(),
             'assigned' => $this->assigned,
             'delivered' => $this->delivered,
-            'failed' => $this->failed,
-            'returned' => $this->returned,
             'success_rate' => $this->success_rate,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

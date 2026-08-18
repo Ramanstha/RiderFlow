@@ -18,9 +18,6 @@ class RiderAttendanceFactory extends Factory
             'rider_id' => Rider::factory(),
             'date' => fake()->dateTimeBetween('-1 month', 'now')->format('Y-m-d'),
             'status' => fake()->randomElement(AttendanceStatus::cases()),
-            'check_in' => '09:00',
-            'check_out' => '17:00',
-            'remarks' => null,
         ];
     }
 }

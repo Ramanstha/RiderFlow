@@ -65,43 +65,6 @@ class RiderPortalTest extends TestCase
         $this->get('/rider-portal')->assertRedirect(route('login'));
     }
 
-    public function test_rider_can_check_in_and_check_out(): void
-    {
-        $rider = Rider::factory()->create();
-
-        $this->actingAs($rider, 'rider')
-            ->from(route('rider.attendance.index'))
-            ->post('/rider-portal/attendance/check-in')
-            ->assertRedirect(route('rider.attendance.index'));
-
-        $attendance = RiderAttendance::query()->where('rider_id', $rider->id)->firstOrFail();
-        $this->assertNotNull($attendance->check_in);
-        $this->assertNull($attendance->check_out);
-
-        // A second check-in on the same day is rejected.
-        $this->actingAs($rider, 'rider')
-            ->from(route('rider.attendance.index'))
-            ->post('/rider-portal/attendance/check-in')
-            ->assertSessionHasErrors('check_in');
-
-        $this->actingAs($rider, 'rider')
-            ->from(route('rider.attendance.index'))
-            ->post('/rider-portal/attendance/check-out')
-            ->assertRedirect(route('rider.attendance.index'));
-
-        $this->assertNotNull($attendance->fresh()->check_out);
-    }
-
-    public function test_check_out_requires_a_check_in_first(): void
-    {
-        $rider = Rider::factory()->create();
-
-        $this->actingAs($rider, 'rider')
-            ->from(route('rider.attendance.index'))
-            ->post('/rider-portal/attendance/check-out')
-            ->assertSessionHasErrors('check_out');
-    }
-
     public function test_rider_only_sees_their_own_records(): void
     {
         $rider = Rider::factory()->create();
@@ -155,8 +118,6 @@ class RiderPortalTest extends TestCase
             'date' => now()->toDateString(),
             'assigned' => 20,
             'delivered' => 18,
-            'failed' => 1,
-            'returned' => 1,
         ])->assertRedirect(route('rider.parcel.index'));
 
         $this->assertDatabaseHas('daily_parcel_counts', [
@@ -174,8 +135,6 @@ class RiderPortalTest extends TestCase
             'date' => now()->toDateString(),
             'assigned' => 5,
             'delivered' => 9,
-            'failed' => 0,
-            'returned' => 0,
         ])->assertSessionHasErrors('delivered');
     }
 
@@ -193,8 +152,6 @@ class RiderPortalTest extends TestCase
                 'date' => now()->toDateString(),
                 'assigned' => 1,
                 'delivered' => 1,
-                'failed' => 0,
-                'returned' => 0,
             ])->assertForbidden();
     }
 

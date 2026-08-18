@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Repositories\BannerRepository;
 use App\Repositories\CompanyRepository;
+use App\Repositories\ContactMessageRepository;
 use App\Repositories\ContactRepository;
 use App\Repositories\Contracts\BannerRepositoryInterface;
 use App\Repositories\Contracts\CompanyRepositoryInterface;
+use App\Repositories\Contracts\ContactMessageRepositoryInterface;
 use App\Repositories\Contracts\ContactRepositoryInterface;
 use App\Repositories\Contracts\DailyParcelCountRepositoryInterface;
 use App\Repositories\Contracts\RiderAssignmentRepositoryInterface;
@@ -40,6 +42,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(BannerRepositoryInterface::class, BannerRepository::class);
         $this->app->bind(ContactRepositoryInterface::class, ContactRepository::class);
+        $this->app->bind(ContactMessageRepositoryInterface::class, ContactMessageRepository::class);
         $this->app->bind(TestimonialRepositoryInterface::class, TestimonialRepository::class);
     }
 }

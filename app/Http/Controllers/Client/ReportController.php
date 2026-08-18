@@ -118,11 +118,11 @@ class ReportController extends PortalController
         return [
             'title' => $this->company()->name.' — Parcel Report',
             'filename' => 'parcel-report',
-            'headings' => ['Rider', 'Assigned', 'Delivered', 'Failed', 'Returned', 'Success Rate (%)'],
+            'headings' => ['Rider', 'Assigned', 'Delivered', 'Success Rate (%)'],
             'rows' => $this->reports->parcelSummary($this->scopedFilters($request->validated())),
             'mapRow' => fn ($row) => [
                 $row['rider_name'], $row['assigned'], $row['delivered'],
-                $row['failed'], $row['returned'], $row['success_rate'],
+                $row['success_rate'],
             ],
         ];
     }

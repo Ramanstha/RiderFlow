@@ -18,8 +18,6 @@ Route::prefix('rider-portal')->name('rider.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-        Route::post('attendance/check-in', [AttendanceController::class, 'checkIn'])->name('attendance.check-in');
-        Route::post('attendance/check-out', [AttendanceController::class, 'checkOut'])->name('attendance.check-out');
 
         Route::get('assignment', [AssignmentController::class, 'index'])->name('assignment.index');
         Route::get('performance', [PerformanceController::class, 'index'])->name('performance.index');

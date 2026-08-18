@@ -15,9 +15,6 @@ class RiderAttendance extends Model
         'rider_id',
         'date',
         'status',
-        'check_in',
-        'check_out',
-        'remarks',
     ];
 
     protected function casts(): array

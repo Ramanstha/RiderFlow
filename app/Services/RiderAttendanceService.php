@@ -154,62 +154,6 @@ class RiderAttendanceService
     }
 
     /**
-     * Today's attendance row for a rider, if the rider has one.
-     */
-    public function todayFor(Rider $rider): ?RiderAttendance
-    {
-        return RiderAttendance::query()
-            ->where('rider_id', $rider->id)
-            ->whereDate('date', now()->toDateString())
-            ->first();
-    }
-
-    /**
-     * Self check-in from the rider portal.
-     */
-    public function checkIn(Rider $rider): RiderAttendance
-    {
-        if ($this->todayFor($rider)) {
-            throw ValidationException::withMessages([
-                'check_in' => 'You have already checked in today.',
-            ]);
-        }
-
-        $now = now();
-
-        return $this->attendances->create([
-            'rider_id' => $rider->id,
-            'date' => $now->toDateString(),
-            'status' => AttendanceStatus::Present,
-            'check_in' => $now->format('H:i:s'),
-        ]);
-    }
-
-    /**
-     * Self check-out from the rider portal.
-     */
-    public function checkOut(Rider $rider): RiderAttendance
-    {
-        $attendance = $this->todayFor($rider);
-
-        if (! $attendance) {
-            throw ValidationException::withMessages([
-                'check_out' => 'You need to check in before you can check out.',
-            ]);
-        }
-
-        if ($attendance->check_out) {
-            throw ValidationException::withMessages([
-                'check_out' => 'You have already checked out today.',
-            ]);
-        }
-
-        return $this->attendances->update($attendance, [
-            'check_out' => now()->format('H:i:s'),
-        ]);
-    }
-
-    /**
      * Keep a rider's attendance in step with their parcel load for one day:
      * parcels on the books means the rider worked, so they are Present; no
      * parcels left on that day means Absent.
@@ -271,8 +215,7 @@ class RiderAttendanceService
     }
 
     /**
-     * Write the status the parcels imply, leaving everything else on the row
-     * (check-in times, remarks) as it stands.
+     * Write the status the parcels imply.
      */
     protected function applyParcelStatus(int $riderId, string $date, bool $hasParcels): RiderAttendance
     {
@@ -280,12 +223,6 @@ class RiderAttendanceService
             ->where('rider_id', $riderId)
             ->whereDate('date', $date)
             ->first();
-
-        // A self check-in is first-hand proof the rider turned up, so parcels
-        // moving around afterwards must not overwrite it.
-        if ($attendance?->check_in) {
-            return $attendance;
-        }
 
         $status = $hasParcels ? AttendanceStatus::Present : AttendanceStatus::Absent;
 
@@ -325,9 +262,7 @@ class RiderAttendanceService
     {
         return $query
             ->where('assigned', '>', 0)
-            ->orWhere('delivered', '>', 0)
-            ->orWhere('failed', '>', 0)
-            ->orWhere('returned', '>', 0);
+            ->orWhere('delivered', '>', 0);
     }
 
     protected function guardDuplicateDate(int $riderId, string $date, ?int $ignoreId = null): void

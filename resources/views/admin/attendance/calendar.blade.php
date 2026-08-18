@@ -110,16 +110,13 @@
                         @endphp
                         <div class="calendar-cell {{ $stateClass }} {{ $cell['date']->isToday() ? 'is-today' : '' }}"
                             @if ($attendance)
-                                title="{{ $cell['date']->format('D, d M Y') }} — {{ $status }}{{ $attendance->check_in ? ' · In '.$attendance->check_in : '' }}{{ $attendance->check_out ? ' · Out '.$attendance->check_out : '' }}{{ $attendance->remarks ? ' · '.$attendance->remarks : '' }}"
+                                title="{{ $cell['date']->format('D, d M Y') }} — {{ $status }}"
                             @else
                                 title="{{ $cell['date']->format('D, d M Y') }} — No record"
                             @endif>
                             <span class="calendar-date">{{ $cell['date']->day }}</span>
                             @if ($attendance)
                                 <span class="calendar-status">{{ $status }}</span>
-                                @if ($attendance->check_in)
-                                    <span class="calendar-time">{{ \Illuminate\Support\Str::of($attendance->check_in)->substr(0, 5) }}</span>
-                                @endif
                             @endif
                         </div>
                     @endif

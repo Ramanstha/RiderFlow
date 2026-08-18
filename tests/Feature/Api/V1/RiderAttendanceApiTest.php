@@ -27,8 +27,6 @@ class RiderAttendanceApiTest extends TestCase
             'rider_id' => $rider->id,
             'date' => '2026-07-01',
             'status' => 'Present',
-            'check_in' => '09:00',
-            'check_out' => '17:00',
         ]);
 
         $response->assertCreated()->assertJsonPath('data.status', 'Present');

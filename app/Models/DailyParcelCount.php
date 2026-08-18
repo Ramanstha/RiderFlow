@@ -20,8 +20,6 @@ class DailyParcelCount extends Model
         'assigned',
         'assigned_at',
         'delivered',
-        'failed',
-        'returned',
     ];
 
     protected function casts(): array
@@ -59,7 +57,7 @@ class DailyParcelCount extends Model
      */
     public function hasRiderReport(): bool
     {
-        return $this->delivered > 0 || $this->failed > 0 || $this->returned > 0;
+        return $this->delivered > 0;
     }
 
     /**
@@ -67,7 +65,7 @@ class DailyParcelCount extends Model
      */
     public function getOutstandingAttribute(): int
     {
-        return max(0, $this->assigned - $this->delivered - $this->failed - $this->returned);
+        return max(0, $this->assigned - $this->delivered);
     }
 
     public function getSuccessRateAttribute(): float

@@ -91,14 +91,6 @@
                 <span class="text-[var(--fg-secondary)]">Delivered</span>
                 <span class="font-semibold text-green-400">{{ number_format($stats['today']['parcels']['delivered']) }}</span>
             </div>
-            <div class="flex justify-between">
-                <span class="text-[var(--fg-secondary)]">Failed</span>
-                <span class="font-semibold text-red-400">{{ number_format($stats['today']['parcels']['failed']) }}</span>
-            </div>
-            <div class="flex justify-between">
-                <span class="text-[var(--fg-secondary)]">Returned</span>
-                <span class="font-semibold text-yellow-400">{{ number_format($stats['today']['parcels']['returned']) }}</span>
-            </div>
             <div class="flex justify-between pt-3 border-t border-[var(--border)]">
                 <span class="text-[var(--fg-secondary)]">Success Rate</span>
                 <span class="font-semibold">{{ $stats['today']['parcels']['success_rate'] }}%</span>
@@ -144,9 +136,7 @@
                     <th class="py-3 pr-4 font-medium">Date</th>
                     <th class="py-3 pr-4 font-medium">Rider</th>
                     <th class="py-3 pr-4 font-medium text-right">Assigned</th>
-                    <th class="py-3 pr-4 font-medium text-right">Delivered</th>
-                    <th class="py-3 pr-4 font-medium text-right">Failed</th>
-                    <th class="py-3 font-medium text-right">Returned</th>
+                    <th class="py-3 font-medium text-right">Delivered</th>
                 </tr>
             </thead>
             <tbody>
@@ -155,13 +145,11 @@
                         <td class="py-3 pr-4">{{ $record->date->format('d M Y') }}</td>
                         <td class="py-3 pr-4">{{ $record->rider->name ?? '—' }}</td>
                         <td class="py-3 pr-4 text-right">{{ number_format($record->assigned) }}</td>
-                        <td class="py-3 pr-4 text-right text-green-400">{{ number_format($record->delivered) }}</td>
-                        <td class="py-3 pr-4 text-right text-red-400">{{ number_format($record->failed) }}</td>
-                        <td class="py-3 text-right text-yellow-400">{{ number_format($record->returned) }}</td>
+                        <td class="py-3 text-right text-green-400">{{ number_format($record->delivered) }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="py-6 text-center text-[var(--fg-secondary)]">No parcel records yet.</td>
+                        <td colspan="4" class="py-6 text-center text-[var(--fg-secondary)]">No parcel records yet.</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -16,9 +16,6 @@ return new class extends Migration
             $table->foreignId('rider_id')->constrained('riders')->cascadeOnDelete();
             $table->date('date');
             $table->enum('status', ['Present', 'Absent'])->default('Present');
-            $table->time('check_in')->nullable();
-            $table->time('check_out')->nullable();
-            $table->text('remarks')->nullable();
             $table->timestamps();
 
             $table->unique(['rider_id', 'date']);

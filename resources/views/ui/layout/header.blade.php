@@ -28,7 +28,9 @@
                         href="{{ route('about') }}">ABOUT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">SERVICES</a>
+                    <a class="nav-link @if (request()->routeIs('service')) active @endif"
+                        @if (request()->routeIs('service')) aria-current="page" @endif
+                        href="{{ route('service') }}">SERVICES</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">PORTFOLIO</a>

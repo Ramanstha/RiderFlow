@@ -18,8 +18,6 @@ class StoreParcelCountRequest extends FormRequest
             'date' => ['required', 'date'],
             'assigned' => ['required', 'integer', 'min:0'],
             'delivered' => ['required', 'integer', 'min:0'],
-            'failed' => ['required', 'integer', 'min:0'],
-            'returned' => ['required', 'integer', 'min:0'],
         ];
     }
 }

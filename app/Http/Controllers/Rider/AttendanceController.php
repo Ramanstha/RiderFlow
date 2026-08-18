@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Rider;
 
 use App\Services\RiderAttendanceService;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -20,21 +19,6 @@ class AttendanceController extends PortalController
 
         return view('rider.attendance.index', [
             'attendances' => $this->attendances->paginate($filters),
-            'today' => $this->attendances->todayFor($rider),
         ]);
-    }
-
-    public function checkIn(): RedirectResponse
-    {
-        $this->attendances->checkIn($this->rider());
-
-        return redirect()->back()->with('success', 'Checked in. Have a safe shift!');
-    }
-
-    public function checkOut(): RedirectResponse
-    {
-        $this->attendances->checkOut($this->rider());
-
-        return redirect()->back()->with('success', 'Checked out. Shift recorded.');
     }
 }

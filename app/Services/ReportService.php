@@ -57,8 +57,6 @@ class ReportService
                     'company_name' => $this->companyNames($rider),
                     'assigned' => $assigned,
                     'delivered' => $delivered,
-                    'failed' => $records->sum('failed'),
-                    'returned' => $records->sum('returned'),
                     'success_rate' => $assigned > 0 ? round(($delivered / $assigned) * 100, 2) : 0.0,
                 ];
             })

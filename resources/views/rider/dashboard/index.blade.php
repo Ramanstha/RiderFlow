@@ -10,11 +10,6 @@
     </p>
 </div>
 
-<!-- Check In / Out -->
-<div class="mb-8 animate-fade-up stagger-1">
-    @include('rider.partials.check-in-out', ['today' => $stats['today_attendance']])
-</div>
-
 <!-- Stats Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
     <div class="card stat-card p-6 animate-fade-up stagger-1">
@@ -95,7 +90,7 @@
     <div class="card p-6 lg:col-span-2 animate-fade-up stagger-5">
         <div class="mb-6">
             <h3 class="font-display text-lg font-semibold">Last 7 Days</h3>
-            <p class="text-sm text-[var(--fg-secondary)]">Parcels you delivered vs. failed</p>
+            <p class="text-sm text-[var(--fg-secondary)]">Parcels assigned vs. delivered</p>
         </div>
         <div class="relative" style="height: 280px;">
             <canvas id="riderParcelChart"></canvas>
@@ -137,12 +132,8 @@
                     <span class="font-medium">{{ number_format($stats['parcels']['assigned']) }}</span>
                 </div>
                 <div class="flex items-center justify-between">
-                    <span class="text-[var(--fg-secondary)]">Failed</span>
-                    <span class="font-medium text-red-400">{{ number_format($stats['parcels']['failed']) }}</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-[var(--fg-secondary)]">Returned</span>
-                    <span class="font-medium text-yellow-400">{{ number_format($stats['parcels']['returned']) }}</span>
+                    <span class="text-[var(--fg-secondary)]">Delivered</span>
+                    <span class="font-medium text-green-400">{{ number_format($stats['parcels']['delivered']) }}</span>
                 </div>
                 <div class="flex items-center justify-between">
                     <span class="text-[var(--fg-secondary)]">Absences</span>
@@ -174,15 +165,15 @@
                 labels: trend.map(d => d.label),
                 datasets: [
                     {
-                        label: 'Delivered',
-                        data: trend.map(d => d.delivered),
-                        backgroundColor: 'rgba(0, 212, 170, 0.7)',
+                        label: 'Assigned',
+                        data: trend.map(d => d.assigned),
+                        backgroundColor: 'rgba(148, 163, 184, 0.5)',
                         borderRadius: 6,
                     },
                     {
-                        label: 'Failed',
-                        data: trend.map(d => d.failed),
-                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                        label: 'Delivered',
+                        data: trend.map(d => d.delivered),
+                        backgroundColor: 'rgba(0, 212, 170, 0.7)',
                         borderRadius: 6,
                     },
                 ],

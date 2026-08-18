@@ -23,8 +23,6 @@ class UpdateParcelCountRequest extends FormRequest
                 : ['required', 'date', 'before_or_equal:today'],
             'assigned' => ['required', 'integer', 'min:0'],
             'delivered' => ['required', 'integer', 'min:0', 'lte:assigned'],
-            'failed' => ['required', 'integer', 'min:0', 'lte:assigned'],
-            'returned' => ['required', 'integer', 'min:0', 'lte:assigned'],
         ];
     }
 
@@ -60,8 +58,6 @@ class UpdateParcelCountRequest extends FormRequest
     {
         return [
             'delivered.lte' => 'Delivered cannot be more than the number assigned.',
-            'failed.lte' => 'Failed cannot be more than the number assigned.',
-            'returned.lte' => 'Returned cannot be more than the number assigned.',
             'date.before_or_equal' => 'You cannot log parcel counts for a future date.',
         ];
     }
