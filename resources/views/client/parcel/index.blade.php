@@ -15,7 +15,7 @@
             <select name="rider_id" class="input-field">
                 <option value="">All riders</option>
                 @foreach ($riders as $rider)
-                    <option value="{{ $rider->id }}" @selected(request('rider_id') == $rider->id)>{{ $rider->name }}</option>
+                    <option class="capitalize" value="{{ $rider->id }}" @selected(request('rider_id') == $rider->id)>{{ $rider->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -39,8 +39,8 @@
         <table class="w-full text-sm">
             <thead>
                 <tr class="text-left text-[var(--fg-secondary)] border-b border-[var(--border)]">
-                    <th class="py-3 pr-4 font-medium">Date</th>
                     <th class="py-3 pr-4 font-medium">Rider</th>
+                    <th class="py-3 pr-4 font-medium">Date</th>
                     <th class="py-3 pr-4 font-medium text-right">Assigned</th>
                     <th class="py-3 pr-4 font-medium text-right">Delivered</th>
                     <th class="py-3 font-medium text-right">Success</th>
@@ -50,8 +50,8 @@
                 @forelse ($records as $record)
                     @php($rate = $record->assigned > 0 ? round(($record->delivered / $record->assigned) * 100, 1) : 0)
                     <tr class="border-b border-[var(--border)] last:border-0">
+                        <td class="py-3 pr-4 capitalize">{{ $record->rider->name ?? '—' }}</td>
                         <td class="py-3 pr-4">{{ $record->date->format('d M Y') }}</td>
-                        <td class="py-3 pr-4">{{ $record->rider->name ?? '—' }}</td>
                         <td class="py-3 pr-4 text-right">
                             {{ number_format($record->assigned) }}
                             @if ($record->isClientAssigned())

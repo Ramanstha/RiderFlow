@@ -50,7 +50,7 @@
                             <div class="flex items-center gap-3">
                                 <img src="{{ $rider->photo ? asset('storage/'.$rider->photo) : 'https://ui-avatars.com/api/?name='.urlencode($rider->name) }}"
                                     alt="{{ $rider->name }}" class="avatar w-9 h-9">
-                                <span class="font-medium">{{ $rider->name }}</span>
+                                <span class="font-medium capitalize">{{ $rider->name }}</span>
                             </div>
                         </td>
                         <td class="py-3 pr-4">

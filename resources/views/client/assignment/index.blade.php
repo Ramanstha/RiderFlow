@@ -15,7 +15,7 @@
             <select name="rider_id" class="input-field">
                 <option value="">All riders</option>
                 @foreach ($riders as $rider)
-                    <option value="{{ $rider->id }}" @selected(request('rider_id') == $rider->id)>{{ $rider->name }}</option>
+                    <option class="capitalize" value="{{ $rider->id }}" @selected(request('rider_id') == $rider->id)>{{ $rider->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -49,7 +49,7 @@
             <tbody>
                 @forelse ($assignments as $assignment)
                     <tr class="border-b border-[var(--border)] last:border-0">
-                        <td class="py-3 pr-4">{{ $assignment->rider->name ?? '—' }}</td>
+                        <td class="py-3 pr-4 capitalize">{{ $assignment->rider->name ?? '—' }}</td>
                         <td class="py-3 pr-4"><span class="badge badge-info">{{ $assignment->type->value }}</span></td>
                         <td class="py-3 pr-4">{{ $assignment->start_date?->format('d M Y') ?? '—' }}</td>
                         <td class="py-3">{{ $assignment->end_date?->format('d M Y') ?? '—' }}</td>

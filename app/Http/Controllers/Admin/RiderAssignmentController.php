@@ -32,7 +32,7 @@ class RiderAssignmentController extends Controller
     {
         $this->authorize('assignments.manage');
 
-        $riders = Rider::query()->orderBy('name')->get();
+        $riders = Rider::query()->active()->unassigned()->orderBy('name')->get();
         $companies = Company::query()->orderBy('name')->get();
 
         return view('admin.assignment.create', compact('riders', 'companies'));

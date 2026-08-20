@@ -118,8 +118,8 @@ class ParcelDrivenAttendanceTest extends TestCase
     {
         $this->travelTo('2026-08-06');
 
-        $worked = Rider::factory()->create();
-        $idle = Rider::factory()->create();
+        $worked = Rider::factory()->assignedFrom('2026-08-01')->create();
+        $idle = Rider::factory()->assignedFrom('2026-08-01')->create();
 
         DailyParcelCount::factory()->create([
             'rider_id' => $worked->id,
@@ -134,12 +134,12 @@ class ParcelDrivenAttendanceTest extends TestCase
         $this->assertSame(['present' => 1, 'absent' => 1], $counts);
     }
 
-    public function test_inactive_riders_and_days_before_a_rider_joined_are_skipped(): void
+    public function test_inactive_riders_and_days_before_a_rider_was_assigned_are_skipped(): void
     {
         $this->travelTo('2026-08-06');
 
-        $inactive = Rider::factory()->create(['status' => RiderStatus::Inactive]);
-        $newJoiner = Rider::factory()->create(['created_at' => '2026-08-05 09:00:00']);
+        $inactive = Rider::factory()->assignedFrom('2026-08-01')->create(['status' => RiderStatus::Inactive]);
+        $newJoiner = Rider::factory()->assignedFrom('2026-08-05')->create();
 
         app(RiderAttendanceService::class)->markDayFromParcels('2026-08-04');
 
@@ -151,11 +151,23 @@ class ParcelDrivenAttendanceTest extends TestCase
         $this->assertNull($inactive->attendances()->first());
     }
 
+    public function test_a_rider_with_no_assignment_is_never_swept(): void
+    {
+        $this->travelTo('2026-08-06');
+
+        Rider::factory()->create(['created_at' => '2026-08-01 09:00:00']);
+
+        $counts = app(RiderAttendanceService::class)->markDayFromParcels('2026-08-06');
+
+        $this->assertSame(['present' => 0, 'absent' => 0], $counts);
+        $this->assertDatabaseCount('rider_attendances', 0);
+    }
+
     public function test_the_command_backfills_a_range_and_refuses_future_dates(): void
     {
         $this->travelTo('2026-08-06');
 
-        $rider = Rider::factory()->create(['created_at' => '2026-08-01 08:00:00']);
+        $rider = Rider::factory()->assignedFrom('2026-08-01')->create();
 
         DailyParcelCount::factory()->create([
             'rider_id' => $rider->id,

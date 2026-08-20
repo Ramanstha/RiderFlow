@@ -40,8 +40,12 @@ class ClientPortalTest extends TestCase
     {
         $company = Company::factory()->create();
         $rider = Rider::factory()->forCompany($company)->create();
-        DailyParcelCount::factory()->create(['rider_id' => $rider->id]);
-        RiderAttendance::factory()->create(['rider_id' => $rider->id]);
+
+        // Separate days on purpose: the parcel row marks its own day's
+        // attendance through the observer, so a random attendance date could
+        // otherwise land on the same day and break the rider/date unique key.
+        DailyParcelCount::factory()->create(['rider_id' => $rider->id, 'date' => now()->subDays(2)]);
+        RiderAttendance::factory()->create(['rider_id' => $rider->id, 'date' => now()->subDay()]);
         RiderPerformance::factory()->create(['rider_id' => $rider->id]);
 
         $this->actingAs($company, 'client');

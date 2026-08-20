@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RiderStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -69,6 +70,27 @@ class Rider extends Authenticatable
     public function parcelCounts(): HasMany
     {
         return $this->hasMany(DailyParcelCount::class);
+    }
+
+    /**
+     * Riders on the active roster; inactive ones stay out of pickers.
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', RiderStatus::Active);
+    }
+
+    /**
+     * Riders free to take a new assignment: none of their assignments is still
+     * running or scheduled to run on the given date (today by default). This
+     * mirrors the overlap guard in RiderAssignmentService.
+     */
+    public function scopeUnassigned(Builder $query, ?string $on = null): Builder
+    {
+        $on ??= now()->toDateString();
+
+        return $query->whereDoesntHave('assignments', fn (Builder $query) => $query
+            ->where(fn (Builder $query) => $query->whereNull('end_date')->orWhereDate('end_date', '>=', $on)));
     }
 
     /**

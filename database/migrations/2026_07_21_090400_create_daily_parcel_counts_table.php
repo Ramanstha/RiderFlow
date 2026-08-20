@@ -17,8 +17,6 @@ return new class extends Migration
             $table->date('date');
             $table->unsignedInteger('assigned')->default(0);
             $table->unsignedInteger('delivered')->default(0);
-            $table->unsignedInteger('failed')->default(0);
-            $table->unsignedInteger('returned')->default(0);
             $table->timestamps();
 
             $table->unique(['rider_id', 'date']);

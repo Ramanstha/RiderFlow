@@ -15,12 +15,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium mb-2">Rider *</label>
-                    <select name="rider_id" class="input-field" required>
+                    <select name="rider_id" class="input-field" required @disabled($riders->isEmpty())>
                         <option value="">Select a rider</option>
                         @foreach ($riders as $rider)
                             <option value="{{ $rider->id }}" @selected((string) old('rider_id') === (string) $rider->id)>{{ $rider->name }}</option>
                         @endforeach
                     </select>
+                    @if ($riders->isEmpty())
+                        <p class="text-sm text-[var(--fg-secondary)] mt-1">No active riders are free — every one is either inactive or already assigned.</p>
+                    @endif
                     @error('rider_id') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>

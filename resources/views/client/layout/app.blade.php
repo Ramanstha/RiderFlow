@@ -183,17 +183,17 @@
             </nav>
 
             <!-- Company Profile -->
-            <div class="p-4 border-t border-[var(--border)]">
+            <!-- <div class="p-4 border-t border-[var(--border)]">
                 <a href="{{ route('client.profile.edit') }}"
                     class="flex items-center gap-3 p-3 rounded-xl hover:bg-[rgba(0,212,170,0.05)] cursor-pointer transition-all">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($client->name) }}"
-                        alt="{{ $client->name }}" class="avatar">
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($client->name) }}" alt="{{ $client->name }}"
+                        class="avatar">
                     <div class="flex-1 min-w-0">
                         <p class="font-semibold truncate">{{ $client->name }}</p>
                         <p class="text-sm text-[var(--fg-secondary)] truncate">{{ $client->contact_person }}</p>
                     </div>
                 </a>
-            </div>
+            </div> -->
         </aside>
 
         <!-- Main Content -->
@@ -206,9 +206,68 @@
                     <div class="flex-1">
                         <p class="text-sm text-[var(--fg-secondary)]">{{ now()->format('l, d M Y') }}</p>
                     </div>
+                    <button type="button"
+                        class="theme-toggle relative p-3 rounded-xl hover:bg-[var(--bg-card)] transition-all"
+                        aria-label="Toggle theme" aria-pressed="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 dark-icon" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 light-icon hidden" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </button>
+
                     <span class="badge badge-{{ $client->status->value === 'Active' ? 'success' : 'danger' }}">
                         {{ $client->status->value }}
                     </span>
+                    <div class="profile relative">
+                        <button type="button" id="profileMenuBtn" aria-haspopup="true" aria-expanded="false"
+                            class="flex items-center gap-2 p-1 rounded-xl hover:bg-[var(--bg-card)] transition-all">
+                            <img class="avatar-up" src="https://ui-avatars.com/api/?name={{ urlencode($client->name) }}"
+                                alt="{{ $client->name }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[var(--fg-secondary)]"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <div id="profileMenu"
+                            class="hidden absolute right-0 mt-2 w-56 rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-xl overflow-hidden z-50">
+                            <div class="px-4 py-3 border-b border-[var(--border)] text-center">
+                                <img class="avatar-down text-center mx-auto mb-2"
+                                    src="https://ui-avatars.com/api/?name={{ urlencode($client->name) }}"
+                                    alt="{{ $client->name }}">
+                                <p class="capitalize font-semibold truncate">{{ $client->name }}</p>
+                                <p class="capitalize text-sm text-[var(--fg-secondary)] truncate">{{ $client->contact_person }}</p>
+                                <p class="text-sm text-[var(--fg-secondary)] truncate">{{ $client->email }}</p>
+                            </div>
+                            <a href="{{ route('client.profile.edit') }}"
+                                class="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[rgba(0,212,170,0.1)] hover:text-[var(--accent)] transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <span>Profile Settings</span>
+                            </a>
+                            <form action="{{ route('logout') }}" method="POST" class="border-t border-[var(--border)]">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full flex items-center gap-3 px-4 py-3 text-sm text-left text-red-500 hover:bg-red-500/10 transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                    <span>Logout</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -265,6 +324,30 @@
                 }
             });
         }
+        // ==================== PROFILE DROPDOWN ====================
+        function initializeProfileMenu() {
+            const btn = document.getElementById('profileMenuBtn');
+            const menu = document.getElementById('profileMenu');
+            if (!btn || !menu) return;
+            const closeProfileMenu = () => {
+                menu.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            };
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = !menu.classList.contains('hidden');
+                menu.classList.toggle('hidden', isOpen);
+                btn.setAttribute('aria-expanded', String(!isOpen));
+            });
+            document.addEventListener('click', (e) => {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                    closeProfileMenu();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeProfileMenu();
+            });
+        }
 
         function closeMobileMenu() {
             const sidebar = document.getElementById('sidebar');
@@ -275,6 +358,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeTheme();
             initializeMobileMenu();
+            initializeProfileMenu();
         });
     </script>
     @stack('scripts')

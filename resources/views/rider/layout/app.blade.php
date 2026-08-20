@@ -170,9 +170,43 @@
                     <div class="flex-1">
                         <p class="text-sm text-[var(--fg-secondary)]">{{ now()->format('l, d M Y') }}</p>
                     </div>
-                    <span class="badge badge-{{ $rider->status->value === 'Active' ? 'success' : ($rider->status->value === 'Inactive' ? 'danger' : 'warning') }}">
+                    <span
+                        class="badge badge-{{ $rider->status->value === 'Active' ? 'success' : ($rider->status->value === 'Inactive' ? 'danger' : 'warning') }}">
                         {{ $rider->status->value }}
                     </span>
+                    <div id="profileMenu"
+                        class="hidden absolute right-0 mt-2 w-56 rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-xl overflow-hidden z-50">
+                        <div class="px-4 py-3 border-b border-[var(--border)] text-center">
+                            <img class="avatar-down text-center mx-auto mb-2"
+                                src="https://ui-avatars.com/api/?name={{ urlencode($rider->name) }}"
+                                alt="{{ $rider->name }}">
+                            <p class="capitalize font-semibold truncate">{{ $rider->name }}</p>
+                            <p class="capitalize text-sm text-[var(--fg-secondary)] truncate">
+                                {{ $rider->contact_person }}</p>
+                            <p class="text-sm text-[var(--fg-secondary)] truncate">{{ $rider->email }}</p>
+                        </div>
+                        <a href="{{ route('client.profile.edit') }}"
+                            class="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[rgba(0,212,170,0.1)] hover:text-[var(--accent)] transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span>Profile Settings</span>
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST" class="border-t border-[var(--border)]">
+                            @csrf
+                            <button type="submit"
+                                class="w-full flex items-center gap-3 px-4 py-3 text-sm text-left text-red-500 hover:bg-red-500/10 transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </header>
 

@@ -106,7 +106,7 @@
 
         @forelse ($stats['top_riders'] as $row)
             <div class="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
-                <a href="{{ route('client.rider.show', $row['rider_id']) }}" class="font-medium hover:text-[var(--accent)]">
+                <a href="{{ route('client.rider.show', $row['rider_id']) }}" class="capitalize font-medium hover:text-[var(--accent)]">
                     {{ $row['rider_name'] }}
                 </a>
                 <div class="flex items-center gap-6 text-sm">

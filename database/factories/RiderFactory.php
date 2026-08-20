@@ -45,6 +45,17 @@ class RiderFactory extends Factory
     }
 
     /**
+     * A rider whose roster — and so whose attendance — starts on a given day.
+     */
+    public function assignedFrom(string $startDate): static
+    {
+        return $this->afterCreating(fn (Rider $rider) => RiderAssignment::factory()->create([
+            'rider_id' => $rider->id,
+            'start_date' => $startDate,
+        ]));
+    }
+
+    /**
      * A rider who has not been given rider portal credentials.
      */
     public function withoutPortalAccess(): static

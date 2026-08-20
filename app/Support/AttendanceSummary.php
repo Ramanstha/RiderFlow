@@ -22,13 +22,26 @@ class AttendanceSummary
      */
     public static function forRecords(Collection $records): array
     {
-        $total = $records->count();
-        $present = static::countPresent($records);
+        return static::forStatuses($records->map(fn (RiderAttendance $attendance) => $attendance->status));
+    }
+
+    /**
+     * The same totals from bare statuses, for callers that work out a day's
+     * status without a row behind it — the calendar reads a day with no
+     * record as Absent, and those days have to count towards the rate.
+     *
+     * @param  Collection<int, AttendanceStatus>  $statuses
+     * @return array{total_days: int, present_days: int, absent_days: int, attendance_rate: float}
+     */
+    public static function forStatuses(Collection $statuses): array
+    {
+        $total = $statuses->count();
+        $present = $statuses->filter(fn (AttendanceStatus $status) => $status === AttendanceStatus::Present)->count();
 
         return [
             'total_days' => $total,
             'present_days' => $present,
-            'absent_days' => static::countAbsent($records),
+            'absent_days' => $statuses->filter(fn (AttendanceStatus $status) => $status === AttendanceStatus::Absent)->count(),
             'attendance_rate' => static::rate($present, $total),
         ];
     }

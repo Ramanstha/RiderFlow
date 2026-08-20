@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Enums\AttendanceStatus;
+use App\Enums\RiderStatus;
 use App\Models\Rider;
 use App\Models\RiderAttendance;
 use App\Services\RiderAttendanceService;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\ActsWithRoles;
 use Tests\TestCase;
@@ -66,7 +68,7 @@ class RiderAttendanceCalendarTest extends TestCase
             ->assertOk()
             ->assertSee('Calendar Rider')
             ->assertSee('May 2026')
-            ->assertSee('1 day recorded in May 2026');
+            ->assertSee('1 day tracked in May 2026');
     }
 
     public function test_the_calendar_only_loads_the_requested_month(): void
@@ -137,5 +139,111 @@ class RiderAttendanceCalendarTest extends TestCase
 
         $this->actingAs($viewer)->get(route('attendance.riders'))->assertOk();
         $this->actingAs($viewer)->get(route('attendance.riders.show', $rider))->assertOk();
+    }
+
+    public function test_a_day_with_no_record_reads_absent(): void
+    {
+        $this->travelTo('2026-08-19');
+
+        $rider = Rider::factory()->assignedFrom('2026-08-17')->create();
+
+        RiderAttendance::factory()->create([
+            'rider_id' => $rider->id,
+            'date' => '2026-08-18',
+            'status' => AttendanceStatus::Present,
+        ]);
+
+        $cells = $this->cellsByDate($rider, '2026-08');
+
+        // The 17th and today both went unassigned, so both read Absent.
+        $this->assertSame(AttendanceStatus::Absent, $cells['2026-08-17']['status']);
+        $this->assertSame(AttendanceStatus::Present, $cells['2026-08-18']['status']);
+        $this->assertSame(AttendanceStatus::Absent, $cells['2026-08-19']['status']);
+    }
+
+    public function test_days_before_the_rider_was_assigned_and_days_still_to_come_stay_blank(): void
+    {
+        $this->travelTo('2026-08-19');
+
+        // On the fleet since the 1st, but only on a client roster from the 17th.
+        $rider = Rider::factory()->assignedFrom('2026-08-17')->create(['created_at' => '2026-08-01 09:00:00']);
+        $cells = $this->cellsByDate($rider, '2026-08');
+
+        $this->assertNull($cells['2026-08-16']['status'], 'The day before the assignment started is not theirs to be absent on.');
+        $this->assertNull($cells['2026-08-20']['status'], 'Tomorrow has not happened yet.');
+    }
+
+    public function test_a_rider_who_has_never_been_assigned_accrues_nothing(): void
+    {
+        $this->travelTo('2026-08-19');
+
+        $rider = Rider::factory()->create(['created_at' => '2026-08-01 09:00:00']);
+        $cells = $this->cellsByDate($rider, '2026-08');
+
+        $this->assertNull($cells['2026-08-18']['status']);
+        $this->assertSame(0, app(RiderAttendanceService::class)->monthlyCalendar($rider, '2026-08')['summary']['total_days']);
+    }
+
+    public function test_the_earliest_assignment_is_the_one_that_starts_the_clock(): void
+    {
+        $this->travelTo('2026-08-19');
+
+        $rider = Rider::factory()
+            ->assignedFrom('2026-08-18')
+            ->assignedFrom('2026-08-10')
+            ->create();
+
+        $cells = $this->cellsByDate($rider, '2026-08');
+
+        $this->assertNull($cells['2026-08-09']['status']);
+        $this->assertSame(AttendanceStatus::Absent, $cells['2026-08-10']['status']);
+    }
+
+    public function test_an_inactive_rider_does_not_accrue_derived_absences(): void
+    {
+        $this->travelTo('2026-08-19');
+
+        $rider = Rider::factory()->assignedFrom('2026-08-01')->create([
+            'status' => RiderStatus::Inactive,
+        ]);
+
+        $cells = $this->cellsByDate($rider, '2026-08');
+
+        $this->assertNull($cells['2026-08-18']['status']);
+    }
+
+    public function test_derived_absences_count_towards_the_summary(): void
+    {
+        $this->travelTo('2026-08-19');
+
+        $rider = Rider::factory()->assignedFrom('2026-08-17')->create();
+
+        RiderAttendance::factory()->create([
+            'rider_id' => $rider->id,
+            'date' => '2026-08-18',
+            'status' => AttendanceStatus::Present,
+        ]);
+
+        $summary = app(RiderAttendanceService::class)->monthlyCalendar($rider, '2026-08')['summary'];
+
+        // The 17th, 18th and 19th — the rider's whole tenure so far.
+        $this->assertSame(3, $summary['total_days']);
+        $this->assertSame(1, $summary['present_days']);
+        $this->assertSame(2, $summary['absent_days']);
+        $this->assertSame(33.33, $summary['attendance_rate']);
+    }
+
+    /**
+     * @return array<string, array{date: CarbonImmutable, attendance: ?RiderAttendance, status: ?AttendanceStatus}>
+     */
+    protected function cellsByDate(Rider $rider, string $month): array
+    {
+        $calendar = app(RiderAttendanceService::class)->monthlyCalendar($rider, $month);
+
+        return collect($calendar['weeks'])
+            ->flatten(1)
+            ->filter()
+            ->keyBy(fn (array $cell) => $cell['date']->toDateString())
+            ->all();
     }
 }

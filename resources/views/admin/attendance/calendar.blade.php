@@ -84,7 +84,6 @@
         <div class="flex flex-wrap items-center gap-4 mb-5 text-xs text-[var(--fg-secondary)]">
             <span class="flex items-center gap-2"><span class="legend-dot legend-present"></span> Present</span>
             <span class="flex items-center gap-2"><span class="legend-dot legend-absent"></span> Absent</span>
-            <span class="flex items-center gap-2"><span class="legend-dot legend-empty"></span> No record</span>
         </div>
 
         <div class="calendar-grid mb-2">
@@ -100,8 +99,7 @@
                         <div class="calendar-cell calendar-cell-empty"></div>
                     @else
                         @php
-                            $attendance = $cell['attendance'];
-                            $status = $attendance?->status->value;
+                            $status = $cell['status']?->value;
                             $stateClass = match ($status) {
                                 'Present' => 'is-present',
                                 'Absent' => 'is-absent',
@@ -109,13 +107,9 @@
                             };
                         @endphp
                         <div class="calendar-cell {{ $stateClass }} {{ $cell['date']->isToday() ? 'is-today' : '' }}"
-                            @if ($attendance)
-                                title="{{ $cell['date']->format('D, d M Y') }} — {{ $status }}"
-                            @else
-                                title="{{ $cell['date']->format('D, d M Y') }} — No record"
-                            @endif>
+                            title="{{ $cell['date']->format('D, d M Y') }}@if ($status) — {{ $status }}@endif">
                             <span class="calendar-date">{{ $cell['date']->day }}</span>
-                            @if ($attendance)
+                            @if ($status)
                                 <span class="calendar-status">{{ $status }}</span>
                             @endif
                         </div>
@@ -125,8 +119,8 @@
         @endforeach
 
         <p class="text-sm text-[var(--fg-secondary)] mt-5">
-            {{ $summary['total_days'] }} {{ \Illuminate\Support\Str::plural('day', $summary['total_days']) }} recorded in {{ $month->format('F Y') }}
-        </p>
+            {{ $summary['total_days'] }} {{ \Illuminate\Support\Str::plural('day', $summary['total_days']) }} tracked in {{ $month->format('F Y') }}
+         </p>
     </div>
 </div>
 @endsection

@@ -90,9 +90,15 @@ class RiderAttendanceService
      * Only the requested month is read, so paging back through history costs a
      * single indexed range query per month rather than loading a whole history.
      *
+     * Every day the rider was on the roster for reads Present or Absent — a day
+     * with no record means nothing was ever assigned to them, which is exactly
+     * what being absent looks like, so there is no third "no record" state.
+     * Only days that are not theirs to answer for — before their first
+     * assignment started, or still to come — are left blank.
+     *
      * @return array{
      *     month: CarbonImmutable,
-     *     weeks: array<int, array<int, null|array{date: CarbonImmutable, attendance: ?RiderAttendance}>>,
+     *     weeks: array<int, array<int, null|array{date: CarbonImmutable, attendance: ?RiderAttendance, status: ?AttendanceStatus}>>,
      *     summary: array{total_days: int, present_days: int, absent_days: int, attendance_rate: float},
      *     previous: string,
      *     next: string,
@@ -112,13 +118,26 @@ class RiderAttendanceService
 
         $byDate = $records->keyBy(fn (RiderAttendance $attendance) => $attendance->date->toDateString());
 
+        // Read once for the whole month rather than per cell.
+        $rosterStart = $this->rosterStartedOn($rider);
+
         // Pad with nulls so the first and last weeks line up under Sun–Sat.
         $cells = array_fill(0, $start->dayOfWeek, null);
+        $statuses = collect();
 
         for ($day = $start; $day->lessThanOrEqualTo($end); $day = $day->addDay()) {
+            $attendance = $byDate->get($day->toDateString());
+            $status = $attendance?->status
+                ?? ($this->isRosteredOn($rider, $day, $rosterStart) ? AttendanceStatus::Absent : null);
+
+            if ($status) {
+                $statuses->push($status);
+            }
+
             $cells[] = [
                 'date' => $day,
-                'attendance' => $byDate->get($day->toDateString()),
+                'attendance' => $attendance,
+                'status' => $status,
             ];
         }
 
@@ -127,11 +146,46 @@ class RiderAttendanceService
         return [
             'month' => $start,
             'weeks' => array_chunk($cells, 7),
-            'summary' => AttendanceSummary::forRecords($records),
+            'summary' => AttendanceSummary::forStatuses($statuses),
             'previous' => $start->subMonth()->format('Y-m'),
             'next' => $start->addMonth()->format('Y-m'),
             'current' => $start->format('Y-m'),
         ];
+    }
+
+    /**
+     * Was the rider on the roster to work that day, and has the day happened?
+     *
+     * These are the same days the nightly sweep marks (see
+     * {@see markDayFromParcels}), so the status the calendar fills in for a day
+     * with no row is the one the sweep would have written for it.
+     */
+    protected function isRosteredOn(Rider $rider, CarbonImmutable $day, ?CarbonImmutable $rosterStart): bool
+    {
+        if ($day->greaterThan(CarbonImmutable::today())) {
+            return false;
+        }
+
+        if ($rider->status !== RiderStatus::Active) {
+            return false;
+        }
+
+        return $rosterStart !== null && ! $rosterStart->greaterThan($day);
+    }
+
+    /**
+     * The day the rider's attendance starts counting: the start date of their
+     * earliest assignment.
+     *
+     * A rider exists on the fleet from the moment they are created, but there
+     * is no work to answer for until a client has them on their roster, so an
+     * unassigned rider has no start day at all and accrues nothing.
+     */
+    protected function rosterStartedOn(Rider $rider): ?CarbonImmutable
+    {
+        $start = $rider->assignments()->min('start_date');
+
+        return $start ? CarbonImmutable::parse($start)->startOfDay() : null;
     }
 
     /**
@@ -168,8 +222,8 @@ class RiderAttendanceService
     }
 
     /**
-     * Close the books on one date for every active rider: Present for those who
-     * had parcels, Absent for everyone else.
+     * Close the books on one date for every active rider already assigned to a
+     * client: Present for those who had parcels, Absent for everyone else.
      *
      * The observer only ever hears about days a parcel row exists for, so this
      * is what marks the days no parcel was assigned at all. Run nightly (see
@@ -193,14 +247,12 @@ class RiderAttendanceService
 
         Rider::query()
             ->where('status', RiderStatus::Active)
+            // Attendance starts at the first assignment: nobody is absent for a
+            // day no client had them on the roster for yet.
+            ->whereHas('assignments', fn (Builder $query) => $query->whereDate('start_date', '<=', $day->toDateString()))
             ->orderBy('id')
             ->chunkById(200, function (Collection $riders) use ($day, $withParcels, &$counts) {
                 foreach ($riders as $rider) {
-                    // Nobody is absent for a day before they joined the fleet.
-                    if ($rider->created_at?->startOfDay()->greaterThan($day)) {
-                        continue;
-                    }
-
                     $attendance = $this->applyParcelStatus(
                         $rider->id,
                         $day->toDateString(),
