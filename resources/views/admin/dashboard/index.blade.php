@@ -131,24 +131,24 @@
                         <div class="w-3 h-3 rounded-full bg-green-400"></div>
                         <span class="text-sm">Present</span>
                     </div>
-                    <span class="font-semibold">186</span>
+                    <span class="font-semibold">{{ number_format($stats['attendance']['present']) }}</span>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-3 h-3 rounded-full bg-red-400"></div>
                         <span class="text-sm">Absent</span>
                     </div>
-                    <span class="font-semibold">8</span>
+                    <span class="font-semibold">{{ number_format($stats['attendance']['absent']) }}</span>
                 </div>
             </div>
 
             <div class="mt-6 pt-6 border-t border-[var(--border)]">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm text-[var(--fg-secondary)]">Attendance Rate</span>
-                    <span class="font-semibold text-green-400">87.5%</span>
+                    <span class="font-semibold text-green-400">{{ $stats['attendance']['rate'] }}%</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 87.5%"></div>
+                    <div class="progress-fill" style="width: {{ $stats['attendance']['rate'] }}%"></div>
                 </div>
             </div>
 
@@ -704,6 +704,11 @@
 @push('scripts')
 <script>
     // ==================== DATA ====================
+    // Fleet-wide figures from AdminDashboardService, keyed by the period the
+    // Week/Month tabs switch between.
+    const deliveryTrendData = @json($stats['delivery']);
+    const attendanceTodayData = @json($stats['attendance']);
+
     const topPerformersData = [{
             rank: 1,
             name: "Lisa Anderson",
@@ -1370,13 +1375,14 @@
     function initDeliveryChart() {
         const ctx = document.getElementById('deliveryChart').getContext('2d');
         const isLight = document.body.classList.contains('light-mode');
+        const weekly = deliveryTrendData.weekly;
         deliveryChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: weekly.labels,
                 datasets: [{
                     label: 'Delivered',
-                    data: [1450, 1680, 1520, 1890, 1750, 2100, 1950],
+                    data: weekly.delivered,
                     borderColor: '#00d4aa',
                     backgroundColor: 'rgba(0, 212, 170, 0.1)',
                     borderWidth: 3,
@@ -1387,6 +1393,19 @@
                     pointBorderWidth: 2,
                     pointRadius: 5,
                     pointHoverRadius: 7
+                }, {
+                    label: 'Assigned',
+                    data: weekly.assigned,
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.08)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#6366f1',
+                    pointBorderColor: isLight ? '#ffffff' : '#0a0f1a',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
                 }]
             },
             options: {
@@ -1462,13 +1481,16 @@
     function initAttendanceChart() {
         const ctx = document.getElementById('attendanceChart').getContext('2d');
         const isLight = document.body.classList.contains('light-mode');
+        // With nothing marked yet a doughnut of zeroes draws nothing at all, so
+        // an empty day gets one flat grey ring instead of a blank card.
+        const marked = attendanceTodayData.total > 0;
         attendanceChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Present', 'Absent'],
+                labels: marked ? ['Present', 'Absent'] : ['No attendance recorded'],
                 datasets: [{
-                    data: [186, 8],
-                    backgroundColor: ['#10b981', '#ef4444'],
+                    data: marked ? [attendanceTodayData.present, attendanceTodayData.absent] : [1],
+                    backgroundColor: marked ? ['#10b981', '#ef4444'] : ['#2d3a4f'],
                     borderWidth: 0,
                     hoverOffset: 8
                 }]
@@ -1488,7 +1510,11 @@
                         borderColor: '#2d3a4f',
                         borderWidth: 1,
                         cornerRadius: 10,
-                        padding: 12
+                        padding: 12,
+                        callbacks: {
+                            label: context => marked ?
+                                context.label + ': ' + context.parsed.toLocaleString() : 'None marked yet'
+                        }
                     }
                 }
             }
@@ -1581,15 +1607,11 @@
 
     function updateDeliveryChart(period) {
         if (!deliveryChart) return;
-        if (period === 'monthly') {
-            deliveryChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-            deliveryChart.data.datasets[0].data = [8200, 8900, 9100, 9500];
-            deliveryChart.data.datasets[1].data = [450, 520, 480, 420];
-        } else {
-            deliveryChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            deliveryChart.data.datasets[0].data = [1450, 1680, 1520, 1890, 1750, 2100, 1950];
-            deliveryChart.data.datasets[1].data = [85, 92, 78, 105, 88, 120, 95];
-        }
+        const series = deliveryTrendData[period === 'monthly' ? 'monthly' : 'weekly'];
+        if (!series) return;
+        deliveryChart.data.labels = series.labels;
+        deliveryChart.data.datasets[0].data = series.delivered;
+        deliveryChart.data.datasets[1].data = series.assigned;
         deliveryChart.update();
     }
 

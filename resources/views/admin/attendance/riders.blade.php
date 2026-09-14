@@ -53,9 +53,9 @@
                     </div>
 
                     <div class="flex flex-wrap items-center gap-2 mb-4">
-                        <span class="badge badge-success">{{ $rider->present_count }} Present</span>
-                        <span class="badge badge-danger">{{ $rider->absent_count }} Absent</span>
-                        <span class="badge badge-info">{{ $rider->attendances_count }} Days</span>
+                        <span class="badge badge-success">{{ $rider->present_days }} Present</span>
+                        <span class="badge badge-danger">{{ $rider->absent_days }} Absent</span>
+                        <span class="badge badge-info">{{ $rider->attendances_days }} Days</span>
                     </div>
 
                     <div class="flex items-center justify-between text-xs text-[var(--fg-secondary)]">

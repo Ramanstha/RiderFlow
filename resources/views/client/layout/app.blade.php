@@ -140,7 +140,7 @@
                     </a>
                 </div>
 
-                <div class="pt-4 mt-4 border-t border-[var(--border)]">
+                <!-- <div class="pt-4 mt-4 border-t border-[var(--border)]">
                     <p class="px-4 py-2 text-xs font-semibold text-[var(--fg-secondary)] uppercase tracking-wider">
                         Account</p>
 
@@ -179,7 +179,7 @@
                         </svg>
                         <span>Dark Mode</span>
                     </div>
-                </div>
+                </div> -->
             </nav>
 
             <!-- Company Profile -->
@@ -285,31 +285,29 @@
     <script>
         // ==================== THEME ====================
         function initializeTheme() {
-            const themeToggle = document.getElementById('themeToggle');
+            // Both the sidebar nav item and the header button toggle the theme.
+            const toggles = document.querySelectorAll('#themeToggle, .theme-toggle');
             const savedTheme = localStorage.getItem('theme') || 'dark';
             if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
-                updateThemeIcons(true);
             }
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-mode');
-                const isLight = document.body.classList.contains('light-mode');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                if (typeof updateChartsColors === 'function') updateChartsColors();
-                updateThemeIcons(isLight);
+            updateThemeIcons(savedTheme === 'light');
+            toggles.forEach((toggle) => {
+                toggle.addEventListener('click', () => {
+                    document.body.classList.toggle('light-mode');
+                    const isLight = document.body.classList.contains('light-mode');
+                    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                    if (typeof updateChartsColors === 'function') updateChartsColors();
+                    updateThemeIcons(isLight);
+                });
             });
         }
 
         function updateThemeIcons(isLight) {
-            const darkIcon = document.querySelector('.dark-icon');
-            const lightIcon = document.querySelector('.light-icon');
-            if (isLight) {
-                darkIcon.classList.add('hidden');
-                lightIcon.classList.remove('hidden');
-            } else {
-                darkIcon.classList.remove('hidden');
-                lightIcon.classList.add('hidden');
-            }
+            // Every toggle carries its own icon pair, so update them all.
+            document.querySelectorAll('.dark-icon').forEach((icon) => icon.classList.toggle('hidden', isLight));
+            document.querySelectorAll('.light-icon').forEach((icon) => icon.classList.toggle('hidden', !isLight));
+            document.querySelectorAll('.theme-toggle').forEach((btn) => btn.setAttribute('aria-pressed', String(isLight)));
         }
         // ==================== MOBILE MENU ====================
         function initializeMobileMenu() {

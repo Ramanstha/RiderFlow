@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="mb-8 animate-fade-up stagger-1">
-    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Welcome back, {{ $rider->name }} !!!</h2>
+    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Welcome back,<span class="capitalize"> {{ $rider->name }} !!!</h2>
     <p class="text-[var(--fg-secondary)] text-md">
         Here's your delivery activity for {{ now()->format('F Y') }}.
     </p>
@@ -105,7 +105,7 @@
                 <div class="space-y-3 text-sm">
                     <div class="flex items-center justify-between">
                         <span class="text-[var(--fg-secondary)]">Business</span>
-                        <span class="font-medium">{{ $assignment->company->name }}</span>
+                        <span class="capitalize font-medium">{{ $assignment->company->name }}</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-[var(--fg-secondary)]">Started</span>

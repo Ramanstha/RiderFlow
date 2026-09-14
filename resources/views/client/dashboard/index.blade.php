@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="mb-8 animate-fade-up stagger-1">
-    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">{{ $company->name }}</h2>
+    <h2 class=" capitalize font-display text-3xl lg:text-2xl font-bold mb-2">{{ $company->name }}</h2>
     <p class="text-[var(--fg-secondary)] text-md">
         Here's how your fleet is performing in {{ now()->format('F Y') }}.
     </p>
