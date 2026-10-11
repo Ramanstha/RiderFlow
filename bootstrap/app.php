@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Railway terminates TLS at its edge and forwards plain HTTP with
+        // X-Forwarded-* headers, so trust the proxy to get correct https URLs.
+        $middleware->trustProxies(at: '*');
+
         // Admins, riders and clients all sign in at /login, so every guard sends
         // its guests to the same door.
         $middleware->redirectGuestsTo(fn () => route('login'));
