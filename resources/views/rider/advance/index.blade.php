@@ -39,7 +39,7 @@
                         <td><span class="text-sm">{{ bs($advance->needed_by, 'Y-m-d') ?: '—' }}</span></td>
                         <td><span class="text-sm" title="{{ $advance->reason }}">{{ \Illuminate\Support\Str::limit($advance->reason, 40) }}</span></td>
                         <td><span class="badge badge-{{ $advance->status->badge() }}">{{ $advance->status->value }}</span></td>
-                        <td><span class="text-sm text-[var(--fg-secondary)]" title="{{ $advance->admin_note }}">{{ $advance->admin_note ?: '—' }}</span></td>
+                        <td class="whitespace-normal min-w-[12rem]"><span class="text-sm text-[var(--fg-secondary)]" title="{{ $advance->admin_note }}">{{ $advance->admin_note ?: '—' }}</span></td>
                         <td>
                             @if ($advance->isPending())
                                 <form action="{{ route('rider.advance.destroy', $advance) }}" method="POST"
@@ -67,7 +67,7 @@
         </table>
     </div>
 
-    <div class="flex items-center justify-between p-4 border-t border-[var(--border)]">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-t border-[var(--border)]">
         <p class="text-sm text-[var(--fg-secondary)]">
             Showing {{ $advances->firstItem() ?? 0 }}-{{ $advances->lastItem() ?? 0 }} of {{ $advances->total() }} records
         </p>

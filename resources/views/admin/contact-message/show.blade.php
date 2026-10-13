@@ -6,7 +6,7 @@
 <div id="contactMessageShowPage" class="page-section">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-            <h2 class="font-display text-2xl font-bold mb-1">{{ $message->subject ?: 'Contact Message' }}</h2>
+            <h2 class="font-display text-2xl font-bold mb-1 break-anywhere">{{ $message->subject ?: 'Contact Message' }}</h2>
             <p class="text-[var(--fg-secondary)] text-sm">
                 Received {{ bs($message->created_at, 'd M Y, h:i A') }}
             </p>
@@ -28,7 +28,7 @@
             </div>
             <div>
                 <p class="text-xs font-semibold text-[var(--fg-secondary)] uppercase tracking-wider mb-1">Email</p>
-                <a href="mailto:{{ $message->email }}" class="font-medium hover:underline">{{ $message->email }}</a>
+                <a href="mailto:{{ $message->email }}" class="font-medium hover:underline break-anywhere">{{ $message->email }}</a>
             </div>
             <div>
                 <p class="text-xs font-semibold text-[var(--fg-secondary)] uppercase tracking-wider mb-1">Phone</p>
@@ -38,10 +38,10 @@
 
         <div>
             <p class="text-xs font-semibold text-[var(--fg-secondary)] uppercase tracking-wider mb-2">Message</p>
-            <p class="text-sm leading-relaxed whitespace-pre-line">{{ $message->message }}</p>
+            <p class="text-sm leading-relaxed whitespace-pre-line break-anywhere">{{ $message->message }}</p>
         </div>
 
-        <div class="flex items-center gap-3 pt-4 border-t border-[var(--border)]">
+        <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-[var(--border)]">
             <a href="mailto:{{ $message->email }}?subject={{ rawurlencode('Re: ' . ($message->subject ?: 'Your enquiry')) }}"
                 class="btn-primary text-sm px-5">Reply by Email</a>
             <form action="{{ route('contact-message.destroy', $message) }}" method="POST"

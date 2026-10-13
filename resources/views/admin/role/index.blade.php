@@ -31,7 +31,7 @@
     @endif
 
     <div class="card p-3 mb-6">
-        <form method="GET" action="{{ route('role.index') }}" class="flex flex-wrap gap-4">
+        <form method="GET" action="{{ route('role.index') }}" class="filter-bar flex flex-wrap gap-4">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Search roles..."
                 class="input-field flex-1 min-w-[200px]">
             <button type="submit" class="btn-secondary text-sm px-5">Filter</button>
@@ -87,7 +87,7 @@
             </table>
         </div>
 
-        <div class="flex items-center justify-between p-4 border-t border-[var(--border)]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-t border-[var(--border)]">
             <p class="text-sm text-[var(--fg-secondary)]">
                 Showing {{ $roles->firstItem() ?? 0 }}-{{ $roles->lastItem() ?? 0 }} of {{ $roles->total() }} roles
             </p>

@@ -8,7 +8,7 @@
         <h2 class="font-display text-2xl font-bold mb-1">Parcel Report</h2>
         <p class="text-[var(--fg-secondary)] text-sm">Delivery volume and success rate per rider</p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
         <a href="{{ route('reports.parcels.csv', request()->query()) }}" class="btn-secondary flex items-center gap-2">
             Export CSV
         </a>
@@ -22,7 +22,7 @@
 </div>
 
 <div class="card p-3 mb-6">
-    <form method="GET" action="{{ route('reports.parcels') }}" class="flex flex-wrap gap-4">
+    <form method="GET" action="{{ route('reports.parcels') }}" class="filter-bar flex flex-wrap gap-4">
         <select name="rider_id" class="input-field w-auto text-sm">
             <option value="">All Riders</option>
             @foreach ($filters['riders'] as $rider)

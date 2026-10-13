@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="mb-8 animate-fade-up stagger-1">
-    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Welcome back,<span class="capitalize"> {{ $rider->name }} !!!</h2>
-    <p class="text-[var(--fg-secondary)] text-md">
+    <h2 class="font-display text-2xl lg:text-3xl font-bold mb-2">Welcome back, <span class="capitalize">{{ $rider->name }}</span> !!!</h2>
+    <p class="text-[var(--fg-secondary)] text-sm sm:text-base">
         Here's your delivery activity for {{ bs(now(), 'F Y') }}.
     </p>
 </div>

@@ -78,7 +78,7 @@
         </div>
 
         @if ($notifications->hasPages())
-            <div class="flex items-center justify-between p-4 border-t border-[var(--border)]">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-t border-[var(--border)]">
                 <p class="text-sm text-[var(--fg-secondary)]">
                     Showing {{ $notifications->firstItem() ?? 0 }}-{{ $notifications->lastItem() ?? 0 }} of {{ $notifications->total() }} notifications
                 </p>

@@ -18,18 +18,12 @@
 @php($rider = auth('rider')->user())
 
 <body class="pattern-bg min-h-screen">
-    <!-- Mobile Menu Button -->
-    <button id="mobileMenuBtn"
-        class="lg:hidden absolute top-4 left-4 z-50 p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-    </button>
+    <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         <aside id="sidebar"
-            class="sidebar fixed lg:sticky inset-y-0 lg:top-0 left-0 z-40 w-72 h-screen transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+            class="sidebar fixed lg:sticky inset-y-0 lg:top-0 left-0 z-40 w-72 max-w-[85vw] h-screen h-[100dvh] lg:h-screen shrink-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <!-- Logo -->
             <div class="p-6 border-b border-[var(--border)]">
                 <div class="flex items-center gap-3">
@@ -171,17 +165,25 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 lg:ml-0 min-h-screen overflow-x-hidden">
+        {{-- min-w-0 lets wide content shrink inside the flex row; overflow-x-clip (not
+             hidden) avoids creating a scroll container, which would break the sticky header. --}}
+        <main class="flex-1 min-w-0 min-h-screen overflow-x-clip">
             <!-- Header -->
             <header
-                class="sticky top-0 z-30 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-b border-[var(--border)] px-4 lg:px-8 py-4">
-                <div class="flex items-center justify-between gap-4">
-                    <div class="lg:hidden w-10"></div>
-                    <div class="flex-1">
-                        <p class="text-sm text-[var(--fg-secondary)]">{{ bs(now(), 'l, d M Y') }}</p>
+                class="sticky top-0 z-30 bg-[var(--bg-primary)]/80 backdrop-blur-lg border-b border-[var(--border)] px-3 sm:px-4 lg:px-8 py-3 lg:py-4">
+                <div class="flex items-center justify-between gap-2 sm:gap-4">
+                    <button type="button" id="mobileMenuBtn" aria-controls="sidebar" aria-expanded="false"
+                        aria-label="Open navigation"
+                        class="lg:hidden p-2.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs sm:text-sm text-[var(--fg-secondary)] truncate">{{ bs(now(), 'l, d M Y') }}</p>
                     </div>
                     <button type="button"
-                        class="theme-toggle relative p-3 rounded-xl hover:bg-[var(--bg-card)] transition-all"
+                        class="theme-toggle relative p-2.5 sm:p-3 rounded-xl hover:bg-[var(--bg-card)] transition-all shrink-0"
                         aria-label="Toggle theme" aria-pressed="false">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 dark-icon" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -195,10 +197,10 @@
                         </svg>
                     </button>
                     <span
-                        class="badge badge-{{ $rider->status->value === 'Active' ? 'success' : ($rider->status->value === 'Inactive' ? 'danger' : 'warning') }}">
+                        class="badge badge-{{ $rider->status->value === 'Active' ? 'success' : ($rider->status->value === 'Inactive' ? 'danger' : 'warning') }} hidden sm:inline-flex">
                         {{ $rider->status->value }}
                     </span>
-                    <div class="profile relative">
+                    <div class="profile relative shrink-0">
                         <button type="button" id="profileMenuBtn" aria-haspopup="true" aria-expanded="false"
                             class="flex items-center gap-2 p-1 rounded-xl hover:bg-[var(--bg-card)] transition-all">
                             <img class="avatar-up"
@@ -211,7 +213,7 @@
                         </button>
 
                         <div id="profileMenu"
-                            class="hidden absolute right-0 mt-2 w-56 rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-xl overflow-hidden z-50">
+                            class="hidden absolute right-0 mt-2 w-56 max-w-[calc(100vw-1.5rem)] rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-xl overflow-hidden z-50">
                             <div class="px-4 py-3 border-b border-[var(--border)] text-center">
                                 <img class="avatar-down text-center mx-auto mb-2"
                                     src="{{ $rider->photo ? asset('storage/' . $rider->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($rider->name) }}"
@@ -219,6 +221,9 @@
                                 <p class="capitalize font-semibold truncate">{{ $rider->name }}</p>
                                 <p class="text-sm text-[var(--fg-secondary)] truncate">{{ $rider->license_number }}</p>
                                 <p class="text-sm text-[var(--fg-secondary)] truncate">{{ $rider->email }}</p>
+                                <span class="badge badge-{{ $rider->status->value === 'Active' ? 'success' : ($rider->status->value === 'Inactive' ? 'danger' : 'warning') }} mt-2 sm:hidden">
+                                    {{ $rider->status->value }}
+                                </span>
                             </div>
                             <a href="{{ route('rider.profile.edit') }}"
                                 class="flex items-center gap-3 px-4 py-3 text-sm hover:bg-[rgba(0,212,170,0.1)] hover:text-[var(--accent)] transition-all">
@@ -247,7 +252,7 @@
             </header>
 
             <!-- Page Content Container -->
-            <div id="pageContent" class="p-4 lg:p-8">
+            <div id="pageContent" class="px-4 py-5 sm:p-6 lg:p-8">
                 @include('rider.partials.flash')
                 @yield('content')
             </div>
@@ -286,15 +291,33 @@
             document.querySelectorAll('.theme-toggle').forEach((btn) => btn.setAttribute('aria-pressed', String(isLight)));
         }
         // ==================== MOBILE MENU ====================
+        function setMobileMenu(open) {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            sidebar.classList.toggle('-translate-x-full', !open);
+            backdrop?.classList.toggle('is-open', open);
+            mobileBtn?.setAttribute('aria-expanded', String(open));
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+
         function initializeMobileMenu() {
             const mobileBtn = document.getElementById('mobileMenuBtn');
             const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
             mobileBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
+                setMobileMenu(sidebar.classList.contains('-translate-x-full'));
             });
-            document.addEventListener('click', (e) => {
-                if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
-                    closeMobileMenu();
+            backdrop?.addEventListener('click', closeMobileMenu);
+            sidebar.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileMenu));
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeMobileMenu();
+            });
+            // Rotating a tablet to desktop width must not leave the page scroll-locked.
+            window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+                if (e.matches) {
+                    backdrop?.classList.remove('is-open');
+                    document.body.style.overflow = '';
                 }
             });
         }
@@ -324,9 +347,8 @@
         }
 
         function closeMobileMenu() {
-            const sidebar = document.getElementById('sidebar');
             if (window.innerWidth < 1024) {
-                sidebar.classList.add('-translate-x-full');
+                setMobileMenu(false);
             }
         }
         document.addEventListener('DOMContentLoaded', function() {

@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="mb-8 animate-fade-up stagger-1">
-    <h2 class=" capitalize font-display text-3xl lg:text-2xl font-bold mb-2">{{ $company->name }}</h2>
-    <p class="text-[var(--fg-secondary)] text-md">
+    <h2 class=" capitalize font-display text-2xl lg:text-3xl font-bold mb-2">{{ $company->name }}</h2>
+    <p class="text-[var(--fg-secondary)] text-sm sm:text-base">
         Here's how your fleet is performing in {{ bs(now(), 'F Y') }}.
     </p>
 </div>
@@ -105,11 +105,11 @@
         </div>
 
         @forelse ($stats['top_riders'] as $row)
-            <div class="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0">
-                <a href="{{ route('client.rider.show', $row['rider_id']) }}" class="capitalize font-medium hover:text-[var(--accent)]">
+            <div class="flex items-center justify-between gap-3 py-3 border-b border-[var(--border)] last:border-0">
+                <a href="{{ route('client.rider.show', $row['rider_id']) }}" class="capitalize font-medium hover:text-[var(--accent)] min-w-0 truncate">
                     {{ $row['rider_name'] }}
                 </a>
-                <div class="flex items-center gap-6 text-sm">
+                <div class="flex items-center gap-3 sm:gap-6 text-sm shrink-0">
                     <span class="text-[var(--fg-secondary)]">{{ number_format($row['delivered']) }} delivered</span>
                     <span class="badge badge-{{ $row['success_rate'] >= 90 ? 'success' : ($row['success_rate'] >= 70 ? 'warning' : 'danger') }}">
                         {{ $row['success_rate'] }}%

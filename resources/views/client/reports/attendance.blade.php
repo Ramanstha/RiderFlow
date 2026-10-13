@@ -5,8 +5,8 @@
 @section('content')
 <div class="mb-8 flex items-start justify-between gap-4 flex-wrap">
     <div>
-        <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Attendance Report</h2>
-        <p class="text-[var(--fg-secondary)] text-md">Attendance totals per rider on your fleet.</p>
+        <h2 class="font-display text-2xl font-bold mb-1">Attendance Report</h2>
+        <p class="text-[var(--fg-secondary)] text-sm sm:text-base">Attendance totals per rider on your fleet.</p>
     </div>
     <a href="{{ route('client.reports.index') }}" class="btn-secondary">All reports</a>
 </div>

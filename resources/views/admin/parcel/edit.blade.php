@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-2xl">
     <div class="mb-8">
-        <h2 class="font-display text-3xl font-bold mb-2">Edit Parcel Count</h2>
+        <h2 class="font-display text-2xl font-bold mb-1">Edit Parcel Count</h2>
         <p class="text-[var(--fg-secondary)]">Update {{ $parcelCount->rider->name }}'s parcel count for {{ bs($parcelCount->date, 'Y-m-d') }}</p>
     </div>
 

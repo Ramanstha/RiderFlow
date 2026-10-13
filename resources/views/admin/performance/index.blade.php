@@ -27,7 +27,7 @@
     @endif
 
     <div class="card p-3 mb-6">
-        <form method="GET" action="{{ route('performance.index') }}" class="flex flex-wrap gap-4">
+        <form method="GET" action="{{ route('performance.index') }}" class="filter-bar flex flex-wrap gap-4">
             <select name="rider_id" class="input-field w-auto text-sm" onchange="this.form.submit()">
                 <option value="">All Riders</option>
                 @foreach ($riders as $rider)
@@ -103,7 +103,7 @@
             </table>
         </div>
 
-        <div class="flex items-center justify-between p-4 border-t border-[var(--border)]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-t border-[var(--border)]">
             <p class="text-sm text-[var(--fg-secondary)]">
                 Showing {{ $performances->firstItem() ?? 0 }}-{{ $performances->lastItem() ?? 0 }} of {{ $performances->total() }} records
             </p>

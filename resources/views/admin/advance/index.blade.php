@@ -28,7 +28,7 @@
     @endif
 
     <div class="card p-3 mb-6">
-        <form method="GET" action="{{ route('advance.index') }}" class="flex flex-wrap gap-4">
+        <form method="GET" action="{{ route('advance.index') }}" class="filter-bar flex flex-wrap gap-4">
             <select name="rider_id" class="input-field w-auto text-sm" onchange="this.form.submit()">
                 <option value="">All Riders</option>
                 @foreach ($riders as $rider)
@@ -78,7 +78,7 @@
                             <td><span class="text-sm">{{ bs($advance->created_at, 'Y-m-d') }}</span></td>
                             <td><span class="text-sm text-[var(--accent)]">Rs. {{ number_format($advance->amount, 2) }}</span></td>
                             <td><span class="text-sm">{{ bs($advance->needed_by, 'Y-m-d') ?: '—' }}</span></td>
-                            <td class="max-w-xs"><span class="text-sm whitespace-normal">{{ $advance->reason }}</span></td>
+                            <td class="whitespace-normal min-w-[14rem] max-w-xs"><span class="text-sm">{{ $advance->reason }}</span></td>
                             <td><span class="badge badge-{{ $advance->status->badge() }}">{{ $advance->status->value }}</span></td>
                             <td>
                                 @if ($advance->isPending())
@@ -101,7 +101,7 @@
                                     <p class="text-sm">{{ $advance->reviewer->name ?? '—' }}</p>
                                     <p class="text-xs text-[var(--fg-secondary)]">{{ bs($advance->reviewed_at, 'Y-m-d') }}</p>
                                     @if ($advance->admin_note)
-                                        <p class="text-xs text-[var(--fg-secondary)] mt-1">{{ $advance->admin_note }}</p>
+                                        <p class="text-xs text-[var(--fg-secondary)] mt-1 whitespace-normal min-w-[12rem]">{{ $advance->admin_note }}</p>
                                     @endif
                                 @endif
                             </td>
@@ -115,7 +115,7 @@
             </table>
         </div>
 
-        <div class="flex items-center justify-between p-4 border-t border-[var(--border)]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-t border-[var(--border)]">
             <p class="text-sm text-[var(--fg-secondary)]">
                 Showing {{ $advances->firstItem() ?? 0 }}-{{ $advances->lastItem() ?? 0 }} of {{ $advances->total() }} records
             </p>

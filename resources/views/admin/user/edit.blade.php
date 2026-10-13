@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-2xl">
     <div class="mb-8">
-        <h2 class="font-display text-3xl font-bold mb-2">Edit User</h2>
+        <h2 class="font-display text-2xl font-bold mb-1">Edit User</h2>
         <p class="text-[var(--fg-secondary)]">Update {{ $user->name }}'s account</p>
     </div>
 

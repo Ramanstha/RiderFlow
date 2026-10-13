@@ -56,9 +56,12 @@ body {
         box-shadow 0.2s ease;
 }
 
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0, 212, 170, 0.1);
+/* Only lift cards for real pointers: on touch screens hover "sticks" after a tap. */
+@media (hover: hover) {
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(0, 212, 170, 0.1);
+    }
 }
 
 .nav-item {
@@ -85,6 +88,18 @@ body {
 
 .nav-item span {
     font-size: 12px;
+}
+
+.btn-primary,
+.btn-secondary {
+    /* Icon + label buttons centre their content whether they render inline,
+       full width (stacked page headers on phones) or as flex-1 halves. */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .btn-primary {
@@ -117,6 +132,13 @@ body {
 .btn-secondary:hover {
     background: var(--bg-card);
     border-color: var(--accent);
+}
+
+/* Compact variant used by form footers and table row actions. */
+.btn-sm {
+    padding: 7px 14px;
+    font-size: 13px;
+    border-radius: 8px;
 }
 
 .input-field {
@@ -158,7 +180,16 @@ body {
 
 .table-container {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     border-radius: 12px;
+}
+
+/* Cells keep to one line so narrow screens scroll the table sideways instead
+   of crushing columns into one-word-per-line stacks. Element selectors carry
+   no class weight, so a cell marked `whitespace-normal` (long free text) wins. */
+th,
+td {
+    white-space: nowrap;
 }
 
 table {
@@ -237,7 +268,7 @@ tr:hover td {
 
 .avatar-up {
     width: 30px;
-    height: auto;
+    height: 30px;
     border-radius: 50px;
     object-fit: cover;
     border: 2px solid var(--border);
@@ -576,9 +607,31 @@ select.input-field {
         gap: 4px;
     }
 
+    .calendar-grid + .calendar-grid {
+        margin-top: 4px;
+    }
+
+    .calendar-weekday {
+        font-size: 12px;
+        letter-spacing: 0;
+    }
+
     .calendar-cell {
-        min-height: 56px;
-        padding: 5px;
+        min-width: 0;
+        min-height: 52px;
+        padding: 4px;
+        overflow: hidden;
+    }
+
+    /* A seventh of a phone is ~40px: stack the BS day over the AD date. */
+    .calendar-cell > span:first-child {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    .calendar-ad-date {
+        font-size: 9px;
     }
 
     .calendar-status {
@@ -695,4 +748,101 @@ select.input-field {
 
 .bs-picker-link:disabled {
     opacity: 0.4;
+}
+
+/* ==================== Responsive shell & shared components ==================== */
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+/* Long unbroken strings (emails, URLs) wrap instead of widening the page. */
+.break-anywhere {
+    overflow-wrap: anywhere;
+}
+
+/* Off-canvas sidebar backdrop (below lg). */
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.sidebar-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (min-width: 1024px) {
+    .sidebar-backdrop {
+        display: none;
+    }
+}
+
+/* Laravel's Tailwind paginator ships light-theme colours; map it onto ours. */
+nav[role="navigation"] a,
+nav[role="navigation"] span[aria-disabled] > span,
+nav[role="navigation"] span[aria-current] > span,
+nav[role="navigation"] > div > span,
+nav[role="navigation"] > div > a {
+    background: var(--bg-card) !important;
+    border-color: var(--border) !important;
+    color: var(--fg-secondary) !important;
+}
+
+nav[role="navigation"] a:hover {
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
+}
+
+nav[role="navigation"] span[aria-current] > span {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: var(--bg-primary) !important;
+}
+
+nav[role="navigation"] p {
+    color: var(--fg-secondary) !important;
+}
+
+nav[role="navigation"] .shadow-sm {
+    box-shadow: none !important;
+}
+
+@media (max-width: 640px) {
+    /* 16px stops iOS Safari from zooming the page when a field is focused. */
+    .input-field,
+    .bs-picker-select {
+        font-size: 16px !important;
+    }
+
+    th {
+        padding: 10px 12px;
+    }
+
+    td {
+        padding: 8px 12px;
+    }
+
+    /* Filter bars: every control takes a full row so nothing is cramped. */
+    .filter-bar {
+        gap: 0.75rem !important;
+    }
+
+    .filter-bar > *,
+    .filter-bar > .bs-date > .input-field {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .modal-content {
+        width: calc(100% - 24px);
+        border-radius: 16px;
+    }
 }

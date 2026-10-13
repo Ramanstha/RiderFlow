@@ -20,7 +20,7 @@
 </div>
 
 <div class="card p-6 mb-6">
-    <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <form method="GET" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
             <label class="block text-sm font-medium mb-2">Rider</label>
             <select name="rider_id" class="input-field">

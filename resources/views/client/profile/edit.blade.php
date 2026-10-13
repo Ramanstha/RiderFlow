@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="mb-8">
-    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Company Profile</h2>
-    <p class="text-[var(--fg-secondary)] text-md">Your contact details and portal password.</p>
+    <h2 class="font-display text-2xl font-bold mb-1">Company Profile</h2>
+    <p class="text-[var(--fg-secondary)] text-sm sm:text-base">Your contact details and portal password.</p>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

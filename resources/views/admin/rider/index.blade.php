@@ -28,7 +28,7 @@
 
     <!-- Filters -->
     <div class="card p-3 mb-6">
-        <form method="GET" action="{{ route('rider.index') }}" class="flex flex-wrap gap-4">
+        <form method="GET" action="{{ route('rider.index') }}" class="filter-bar flex flex-wrap gap-4">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Search riders..."
                 class="input-field flex-1 min-w-[200px]">
             <select name="status" class="input-field w-auto text-sm" onchange="this.form.submit()">
@@ -119,7 +119,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class="flex items-center justify-between p-4 border-t border-[var(--border)]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-t border-[var(--border)]">
             <p class="text-sm text-[var(--fg-secondary)]">
                 Showing {{ $riders->firstItem() ?? 0 }}-{{ $riders->lastItem() ?? 0 }} of {{ $riders->total() }} riders
             </p>

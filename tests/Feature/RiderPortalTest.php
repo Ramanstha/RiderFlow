@@ -77,7 +77,7 @@ class RiderPortalTest extends TestCase
 
         $this->actingAs($rider, 'rider');
 
-        $this->get('/rider-portal/attendance')->assertOk()->assertSee('No attendance records found.');
+        $this->get('/rider-portal/attendance')->assertOk()->assertSee('0 Present')->assertDontSee('Someone Else');
         $this->get('/rider-portal/assignment')->assertOk()->assertSee('No assignments found.');
         $this->get('/rider-portal/performance')->assertOk()->assertSee('No performance records yet.');
         $this->get('/rider-portal/parcel')->assertOk()->assertSee('No parcel counts submitted yet.');

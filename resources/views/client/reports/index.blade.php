@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="mb-8">
-    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Reports &amp; Exports</h2>
-    <p class="text-[var(--fg-secondary)] text-md">
+    <h2 class="font-display text-2xl font-bold mb-1">Reports &amp; Exports</h2>
+    <p class="text-[var(--fg-secondary)] text-sm sm:text-base">
         Summaries for your own fleet, downloadable as CSV, Excel or PDF.
     </p>
 </div>

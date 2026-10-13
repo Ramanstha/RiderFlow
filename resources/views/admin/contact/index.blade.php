@@ -31,7 +31,7 @@
     @endif
 
     <div class="card p-3 mb-6">
-        <form method="GET" action="{{ route('contact-info.index') }}" class="flex flex-wrap gap-4">
+        <form method="GET" action="{{ route('contact-info.index') }}" class="filter-bar flex flex-wrap gap-4">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Search contact details..."
                 class="input-field flex-1 min-w-[200px]">
             <button type="submit" class="btn-secondary text-sm px-5">Filter</button>
@@ -55,7 +55,7 @@
                         <tr>
                             <td><p class="font-medium">{{ $contact->email }}</p></td>
                             <td><span class="text-sm">{{ $contact->phone }}</span></td>
-                            <td><span class="text-sm">{{ Str::limit($contact->address, 60) }}</span></td>
+                            <td class="whitespace-normal min-w-[14rem]"><span class="text-sm">{{ Str::limit($contact->address, 60) }}</span></td>
                             <td>
                                 <div class="flex items-center gap-2 text-sm">
                                     @forelse (collect([
@@ -100,7 +100,7 @@
             </table>
         </div>
 
-        <div class="flex items-center justify-between p-4 border-t border-[var(--border)]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-t border-[var(--border)]">
             <p class="text-sm text-[var(--fg-secondary)]">
                 Showing {{ $contacts->firstItem() ?? 0 }}-{{ $contacts->lastItem() ?? 0 }} of {{ $contacts->total() }} entries
             </p>

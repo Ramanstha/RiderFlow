@@ -14,11 +14,8 @@ class AttendanceController extends PortalController
     {
         $rider = $this->rider();
 
-        $filters = $request->only(['status', 'date_from', 'date_to']);
-        $filters['rider_id'] = $rider->id;
+        $calendar = $this->attendances->monthlyCalendar($rider, $request->query('month'));
 
-        return view('rider.attendance.index', [
-            'attendances' => $this->attendances->paginate($filters),
-        ]);
+        return view('rider.attendance.index', array_merge($calendar, ['rider' => $rider]));
     }
 }

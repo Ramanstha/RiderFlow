@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-3xl">
     <div class="mb-8">
-        <h2 class="font-display text-3xl font-bold mb-2">Edit Role</h2>
+        <h2 class="font-display text-2xl font-bold mb-1">Edit Role</h2>
         <p class="text-[var(--fg-secondary)]">Update {{ $role->name }}'s permissions</p>
     </div>
 

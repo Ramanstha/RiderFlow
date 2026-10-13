@@ -4,13 +4,13 @@
 
 @section('content')
 <div class="mb-8">
-    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">My Riders</h2>
-    <p class="text-[var(--fg-secondary)] text-md">The riders currently assigned to your company.</p>
+    <h2 class="font-display text-2xl font-bold mb-1">My Riders</h2>
+    <p class="text-[var(--fg-secondary)] text-sm sm:text-base">The riders currently assigned to your company.</p>
 </div>
 
 <div class="card p-6 mb-6">
-    <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="md:col-span-2">
+    <form method="GET" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="sm:col-span-2">
             <label class="block text-sm font-medium mb-2">Search</label>
             <input type="text" name="search" value="{{ request('search') }}" class="input-field"
                 placeholder="Name, email or phone">

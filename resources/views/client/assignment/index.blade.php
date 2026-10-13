@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="mb-8">
-    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Assignments</h2>
-    <p class="text-[var(--fg-secondary)] text-md">Riders assigned to your business.</p>
+    <h2 class="font-display text-2xl font-bold mb-1">Assignments</h2>
+    <p class="text-[var(--fg-secondary)] text-sm sm:text-base">Riders assigned to your business.</p>
 </div>
 
 <div class="card p-6 mb-6">

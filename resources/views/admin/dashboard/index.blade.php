@@ -7,8 +7,8 @@
 <div id="dashboardPage" class="page-section">
     <!-- Welcome Section -->
     <div class="mb-8 animate-fade-up stagger-1">
-        <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Welcome back, {{auth()->user()->name}} !!!</h2>
-        <p class="text-[var(--fg-secondary)] text-md">Here's what's happening with your delivery
+        <h2 class="font-display text-2xl lg:text-3xl font-bold mb-2">Welcome back, {{auth()->user()->name}} !!!</h2>
+        <p class="text-[var(--fg-secondary)] text-sm sm:text-base">Here's what's happening with your delivery
             operations today.</p>
     </div>
 
@@ -106,7 +106,7 @@
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 items-start">
         <div class="card p-6 lg:col-span-2 animate-fade-up stagger-5">
-            <div class="flex items-center justify-between mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
                 <div>
                     <h3 class="font-display text-lg font-semibold">Delivery Overview</h3>
                     <p class="text-sm text-[var(--fg-secondary)]">Weekly parcel delivery statistics</p>
@@ -187,7 +187,7 @@
 <div id="businessesPage" class="page-section hidden">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-            <h2 class="font-display text-3xl font-bold mb-2">Client Businesses</h2>
+            <h2 class="font-display text-2xl font-bold mb-1">Client Businesses</h2>
             <p class="text-[var(--fg-secondary)]">Manage your partner businesses and clients</p>
         </div>
         <button class="btn-primary flex items-center gap-2" onclick="openModal('addBusinessModal')">
@@ -209,7 +209,7 @@
 <div id="assignmentsPage" class="page-section hidden">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-            <h2 class="font-display text-3xl font-bold mb-2">Rider Assignments</h2>
+            <h2 class="font-display text-2xl font-bold mb-1">Rider Assignments</h2>
             <p class="text-[var(--fg-secondary)]">Assign and manage rider-to-business allocations</p>
         </div>
         <button class="btn-primary flex items-center gap-2" onclick="openModal('newAssignmentModal')">
@@ -255,7 +255,7 @@
 <div id="attendancePage" class="page-section hidden">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-            <h2 class="font-display text-3xl font-bold mb-2">Attendance Management</h2>
+            <h2 class="font-display text-2xl font-bold mb-1">Attendance Management</h2>
             <p class="text-[var(--fg-secondary)]">Track daily attendance and generate reports</p>
         </div>
         <div class="flex gap-3">
@@ -339,7 +339,7 @@
 <div id="parcelsPage" class="page-section hidden">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-            <h2 class="font-display text-3xl font-bold mb-2">Parcel Tracking</h2>
+            <h2 class="font-display text-2xl font-bold mb-1">Parcel Tracking</h2>
             <p class="text-[var(--fg-secondary)]">Assign and track daily parcel deliveries</p>
         </div>
         <button class="btn-primary flex items-center gap-2" onclick="openModal('assignParcelsModal')">
@@ -392,7 +392,7 @@
 <!-- Performance Page -->
 <div id="performancePage" class="page-section hidden">
     <div class="mb-8">
-        <h2 class="font-display text-3xl font-bold mb-2">Performance Analytics</h2>
+        <h2 class="font-display text-2xl font-bold mb-1">Performance Analytics</h2>
         <p class="text-[var(--fg-secondary)]">Track rider performance metrics and insights</p>
     </div>
 
@@ -477,7 +477,7 @@
 <!-- Reports Page -->
 <div id="reportsPage" class="page-section hidden">
     <div class="mb-8">
-        <h2 class="font-display text-3xl font-bold mb-2">Reports Center</h2>
+        <h2 class="font-display text-2xl font-bold mb-1">Reports Center</h2>
         <p class="text-[var(--fg-secondary)]">Generate and export detailed reports</p>
     </div>
 
@@ -586,7 +586,7 @@
 <!-- Notifications Page -->
 <div id="notificationsPage" class="page-section hidden">
     <div class="mb-8">
-        <h2 class="font-display text-3xl font-bold mb-2">Notifications</h2>
+        <h2 class="font-display text-2xl font-bold mb-1">Notifications</h2>
         <p class="text-[var(--fg-secondary)]">Stay updated with important alerts and reminders</p>
     </div>
 

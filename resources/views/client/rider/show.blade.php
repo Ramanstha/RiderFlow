@@ -4,12 +4,12 @@
 
 @section('content')
 <div class="mb-8 flex items-start justify-between gap-4 flex-wrap">
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-4 min-w-0">
         <img src="{{ $rider->photo ? asset('storage/'.$rider->photo) : 'https://ui-avatars.com/api/?name='.urlencode($rider->name) }}"
             alt="{{ $rider->name }}" class="avatar w-14 h-14">
-        <div>
-            <h2 class="font-display text-2xl font-bold">{{ $rider->name }}</h2>
-            <p class="text-[var(--fg-secondary)] text-sm">
+        <div class="min-w-0">
+            <h2 class="font-display text-2xl font-bold break-anywhere">{{ $rider->name }}</h2>
+            <p class="text-[var(--fg-secondary)] text-sm break-anywhere">
                 {{ $rider->email }} &middot; {{ $rider->phone }} &middot;
                 <span class="font-mono text-xs">{{ $rider->license_number }}</span>
             </p>

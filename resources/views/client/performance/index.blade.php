@@ -4,12 +4,12 @@
 
 @section('content')
 <div class="mb-8">
-    <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Performance</h2>
-    <p class="text-[var(--fg-secondary)] text-md">Scores and delivery totals for your riders.</p>
+    <h2 class="font-display text-2xl font-bold mb-1">Performance</h2>
+    <p class="text-[var(--fg-secondary)] text-sm sm:text-base">Scores and delivery totals for your riders.</p>
 </div>
 
 <div class="card p-6 mb-6">
-    <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <form method="GET" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
             <label class="block text-sm font-medium mb-2">Rider</label>
             <select name="rider_id" class="input-field">

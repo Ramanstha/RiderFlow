@@ -20,7 +20,7 @@
 
     <!-- Search -->
     <div class="card p-3 mb-6">
-        <form method="GET" action="{{ route('attendance.riders') }}" class="flex flex-wrap gap-4">
+        <form method="GET" action="{{ route('attendance.riders') }}" class="filter-bar flex flex-wrap gap-4">
             <input type="text" name="search" value="{{ $search }}" placeholder="Search riders by name, email or phone..."
                 class="input-field flex-1 min-w-[200px]">
             <button type="submit" class="btn-secondary text-sm px-5">Search</button>
