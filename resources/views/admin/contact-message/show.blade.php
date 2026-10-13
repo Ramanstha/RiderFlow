@@ -8,7 +8,7 @@
         <div>
             <h2 class="font-display text-2xl font-bold mb-1">{{ $message->subject ?: 'Contact Message' }}</h2>
             <p class="text-[var(--fg-secondary)] text-sm">
-                Received {{ $message->created_at?->format('d M Y, h:i A') }}
+                Received {{ bs($message->created_at, 'd M Y, h:i A') }}
             </p>
         </div>
         <a href="{{ route('contact-message.index') }}" class="btn-secondary flex items-center gap-2">

@@ -7,7 +7,7 @@
     <div class="mb-8">
         <h2 class="font-display text-2xl font-bold">Edit Assignment</h2>
         <p class="text-[var(--fg-secondary)]">
-            {{ $assignment->rider->name ?? 'Rider' }} &middot; {{ $assignment->date->format('d M Y') }}
+            {{ $assignment->rider->name ?? 'Rider' }} &middot; {{ bs($assignment->date, 'd M Y') }}
         </p>
     </div>
 
@@ -33,7 +33,7 @@
 
             <div>
                 <label class="block text-sm font-medium mb-2">Date</label>
-                <input type="text" class="input-field opacity-60" value="{{ $assignment->date->format('d M Y') }}" disabled>
+                <input type="text" class="input-field opacity-60" value="{{ bs($assignment->date, 'd M Y') }}" disabled>
                 <p class="text-xs text-[var(--fg-secondary)] mt-1">
                     Withdraw and re-assign to move this load to another rider or day.
                 </p>

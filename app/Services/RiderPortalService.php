@@ -8,6 +8,7 @@ use App\Models\RiderAssignment;
 use App\Models\RiderAttendance;
 use App\Models\RiderPerformance;
 use App\Support\AttendanceSummary;
+use App\Support\NepaliDate;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 
@@ -19,8 +20,8 @@ class RiderPortalService
 {
     public function dashboard(Rider $rider): array
     {
-        $monthStart = now()->startOfMonth()->toDateString();
-        $monthEnd = now()->endOfMonth()->toDateString();
+        $monthStart = NepaliDate::startOfMonth(now())->toDateString();
+        $monthEnd = NepaliDate::endOfMonth(now())->toDateString();
 
         return [
             'today_parcels' => $this->todayParcels($rider),
@@ -125,6 +126,6 @@ class RiderPortalService
 
     public function currentPeriod(): Carbon
     {
-        return now()->startOfMonth();
+        return Carbon::instance(NepaliDate::startOfMonth(now()));
     }
 }

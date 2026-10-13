@@ -24,8 +24,8 @@
                     <tr>
                         <td><p class="font-medium">{{ $assignment->company->name }}</p></td>
                         <td><span class="badge badge-info">{{ $assignment->type->value }}</span></td>
-                        <td><span class="text-sm">{{ $assignment->start_date->format('Y-m-d') }}</span></td>
-                        <td><span class="text-sm">{{ $assignment->end_date?->format('Y-m-d') ?: '-' }}</span></td>
+                        <td><span class="text-sm">{{ bs($assignment->start_date, 'Y-m-d') }}</span></td>
+                        <td><span class="text-sm">{{ bs($assignment->end_date, 'Y-m-d') ?: '-' }}</span></td>
                     </tr>
                 @empty
                     <tr>

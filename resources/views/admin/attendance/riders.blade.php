@@ -9,7 +9,7 @@
             <h2 class="font-display text-2xl font-bold mb-1">Attendance by Rider</h2>
             <p class="text-[var(--fg-secondary)] text-sm">Pick a rider to open their monthly attendance calendar</p>
         </div>
-        <a href="{{ route('attendance.index') }}" class="btn-secondary flex items-center gap-2 text-sm px-5">
+        <a href="{{ route('attendance.riders') }}" class="btn-secondary flex items-center gap-2 text-sm px-5">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -53,15 +53,15 @@
                     </div>
 
                     <div class="flex flex-wrap items-center gap-2 mb-4">
-                        <span class="badge badge-success">{{ $rider->present_days }} Present</span>
-                        <span class="badge badge-danger">{{ $rider->absent_days }} Absent</span>
-                        <span class="badge badge-info">{{ $rider->attendances_days }} Days</span>
+                        <span class="badge badge-success">{{ $rider->present_count }} Present</span>
+                        <span class="badge badge-danger">{{ $rider->absent_count }} Absent</span>
+                        <span class="badge badge-info">{{ $rider->attendances_count }} {{ \Illuminate\Support\Str::plural('Day', $rider->attendances_count) }}</span>
                     </div>
 
                     <div class="flex items-center justify-between text-xs text-[var(--fg-secondary)]">
                         <span>
                             Last marked
-                            {{ $rider->last_marked_on ? \Illuminate\Support\Carbon::parse($rider->last_marked_on)->format('d M Y') : '—' }}
+                            {{ bs($rider->last_marked_on, 'd M Y') ?: '—' }}
                         </span>
                         <span class="flex items-center gap-1 text-[var(--accent)] font-medium">
                             View calendar

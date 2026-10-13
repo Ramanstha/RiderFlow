@@ -42,6 +42,7 @@ class ParcelCountController extends PortalController
     public function edit(DailyParcelCount $parcel): View
     {
         $this->authorizeOwnership($parcel->rider_id);
+        abort_unless($parcel->isEditableByRider(), 403, 'This parcel count can no longer be edited.');
 
         return view('rider.parcel.edit', ['parcelCount' => $parcel->load('assignedByCompany:id,name')]);
     }
@@ -49,6 +50,7 @@ class ParcelCountController extends PortalController
     public function update(UpdateParcelCountRequest $request, DailyParcelCount $parcel): RedirectResponse
     {
         $this->authorizeOwnership($parcel->rider_id);
+        abort_unless($parcel->isEditableByRider(), 403, 'This parcel count can no longer be edited.');
 
         $this->parcelCounts->update($parcel, [
             ...$request->validated(),

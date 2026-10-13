@@ -20,10 +20,10 @@ class RiderAttendanceController extends Controller
     {
         $this->authorize('attendances.view');
 
-        $attendances = $this->attendances->paginate($request->only(['rider_id', 'status', 'date_from', 'date_to']));
-        $riders = Rider::query()->orderBy('name')->get();
+        $search = trim((string) $request->query('search')) ?: null;
+        $riders = $this->attendances->ridersWithAttendance($search);
 
-        return view('admin.attendance.index', compact('attendances', 'riders'));
+        return view('admin.attendance.riders', compact('riders', 'search'));
     }
 
     /**
@@ -34,10 +34,11 @@ class RiderAttendanceController extends Controller
     {
         $this->authorize('attendances.view');
 
-        $search = trim((string) $request->query('search')) ?: null;
-        $riders = $this->attendances->ridersWithAttendance($search);
 
-        return view('admin.attendance.riders', compact('riders', 'search'));
+        $attendances = $this->attendances->paginate($request->only(['rider_id', 'status', 'date_from', 'date_to']));
+        $riders = Rider::query()->orderBy('name')->get();
+
+        return view('admin.attendance.index', compact('attendances', 'riders'));
     }
 
     /**

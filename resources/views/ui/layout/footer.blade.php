@@ -30,7 +30,7 @@
                 <span class="separator">|</span>
                 <a href="#">BLOG</a>
                 <span class="separator">|</span>
-                <a href="#">CATERING</a>
+                <a href="#">SERVICES</a>
                 <span class="separator">|</span>
                 <a href="#">DELIVERY</a>
             </div>

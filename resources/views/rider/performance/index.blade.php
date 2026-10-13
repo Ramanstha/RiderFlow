@@ -11,8 +11,8 @@
 <!-- Filters -->
 <div class="card p-3 mb-6">
     <form method="GET" action="{{ route('rider.performance.index') }}" class="flex flex-wrap gap-4">
-        <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field w-auto text-sm">
-        <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field w-auto text-sm">
+        <x-nepali-date name="date_from" :value="request('date_from')" class="w-auto text-sm" />
+        <x-nepali-date name="date_to" :value="request('date_to')" class="w-auto text-sm" />
         <button type="submit" class="btn-secondary text-sm px-5">Filter</button>
     </form>
 </div>
@@ -33,7 +33,7 @@
             <tbody>
                 @forelse ($performances as $performance)
                     <tr>
-                        <td><span class="text-sm">{{ $performance->period->format('M Y') }}</span></td>
+                        <td><span class="text-sm">{{ bs($performance->period, 'M Y') }}</span></td>
                         <td>
                             <div class="flex items-center gap-3">
                                 <div class="progress-bar w-24">

@@ -32,7 +32,7 @@
                 <tbody>
                     @forelse ($attendance as $record)
                         <tr class="border-b border-[var(--border)] last:border-0">
-                            <td class="py-2 pr-4">{{ $record->date->format('d M Y') }}</td>
+                            <td class="py-2 pr-4">{{ bs($record->date, 'd M Y') }}</td>
                             <td class="py-2 pr-4">
                                 <span class="badge badge-{{ $record->status->value === 'Present' ? 'success' : 'danger' }}">
                                     {{ $record->status->value }}
@@ -55,18 +55,20 @@
                     <tr class="text-left text-[var(--fg-secondary)] border-b border-[var(--border)]">
                         <th class="py-2 pr-4 font-medium">Date</th>
                         <th class="py-2 pr-4 font-medium text-right">Assigned</th>
-                        <th class="py-2 font-medium text-right">Delivered</th>
+                        <th class="py-2 pr-4 font-medium text-right">Delivered</th>
+                        <th class="py-2 font-medium text-right">KM Run</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($parcels as $record)
                         <tr class="border-b border-[var(--border)] last:border-0">
-                            <td class="py-2 pr-4">{{ $record->date->format('d M Y') }}</td>
+                            <td class="py-2 pr-4">{{ bs($record->date, 'd M Y') }}</td>
                             <td class="py-2 pr-4 text-right">{{ number_format($record->assigned) }}</td>
-                            <td class="py-2 text-right text-green-400">{{ number_format($record->delivered) }}</td>
+                            <td class="py-2 pr-4 text-right text-green-400">{{ $record->delivered !== null ? number_format($record->delivered) : '—' }}</td>
+                            <td class="py-2 text-right">{{ $record->km_run !== null ? number_format($record->km_run) : '—' }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="3" class="py-6 text-center text-[var(--fg-secondary)]">No parcel records yet.</td></tr>
+                        <tr><td colspan="4" class="py-6 text-center text-[var(--fg-secondary)]">No parcel records yet.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -92,8 +94,8 @@
                         <tr class="border-b border-[var(--border)] last:border-0">
                             <td class="py-2 pr-4">{{ $assignment->company->name ?? '—' }}</td>
                             <td class="py-2 pr-4">{{ $assignment->type->value }}</td>
-                            <td class="py-2 pr-4">{{ $assignment->start_date?->format('d M Y') }}</td>
-                            <td class="py-2">{{ $assignment->end_date?->format('d M Y') ?? 'Ongoing' }}</td>
+                            <td class="py-2 pr-4">{{ bs($assignment->start_date, 'd M Y') }}</td>
+                            <td class="py-2">{{ bs($assignment->end_date, 'd M Y') ?: 'Ongoing' }}</td>
                         </tr>
                     @empty
                         <tr><td colspan="4" class="py-6 text-center text-[var(--fg-secondary)]">No assignments yet.</td></tr>
@@ -118,7 +120,7 @@
                 <tbody>
                     @forelse ($performance as $record)
                         <tr class="border-b border-[var(--border)] last:border-0">
-                            <td class="py-2 pr-4">{{ $record->period->format('M Y') }}</td>
+                            <td class="py-2 pr-4">{{ bs($record->period, 'M Y') }}</td>
                             <td class="py-2 pr-4 text-right">{{ $record->score }}%</td>
                             <td class="py-2 pr-4 text-right">{{ number_format($record->deliveries_completed) }}</td>
                             <td class="py-2 text-right">{{ number_format($record->deliveries_failed) }}</td>

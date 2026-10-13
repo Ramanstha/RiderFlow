@@ -50,7 +50,7 @@ class ClientParcelAssignmentService
             'date' => $data['date'],
             'assigned' => (int) $data['assigned'],
             'assigned_at' => now(),
-            'delivered' => 0,
+            'delivered' => null,
         ]);
     }
 

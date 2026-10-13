@@ -8,6 +8,7 @@ use App\Models\Rider;
 use App\Models\RiderAttendance;
 use App\Models\RiderPerformance;
 use App\Support\AttendanceSummary;
+use App\Support\NepaliDate;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -85,7 +86,7 @@ class ReportService
                     'total_deliveries_completed' => $records->sum('deliveries_completed'),
                     'total_deliveries_failed' => $records->sum('deliveries_failed'),
                     'periods' => $records->map(fn ($r) => [
-                        'period' => $r->period->format('Y-m'),
+                        'period' => NepaliDate::format($r->period, 'Y-m'),
                         'score' => $r->score,
                     ])->values(),
                 ];

@@ -204,7 +204,7 @@
                 <div class="flex items-center justify-between gap-4">
                     <div class="lg:hidden w-10"></div>
                     <div class="flex-1">
-                        <p class="text-sm text-[var(--fg-secondary)]">{{ now()->format('l, d M Y') }}</p>
+                        <p class="text-sm text-[var(--fg-secondary)]">{{ bs(now(), 'l, d M Y') }}</p>
                     </div>
                     <button type="button"
                         class="theme-toggle relative p-3 rounded-xl hover:bg-[var(--bg-card)] transition-all"
@@ -280,6 +280,7 @@
     </div>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    @include('partials.nepali-date-scripts')
     @stack('vendor-scripts')
 
     <script>
@@ -359,6 +360,7 @@
             initializeProfileMenu();
         });
     </script>
+    <script src="{{ asset('backend/js/number-input.js') }}?v={{ filemtime(public_path('backend/js/number-input.js')) }}"></script>
     @stack('scripts')
 </body>
 

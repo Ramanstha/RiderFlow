@@ -68,6 +68,27 @@ class ClientPortalTest extends TestCase
         }
     }
 
+    public function test_an_open_day_without_delivered_or_end_reading_renders(): void
+    {
+        $company = Company::factory()->create();
+        $rider = Rider::factory()->forCompany($company)->create();
+
+        DailyParcelCount::factory()->create([
+            'rider_id' => $rider->id,
+            'date' => now(),
+            'assigned' => 20,
+            'delivered' => null,
+            'start_km' => 1200,
+            'end_km' => null,
+        ]);
+
+        $this->actingAs($company, 'client');
+
+        $this->get('/client-portal/parcel')->assertOk()->assertSee('1,200');
+        $this->get("/client-portal/rider/{$rider->id}")->assertOk();
+        $this->get('/client-portal/parcel-assignment')->assertOk();
+    }
+
     public function test_the_dashboard_counts_only_the_clients_own_fleet(): void
     {
         $company = Company::factory()->create();

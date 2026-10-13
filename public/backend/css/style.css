@@ -520,6 +520,12 @@ select.input-field {
     font-weight: 600;
 }
 
+.calendar-ad-date {
+    font-size: 10px;
+    color: var(--fg-secondary);
+    white-space: nowrap;
+}
+
 .calendar-status {
     font-size: 10px;
     font-weight: 600;
@@ -578,4 +584,115 @@ select.input-field {
     .calendar-status {
         display: none;
     }
+}
+
+/* ---- Nepali (BS) date picker — see public/backend/js/nepali-date.js ---- */
+.bs-date {
+    display: contents;
+}
+
+.bs-picker {
+    position: fixed;
+    z-index: 1000;
+    display: none;
+    width: 288px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--fg-primary);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    font-size: 13px;
+}
+
+.bs-picker.is-open {
+    display: block;
+}
+
+.bs-picker-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.bs-picker-select {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 6px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--fg-primary);
+}
+
+.bs-picker-nav {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 16px;
+    line-height: 1;
+}
+
+.bs-picker-nav:hover,
+.bs-picker-day:not(:disabled):hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.bs-picker-sub {
+    margin: 6px 0 4px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--fg-secondary);
+}
+
+.bs-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 3px;
+}
+
+.bs-picker-weekday {
+    padding: 4px 0;
+    text-align: center;
+    font-size: 11px;
+    color: var(--fg-secondary);
+}
+
+.bs-picker-day {
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+
+.bs-picker-day.is-today {
+    border-color: var(--border);
+    font-weight: 700;
+}
+
+.bs-picker-day.is-selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.bs-picker-day:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.bs-picker-foot {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.bs-picker-link {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.bs-picker-link:disabled {
+    opacity: 0.4;
 }

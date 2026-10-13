@@ -34,8 +34,8 @@
                     <option value="{{ $rider->id }}" @selected((string) request('rider_id') === (string) $rider->id)>{{ $rider->name }}</option>
                 @endforeach
             </select>
-            <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field w-auto text-sm">
-            <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field w-auto text-sm">
+            <x-nepali-date name="date_from" :value="request('date_from')" class="w-auto text-sm" />
+            <x-nepali-date name="date_to" :value="request('date_to')" class="w-auto text-sm" />
             <button type="submit" class="btn-secondary text-sm px-5">Filter</button>
         </form>
     </div>
@@ -49,6 +49,9 @@
                         <th>Date</th>
                         <th>Assigned</th>
                         <th>Delivered</th>
+                        <th>Start KM</th>
+                        <th>End KM</th>
+                        <th>KM Run</th>
                         <th>Success Rate</th>
                         <th>Actions</th>
                     </tr>
@@ -57,7 +60,7 @@
                     @forelse ($parcelCounts as $parcelCount)
                         <tr>
                             <td><p class="font-medium">{{ $parcelCount->rider->name }}</p></td>
-                            <td><span class="text-sm">{{ $parcelCount->date->format('Y-m-d') }}</span></td>
+                            <td><span class="text-sm">{{ bs($parcelCount->date, 'Y-m-d') }}</span></td>
                             <td>
                                 <span class="text-sm">{{ $parcelCount->assigned }}</span>
                                 @if ($parcelCount->isClientAssigned())
@@ -65,7 +68,10 @@
                                         title="Assigned by {{ $parcelCount->assignedByCompany->name ?? 'the client' }}">Client</span>
                                 @endif
                             </td>
-                            <td><span class="text-sm">{{ $parcelCount->delivered }}</span></td>
+                            <td><span class="text-sm">{{ $parcelCount->delivered ?? '—' }}</span></td>
+                            <td><span class="text-sm">{{ $parcelCount->start_km }}</span></td>
+                            <td><span class="text-sm">{{ $parcelCount->end_km ?? '—' }}</span></td>
+                            <td><span class="text-sm">{{ $parcelCount->km_run ?? '—' }}</span></td>
                             <td>
                                 <span class="badge badge-{{ $parcelCount->success_rate >= 80 ? 'success' : ($parcelCount->success_rate >= 50 ? 'warning' : 'danger') }}">{{ $parcelCount->success_rate }}%</span>
                             </td>
@@ -94,7 +100,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center text-[var(--fg-secondary)] py-8">No parcel counts found.</td>
+                            <td colspan="9" class="text-center text-[var(--fg-secondary)] py-8">No parcel counts found.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -105,9 +111,7 @@
             <p class="text-sm text-[var(--fg-secondary)]">
                 Showing {{ $parcelCounts->firstItem() ?? 0 }}-{{ $parcelCounts->lastItem() ?? 0 }} of {{ $parcelCounts->total() }} records
             </p>
-            <div class="flex gap-2">
-                {{ $parcelCounts->links() }}
-            </div>
+            {{ $parcelCounts->links() }}
         </div>
     </div>
 </div>

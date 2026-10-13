@@ -22,7 +22,9 @@ class UpdateParcelCountRequest extends FormRequest
                 ? ['required', 'date']
                 : ['required', 'date', 'before_or_equal:today'],
             'assigned' => ['required', 'integer', 'min:0'],
-            'delivered' => ['required', 'integer', 'min:0', 'lte:assigned'],
+            'delivered' => ['nullable', 'integer', 'min:0', 'lte:assigned'],
+            'start_km' => ['sometimes', 'integer', 'min:0'],
+            'end_km' => ['nullable', 'integer', 'min:0', 'gte:start_km'],
         ];
     }
 
@@ -58,6 +60,7 @@ class UpdateParcelCountRequest extends FormRequest
     {
         return [
             'delivered.lte' => 'Delivered cannot be more than the number assigned.',
+            'end_km.gte' => 'End KM cannot be less than Start KM.',
             'date.before_or_equal' => 'You cannot log parcel counts for a future date.',
         ];
     }

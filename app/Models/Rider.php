@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\RiderStatus;
+use App\Support\NepaliDate;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,6 +22,7 @@ class Rider extends Authenticatable
         'email',
         'phone',
         'photo',
+        'pay',
         'license_number',
         'password',
         'status',
@@ -37,6 +40,7 @@ class Rider extends Authenticatable
     {
         return [
             'status' => RiderStatus::class,
+            'pay' => 'decimal:2',
             'password' => 'hashed',
             'last_login_at' => 'datetime',
         ];
@@ -72,6 +76,11 @@ class Rider extends Authenticatable
         return $this->hasMany(DailyParcelCount::class);
     }
 
+    public function salaryAdvances(): HasMany
+    {
+        return $this->hasMany(SalaryAdvance::class);
+    }
+
     /**
      * Riders on the active roster; inactive ones stay out of pickers.
      */
@@ -91,6 +100,21 @@ class Rider extends Authenticatable
 
         return $query->whereDoesntHave('assignments', fn (Builder $query) => $query
             ->where(fn (Builder $query) => $query->whereNull('end_date')->orWhereDate('end_date', '>=', $on)));
+    }
+
+    /**
+     * `pay` is a per-day rate; a month's pay is that rate across every day of
+     * the BS month the date falls in (the current month by default).
+     */
+    public function monthlyPay(?CarbonInterface $date = null): ?float
+    {
+        if ($this->pay === null) {
+            return null;
+        }
+
+        $bs = NepaliDate::fromAd($date ?? now());
+
+        return round((float) $this->pay * NepaliDate::daysInMonth($bs['year'], $bs['month']), 2);
     }
 
     /**

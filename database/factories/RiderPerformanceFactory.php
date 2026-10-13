@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Rider;
 use App\Models\RiderPerformance;
+use App\Support\NepaliDate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,7 +16,7 @@ class RiderPerformanceFactory extends Factory
     {
         return [
             'rider_id' => Rider::factory(),
-            'period' => now()->startOfMonth()->toDateString(),
+            'period' => NepaliDate::startOfMonth(now())->toDateString(),
             'score' => fake()->numberBetween(0, 100),
             'deliveries_completed' => fake()->numberBetween(0, 200),
             'deliveries_failed' => fake()->numberBetween(0, 20),

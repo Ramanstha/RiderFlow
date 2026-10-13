@@ -30,11 +30,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-2">From</label>
-            <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field">
+            <x-nepali-date name="date_from" :value="request('date_from')" class="" />
         </div>
         <div>
             <label class="block text-sm font-medium mb-2">To</label>
-            <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field">
+            <x-nepali-date name="date_to" :value="request('date_to')" class="" />
         </div>
         <div class="flex items-end gap-2">
             <button type="submit" class="btn-primary flex-1 text-center">Filter</button>
@@ -57,7 +57,7 @@
                 @forelse ($records as $record)
                     <tr class="border-b border-[var(--border)] last:border-0">
                         <td class="py-3 pr-4 capitalize">{{ $record->rider->name ?? '—' }}</td>
-                        <td class="py-3 pr-4">{{ $record->date->format('d M Y') }}</td>
+                        <td class="py-3 pr-4">{{ bs($record->date, 'd M Y') }}</td>
                         <td class="py-3 pr-4">
                             <span class="badge badge-{{ $record->status->value === 'Present' ? 'success' : 'danger' }}">
                                 {{ $record->status->value }}

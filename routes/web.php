@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\RiderAttendanceController;
 use App\Http\Controllers\Admin\RiderController;
 use App\Http\Controllers\Admin\RiderPerformanceController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SalaryAdvanceController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\UI\HomeController;
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('performance', RiderPerformanceController::class);
     Route::resource('assignment', RiderAssignmentController::class);
     Route::resource('parcel', ParcelCountController::class);
+    Route::resource('advance', SalaryAdvanceController::class)->only(['index', 'update']);
     Route::resource('user', UserController::class);
     Route::resource('role', RoleController::class)->except(['show']);
     Route::resource('banner', BannerController::class)->except(['show']);

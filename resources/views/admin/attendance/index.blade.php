@@ -51,8 +51,8 @@
                     <option value="{{ $status->value }}" @selected(request('status') === $status->value)>{{ $status->value }}</option>
                 @endforeach
             </select>
-            <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field w-auto text-sm">
-            <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field w-auto text-sm">
+            <x-nepali-date name="date_from" :value="request('date_from')" class="w-auto text-sm" />
+            <x-nepali-date name="date_to" :value="request('date_to')" class="w-auto text-sm" />
             <button type="submit" class="btn-secondary text-sm px-5">Filter</button>
         </form>
     </div>
@@ -74,11 +74,11 @@
                     @forelse ($attendances as $attendance)
                         <tr>
                             <td>
-                                <a href="{{ route('attendance.riders.show', [$attendance->rider, 'month' => $attendance->date->format('Y-m')]) }}"
+                                <a href="{{ route('attendance.riders.show', [$attendance->rider, 'month' => \App\Support\NepaliDate::monthKey($attendance->date)]) }}"
                                     class="font-medium hover:text-[var(--accent)] transition-all">{{ $attendance->rider->name }}</a>
                             </td>
                             <td><span class="text-sm">{{ $attendance->rider->companies->pluck('name')->join(', ') ?: '—' }}</span></td>
-                            <td><span class="text-sm">{{ $attendance->date->format('Y-m-d') }}</span></td>
+                            <td><span class="text-sm">{{ bs($attendance->date, 'Y-m-d') }}</span></td>
                             <td>
                                 <span class="badge badge-{{ $attendance->status->value === 'Present' ? 'success' : 'danger' }}">{{ $attendance->status->value }}</span>
                             </td>

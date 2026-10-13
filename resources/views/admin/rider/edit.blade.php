@@ -50,6 +50,12 @@
             </div>
 
             <div>
+                <label class="block text-sm font-medium mb-2">Pay per Day (Rs.)</label>
+                <input type="number" name="pay" value="{{ old('pay', $rider->pay) }}" step="0.01" min="0" class="input-field" placeholder="Enter per-day pay">
+                @error('pay') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
                 <label class="block text-sm font-medium mb-2">Status *</label>
                 <select name="status" class="input-field" required>
                     @foreach (\App\Enums\RiderStatus::cases() as $status)

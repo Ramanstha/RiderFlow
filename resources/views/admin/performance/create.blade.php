@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2">Period (month) *</label>
-                    <input type="month" name="period" value="{{ old('period', now()->format('Y-m')) }}" class="input-field" required>
+                    <x-nepali-month name="period" :value="old('period', now())" required />
                     @error('period') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>

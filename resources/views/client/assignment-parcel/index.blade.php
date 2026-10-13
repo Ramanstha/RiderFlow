@@ -32,11 +32,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-2">From</label>
-            <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field">
+            <x-nepali-date name="date_from" :value="request('date_from')" class="" />
         </div>
         <div>
             <label class="block text-sm font-medium mb-2">To</label>
-            <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field">
+            <x-nepali-date name="date_to" :value="request('date_to')" class="" />
         </div>
         <div class="flex items-end gap-2">
             <button type="submit" class="btn-primary flex-1 text-center">Filter</button>
@@ -63,9 +63,9 @@
                 @forelse ($assignments as $assignment)
                 <tr class="border-b border-[var(--border)] last:border-0">
                     <td class="capitalize py-3 pr-4">{{ $assignment->rider->name ?? '—' }}</td>
-                    <td class="py-3 pr-4">{{ $assignment->date->format('d M Y') }}</td>
+                    <td class="py-3 pr-4">{{ bs($assignment->date, 'd M Y') }}</td>
                     <td class="py-3 pr-4 text-right font-semibold">{{ number_format($assignment->assigned) }}</td>
-                    <td class="py-3 pr-4 text-right text-green-400">{{ number_format($assignment->delivered) }}</td>
+                    <td class="py-3 pr-4 text-right text-green-400">{{ $assignment->delivered !== null ? number_format($assignment->delivered) : '—' }}</td>
                     <td class="py-3 pr-4 text-right text-yellow-400">{{ number_format($assignment->outstanding) }}</td>
                     <td class="py-3 pr-4">
                         @if ($assignment->hasRiderReport())

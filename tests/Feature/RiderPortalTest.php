@@ -138,6 +138,59 @@ class RiderPortalTest extends TestCase
         ])->assertSessionHasErrors('delivered');
     }
 
+    public function test_rider_can_open_the_day_with_only_a_start_reading(): void
+    {
+        $rider = Rider::factory()->create();
+
+        $this->actingAs($rider, 'rider')->post('/rider-portal/parcel', [
+            'date' => now()->toDateString(),
+            'assigned' => 20,
+            'start_km' => 1200,
+        ])->assertRedirect(route('rider.parcel.index'));
+
+        $this->assertDatabaseHas('daily_parcel_counts', [
+            'rider_id' => $rider->id,
+            'start_km' => 1200,
+            'end_km' => null,
+            'delivered' => null,
+        ]);
+    }
+
+    public function test_rider_closes_the_day_with_end_reading_and_delivered(): void
+    {
+        $rider = Rider::factory()->create();
+        $parcel = DailyParcelCount::factory()->create([
+            'rider_id' => $rider->id,
+            'date' => now()->toDateString(),
+            'assigned' => 20,
+            'delivered' => null,
+            'start_km' => 1200,
+            'end_km' => null,
+        ]);
+
+        $this->actingAs($rider, 'rider')->put("/rider-portal/parcel/{$parcel->id}", [
+            'date' => now()->toDateString(),
+            'assigned' => 20,
+            'delivered' => 18,
+            'start_km' => 1200,
+            'end_km' => 1265,
+        ])->assertRedirect(route('rider.parcel.index'));
+
+        $this->assertSame(65, $parcel->fresh()->km_run);
+    }
+
+    public function test_end_reading_cannot_be_below_start_reading(): void
+    {
+        $rider = Rider::factory()->create();
+
+        $this->actingAs($rider, 'rider')->post('/rider-portal/parcel', [
+            'date' => now()->toDateString(),
+            'assigned' => 20,
+            'start_km' => 1200,
+            'end_km' => 1100,
+        ])->assertSessionHasErrors('end_km');
+    }
+
     public function test_rider_cannot_edit_another_riders_parcel_count(): void
     {
         $rider = Rider::factory()->create();

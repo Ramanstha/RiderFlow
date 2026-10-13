@@ -51,8 +51,8 @@
                     <tr class="border-b border-[var(--border)] last:border-0">
                         <td class="py-3 pr-4 capitalize">{{ $assignment->rider->name ?? '—' }}</td>
                         <td class="py-3 pr-4"><span class="badge badge-info">{{ $assignment->type->value }}</span></td>
-                        <td class="py-3 pr-4">{{ $assignment->start_date?->format('d M Y') ?? '—' }}</td>
-                        <td class="py-3">{{ $assignment->end_date?->format('d M Y') ?? '—' }}</td>
+                        <td class="py-3 pr-4">{{ bs($assignment->start_date, 'd M Y') ?: '—' }}</td>
+                        <td class="py-3">{{ bs($assignment->end_date, 'd M Y') ?: '—' }}</td>
                     </tr>
                 @empty
                     <tr>

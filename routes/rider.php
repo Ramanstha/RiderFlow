@@ -6,6 +6,7 @@ use App\Http\Controllers\Rider\DashboardController;
 use App\Http\Controllers\Rider\ParcelCountController;
 use App\Http\Controllers\Rider\PerformanceController;
 use App\Http\Controllers\Rider\ProfileController;
+use App\Http\Controllers\Rider\SalaryAdvanceController;
 use Illuminate\Support\Facades\Route;
 
 // ////////////Rider Portal//////////////////
@@ -23,6 +24,8 @@ Route::prefix('rider-portal')->name('rider.')->group(function () {
         Route::get('performance', [PerformanceController::class, 'index'])->name('performance.index');
 
         Route::resource('parcel', ParcelCountController::class)->only(['index', 'create', 'store', 'edit', 'update']);
+
+        Route::resource('advance', SalaryAdvanceController::class)->only(['index', 'create', 'store', 'destroy']);
 
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');

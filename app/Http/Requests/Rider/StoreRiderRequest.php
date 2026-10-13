@@ -21,6 +21,7 @@ class StoreRiderRequest extends FormRequest
             'email' => ['required', 'email', 'max:255', 'unique:riders,email'],
             'phone' => ['required', 'string', 'max:30'],
             'photo' => ['nullable', 'image', 'max:2048'],
+            'pay' => ['nullable', 'numeric', 'min:0', 'max:99999999.99'],
             'license_number' => ['required', 'string', 'max:255', 'unique:riders,license_number'],
             'status' => ['required', Rule::enum(RiderStatus::class)],
             // Optional: leaving it blank simply means the rider cannot sign in

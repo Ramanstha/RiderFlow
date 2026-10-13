@@ -635,7 +635,7 @@
 
             <div>
                 <label class="block text-sm font-medium mb-2">Start Date *</label>
-                <input type="date" class="input-field" required>
+                <x-nepali-date name="date" required />
             </div>
 
             <div>
@@ -669,7 +669,7 @@
         <form class="space-y-4">
             <div>
                 <label class="block text-sm font-medium mb-2">Date *</label>
-                <input type="date" class="input-field" required>
+                <x-nepali-date name="date" required />
             </div>
 
             <div>

@@ -48,12 +48,12 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium mb-2">Start Date *</label>
-                    <input type="date" name="start_date" value="{{ old('start_date', $assignment->start_date->toDateString()) }}" class="input-field" required>
+                    <x-nepali-date name="start_date" :value="old('start_date', $assignment->start_date->toDateString())" required />
                     @error('start_date') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2">End Date</label>
-                    <input type="date" name="end_date" value="{{ old('end_date', $assignment->end_date?->toDateString()) }}" class="input-field">
+                    <x-nepali-date name="end_date" :value="old('end_date', $assignment->end_date?->toDateString())" />
                     @error('end_date') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>

@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
-    protected const ENTITIES = ['companies', 'riders', 'attendances', 'performances', 'assignments', 'parcels'];
+    protected const ENTITIES = ['admin','companies', 'riders', 'attendances', 'performances', 'assignments', 'parcels','advance','users'];
 
     public function run(): void
     {
@@ -19,9 +19,7 @@ class RoleSeeder extends Seeder
             $permissions[] = "{$entity}.manage";
         }
         $permissions[] = 'reports.view';
-        $permissions[] = 'users.manage';
         $permissions[] = 'site.manage';
-        $permissions[] = 'admin.manage';
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);

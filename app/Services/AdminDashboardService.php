@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\DailyParcelCount;
 use App\Models\RiderAttendance;
 use App\Support\AttendanceSummary;
+use App\Support\NepaliDate;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
@@ -85,18 +86,19 @@ class AdminDashboardService
     }
 
     /**
-     * The current month in seven-day blocks — Week 1 is the 1st to the 7th, so
-     * the buckets stay put as the month runs rather than shifting with today.
+     * The current Nepali (BS) month in seven-day blocks — Week 1 is the 1st to
+     * the 7th, so the buckets stay put as the month runs rather than shifting
+     * with today.
      *
      * @return array{labels: list<string>, assigned: list<int>, delivered: list<int>}
      */
     protected function monthlyTrend(): array
     {
-        $start = CarbonImmutable::now()->startOfMonth();
-        $end = $start->endOfMonth();
+        $start = NepaliDate::startOfMonth(CarbonImmutable::today());
+        $end = NepaliDate::endOfMonth($start);
         $totals = $this->parcelTotalsByDate($start, $end);
 
-        $buckets = (int) ceil($end->day / 7);
+        $buckets = (int) ceil(($start->diffInDays($end) + 1) / 7);
         $series = [
             'labels' => [],
             'assigned' => array_fill(0, $buckets, 0),
@@ -114,7 +116,7 @@ class AdminDashboardService
                 continue;
             }
 
-            $bucket = intdiv($day->day - 1, 7);
+            $bucket = intdiv((int) $start->diffInDays($day), 7);
             $series['assigned'][$bucket] += (int) $row->assigned;
             $series['delivered'][$bucket] += (int) $row->delivered;
         }

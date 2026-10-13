@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\DailyParcelCount;
 use App\Models\RiderAttendance;
 use App\Support\AttendanceSummary;
+use App\Support\NepaliDate;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -18,8 +19,8 @@ class ClientPortalService
 {
     public function dashboard(Company $company): array
     {
-        $monthStart = now()->startOfMonth()->toDateString();
-        $monthEnd = now()->endOfMonth()->toDateString();
+        $monthStart = NepaliDate::startOfMonth(now())->toDateString();
+        $monthEnd = NepaliDate::endOfMonth(now())->toDateString();
 
         return [
             'riders' => $this->riderCounts($company),

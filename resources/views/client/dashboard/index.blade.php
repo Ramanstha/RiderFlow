@@ -6,7 +6,7 @@
 <div class="mb-8 animate-fade-up stagger-1">
     <h2 class=" capitalize font-display text-3xl lg:text-2xl font-bold mb-2">{{ $company->name }}</h2>
     <p class="text-[var(--fg-secondary)] text-md">
-        Here's how your fleet is performing in {{ now()->format('F Y') }}.
+        Here's how your fleet is performing in {{ bs(now(), 'F Y') }}.
     </p>
 </div>
 
@@ -142,7 +142,7 @@
             <tbody>
                 @forelse ($stats['recent_activity'] as $record)
                     <tr class="border-b border-[var(--border)] last:border-0">
-                        <td class="py-3 pr-4">{{ $record->date->format('d M Y') }}</td>
+                        <td class="py-3 pr-4">{{ bs($record->date, 'd M Y') }}</td>
                         <td class="py-3 pr-4">{{ $record->rider->name ?? '—' }}</td>
                         <td class="py-3 pr-4 text-right">{{ number_format($record->assigned) }}</td>
                         <td class="py-3 text-right text-green-400">{{ number_format($record->delivered) }}</td>

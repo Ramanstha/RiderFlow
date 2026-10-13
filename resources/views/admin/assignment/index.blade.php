@@ -76,7 +76,7 @@
                                 <p class="text-xs text-[var(--fg-secondary)]">{{ $assignment->company->phone ?: '-' }}</p>
                             </td>
                             <td><span class="badge badge-info">{{ $assignment->type->value }}</span></td>
-                            <td><span class="text-sm">{{ $assignment->start_date->format('Y-m-d') }} &rarr; {{ $assignment->end_date?->format('Y-m-d') ?? 'Ongoing' }}</span></td>
+                            <td><span class="text-sm">{{ bs($assignment->start_date, 'Y-m-d') }} &rarr; {{ bs($assignment->end_date, 'Y-m-d') ?: 'Ongoing' }}</span></td>
                             <td>
                                 @can('assignments.manage')
                                 <div class="flex items-center gap-1">

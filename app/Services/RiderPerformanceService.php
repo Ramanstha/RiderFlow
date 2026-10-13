@@ -7,6 +7,7 @@ use App\Models\RiderPerformance;
 use App\Repositories\Contracts\RiderAttendanceRepositoryInterface;
 use App\Repositories\Contracts\RiderPerformanceRepositoryInterface;
 use App\Support\AttendanceSummary;
+use App\Support\NepaliDate;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -36,6 +37,8 @@ class RiderPerformanceService
 
     public function create(array $data): RiderPerformance
     {
+        $data['period'] = $this->periodStart($data['period']);
+
         $this->guardDuplicatePeriod($data['rider_id'], $data['period']);
 
         return $this->performances->create($data);
@@ -43,6 +46,10 @@ class RiderPerformanceService
 
     public function update(RiderPerformance $performance, array $data): RiderPerformance
     {
+        if (isset($data['period'])) {
+            $data['period'] = $this->periodStart($data['period']);
+        }
+
         $riderId = $data['rider_id'] ?? $performance->rider_id;
         $period = $data['period'] ?? $performance->period->toDateString();
 
@@ -60,8 +67,8 @@ class RiderPerformanceService
     {
         $records = $this->attendances->all([
             'rider_id' => $rider->id,
-            'date_from' => $period->copy()->startOfMonth()->toDateString(),
-            'date_to' => $period->copy()->endOfMonth()->toDateString(),
+            'date_from' => NepaliDate::startOfMonth($period)->toDateString(),
+            'date_to' => NepaliDate::endOfMonth($period)->toDateString(),
         ]);
 
         return AttendanceSummary::rate(
@@ -72,11 +79,13 @@ class RiderPerformanceService
 
     protected function guardDuplicatePeriod(int $riderId, string $period, ?int $ignoreId = null): void
     {
-        $periodStart = Carbon::parse($period)->startOfMonth()->toDateString();
+        $start = NepaliDate::startOfMonth(Carbon::parse($period));
 
+        // The whole BS month, so a row stored on any day of it still counts.
         $exists = RiderPerformance::query()
             ->where('rider_id', $riderId)
-            ->whereDate('period', $periodStart)
+            ->whereDate('period', '>=', $start->toDateString())
+            ->whereDate('period', '<=', NepaliDate::endOfMonth($start)->toDateString())
             ->when($ignoreId, fn ($query, $ignoreId) => $query->whereKeyNot($ignoreId))
             ->exists();
 
@@ -85,5 +94,14 @@ class RiderPerformanceService
                 'period' => 'A performance record for this rider and period already exists.',
             ]);
         }
+    }
+
+    /**
+     * Performance is tracked per Nepali (BS) month: any date inside a month is
+     * stored as the AD date of that month's 1st.
+     */
+    protected function periodStart(string $period): string
+    {
+        return NepaliDate::startOfMonth(Carbon::parse($period))->toDateString();
     }
 }

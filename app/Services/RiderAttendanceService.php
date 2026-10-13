@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Enums\AttendanceStatus;
 use App\Enums\RiderStatus;
+use App\Enums\SalaryAdvanceStatus;
 use App\Models\DailyParcelCount;
 use App\Models\Rider;
 use App\Models\RiderAttendance;
 use App\Repositories\Contracts\RiderAttendanceRepositoryInterface;
 use App\Support\AttendanceSummary;
+use App\Support\NepaliDate;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -85,7 +87,8 @@ class RiderAttendanceService
     }
 
     /**
-     * One month of a rider's attendance, laid out as calendar weeks.
+     * One Nepali (Bikram Sambat) month of a rider's attendance, laid out as
+     * calendar weeks. The month is a BS `YYYY-MM` string, e.g. `2083-06`.
      *
      * Only the requested month is read, so paging back through history costs a
      * single indexed range query per month rather than loading a whole history.
@@ -98,17 +101,22 @@ class RiderAttendanceService
      *
      * @return array{
      *     month: CarbonImmutable,
-     *     weeks: array<int, array<int, null|array{date: CarbonImmutable, attendance: ?RiderAttendance, status: ?AttendanceStatus}>>,
+     *     bs: array{year: int, month: int, label: string, label_ne: string, ad_range: string},
+     *     weeks: array<int, array<int, null|array{date: CarbonImmutable, bs_day: int, attendance: ?RiderAttendance, status: ?AttendanceStatus}>>,
      *     summary: array{total_days: int, present_days: int, absent_days: int, attendance_rate: float},
-     *     previous: string,
-     *     next: string,
-     *     current: string
+     *     payroll: array{earnings: ?float, advances: float, payable: ?float},
+     *     previous: ?string,
+     *     next: ?string,
+     *     current: string,
+     *     years: array<int, int>
      * }
      */
     public function monthlyCalendar(Rider $rider, ?string $month = null): array
     {
-        $start = $this->resolveMonth($month);
-        $end = $start->endOfMonth();
+        ['year' => $year, 'month' => $bsMonth] = $this->resolveMonth($month);
+
+        $start = NepaliDate::toAd($year, $bsMonth);
+        $end = $start->addDays(NepaliDate::daysInMonth($year, $bsMonth) - 1);
 
         $records = RiderAttendance::query()
             ->where('rider_id', $rider->id)
@@ -125,7 +133,7 @@ class RiderAttendanceService
         $cells = array_fill(0, $start->dayOfWeek, null);
         $statuses = collect();
 
-        for ($day = $start; $day->lessThanOrEqualTo($end); $day = $day->addDay()) {
+        for ($day = $start, $bsDay = 1; $day->lessThanOrEqualTo($end); $day = $day->addDay(), $bsDay++) {
             $attendance = $byDate->get($day->toDateString());
             $status = $attendance?->status
                 ?? ($this->isRosteredOn($rider, $day, $rosterStart) ? AttendanceStatus::Absent : null);
@@ -136,6 +144,7 @@ class RiderAttendanceService
 
             $cells[] = [
                 'date' => $day,
+                'bs_day' => $bsDay,
                 'attendance' => $attendance,
                 'status' => $status,
             ];
@@ -143,13 +152,59 @@ class RiderAttendanceService
 
         $cells = array_pad($cells, (int) ceil(count($cells) / 7) * 7, null);
 
+        [$prevYear, $prevMonth] = $bsMonth === 1 ? [$year - 1, 12] : [$year, $bsMonth - 1];
+        [$nextYear, $nextMonth] = $bsMonth === 12 ? [$year + 1, 1] : [$year, $bsMonth + 1];
+
+        // A BS month straddles two AD months, e.g. "Sep – Oct 2026".
+        $adRange = match (true) {
+            $start->isSameMonth($end) => $start->format('M Y'),
+            $start->year === $end->year => $start->format('M').' – '.$end->format('M Y'),
+            default => $start->format('M Y').' – '.$end->format('M Y'),
+        };
+
+        $summary = AttendanceSummary::forStatuses($statuses);
+
         return [
             'month' => $start,
+            'bs' => [
+                'year' => $year,
+                'month' => $bsMonth,
+                'label' => NepaliDate::MONTHS[$bsMonth].' '.$year,
+                'label_ne' => NepaliDate::MONTHS_NE[$bsMonth].' '.NepaliDate::digits($year),
+                'ad_range' => $adRange,
+            ],
             'weeks' => array_chunk($cells, 7),
-            'summary' => AttendanceSummary::forStatuses($statuses),
-            'previous' => $start->subMonth()->format('Y-m'),
-            'next' => $start->addMonth()->format('Y-m'),
-            'current' => $start->format('Y-m'),
+            'summary' => $summary,
+            'payroll' => $this->monthlyPayroll($rider, $summary['present_days'], $start, $end),
+            // Null at the edges of the conversion table.
+            'previous' => NepaliDate::isValid($prevYear, $prevMonth) ? $this->formatMonth($prevYear, $prevMonth) : null,
+            'next' => NepaliDate::isValid($nextYear, $nextMonth) ? $this->formatMonth($nextYear, $nextMonth) : null,
+            'current' => $this->formatMonth($year, $bsMonth),
+            'years' => range(NepaliDate::MIN_YEAR, NepaliDate::MAX_YEAR),
+        ];
+    }
+
+    /**
+     * What the rider earned over the month, what was already paid out as
+     * approved advances in it, and what is still owed. `pay` is a per-day rate,
+     * so earnings only accrue on Present days; an advance belongs to the month
+     * it was approved in. Earnings and payable are null when no pay is on file.
+     *
+     * @return array{earnings: ?float, advances: float, payable: ?float}
+     */
+    protected function monthlyPayroll(Rider $rider, int $presentDays, CarbonImmutable $start, CarbonImmutable $end): array
+    {
+        $earnings = $rider->pay === null ? null : round((float) $rider->pay * $presentDays, 2);
+
+        $advances = round((float) $rider->salaryAdvances()
+            ->where('status', SalaryAdvanceStatus::Approved)
+            ->whereBetween('reviewed_at', [$start->startOfDay(), $end->endOfDay()])
+            ->sum('amount'), 2);
+
+        return [
+            'earnings' => $earnings,
+            'advances' => $advances,
+            'payable' => $earnings === null ? null : round($earnings - $advances, 2),
         ];
     }
 
@@ -189,22 +244,27 @@ class RiderAttendanceService
     }
 
     /**
-     * A `YYYY-MM` string as the first day of that month; anything unparseable
-     * falls back to the current month rather than erroring out.
+     * A BS `YYYY-MM` string as a year and month; anything unparseable or
+     * outside the conversion table falls back to the current Nepali month
+     * rather than erroring out.
+     *
+     * @return array{year: int, month: int}
      */
-    protected function resolveMonth(?string $month): CarbonImmutable
+    protected function resolveMonth(?string $month): array
     {
-        if (! $month) {
-            return CarbonImmutable::now()->startOfMonth();
+        if ($month && preg_match('/^(\d{4})-(\d{1,2})$/', $month, $parts)
+            && NepaliDate::isValid((int) $parts[1], (int) $parts[2])) {
+            return ['year' => (int) $parts[1], 'month' => (int) $parts[2]];
         }
 
-        try {
-            // Anchored to the 1st: 'Y-m' alone would borrow today's day number
-            // and overflow short months (31 February lands in March).
-            return CarbonImmutable::createFromFormat('Y-m-d', $month.'-01')->startOfDay();
-        } catch (\Throwable) {
-            return CarbonImmutable::now()->startOfMonth();
-        }
+        $today = NepaliDate::fromAd(CarbonImmutable::today());
+
+        return ['year' => $today['year'], 'month' => $today['month']];
+    }
+
+    protected function formatMonth(int $year, int $month): string
+    {
+        return sprintf('%04d-%02d', $year, $month);
     }
 
     /**

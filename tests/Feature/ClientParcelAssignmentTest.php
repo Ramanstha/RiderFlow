@@ -45,7 +45,7 @@ class ClientParcelAssignmentTest extends TestCase
         $this->assertTrue($assignment->isClientAssigned());
 
         // The rider starts with nothing reported.
-        $this->assertSame(0, $assignment->delivered);
+        $this->assertNull($assignment->delivered);
         $this->assertSame(40, $assignment->outstanding);
     }
 

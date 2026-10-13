@@ -6,7 +6,7 @@
 <div class="max-w-2xl">
     <div class="mb-8">
         <h2 class="font-display text-3xl font-bold mb-2">Edit Performance Record</h2>
-        <p class="text-[var(--fg-secondary)]">Update {{ $performance->rider->name }}'s {{ $performance->period->format('Y-m') }} performance</p>
+        <p class="text-[var(--fg-secondary)]">Update {{ $performance->rider->name }}'s {{ bs($performance->period, 'F Y') }} performance</p>
     </div>
 
     <div class="card p-6">
@@ -26,7 +26,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2">Period (month) *</label>
-                    <input type="month" name="period" value="{{ old('period', $performance->period->format('Y-m')) }}" class="input-field" required>
+                    <x-nepali-month name="period" :value="old('period', $performance->period)" required />
                     @error('period') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>

@@ -93,6 +93,16 @@
                         <span>My Parcels</span>
                     </a>
 
+                    <a href="{{ route('rider.advance.index') }}"
+                        class="nav-item {{ request()->routeIs('rider.advance.*') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Advance Salary</span>
+                    </a>
+
                     <a href="{{ route('rider.performance.index') }}"
                         class="nav-item {{ request()->routeIs('rider.performance.*') ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
@@ -168,7 +178,7 @@
                 <div class="flex items-center justify-between gap-4">
                     <div class="lg:hidden w-10"></div>
                     <div class="flex-1">
-                        <p class="text-sm text-[var(--fg-secondary)]">{{ now()->format('l, d M Y') }}</p>
+                        <p class="text-sm text-[var(--fg-secondary)]">{{ bs(now(), 'l, d M Y') }}</p>
                     </div>
                     <button type="button"
                         class="theme-toggle relative p-3 rounded-xl hover:bg-[var(--bg-card)] transition-all"
@@ -245,6 +255,7 @@
     </div>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    @include('partials.nepali-date-scripts')
     @stack('vendor-scripts')
 
     <script>
@@ -324,6 +335,7 @@
             initializeProfileMenu();
         });
     </script>
+    <script src="{{ asset('backend/js/number-input.js') }}?v={{ filemtime(public_path('backend/js/number-input.js')) }}"></script>
     @stack('scripts')
 </body>
 

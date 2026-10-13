@@ -6,7 +6,7 @@
 <div class="max-w-2xl">
     <div class="mb-8">
         <h2 class="font-display text-2xl font-bold">Edit Parcel Count</h2>
-        <p class="text-[var(--fg-secondary)]">Correct your numbers for {{ $parcelCount->date->format('d M Y') }}</p>
+        <p class="text-[var(--fg-secondary)]">Correct your numbers for {{ bs($parcelCount->date, 'd M Y') }}</p>
     </div>
 
     @if ($parcelCount->isClientAssigned())
@@ -14,7 +14,7 @@
             <p class="text-sm">
                 <span class="font-semibold">{{ $parcelCount->assignedByCompany->name ?? 'Your client' }}</span>
                 assigned you <span class="font-semibold">{{ number_format($parcelCount->assigned) }}</span> parcels for
-                {{ $parcelCount->date->format('d M Y') }}. Report your delivery numbers below — the assigned total and
+                {{ bs($parcelCount->date, 'd M Y') }}. Report your delivery numbers below — the assigned total and
                 date are set by the client and cannot be changed here.
             </p>
         </div>
@@ -26,9 +26,9 @@
             @method('PUT')
             <div>
                 <label class="block text-sm font-medium mb-2">Date *</label>
-                <input type="date" name="date" value="{{ old('date', $parcelCount->date->toDateString()) }}"
-                    max="{{ now()->toDateString() }}" class="input-field @if ($parcelCount->isClientAssigned()) opacity-60 @endif"
-                    @disabled($parcelCount->isClientAssigned()) required>
+                <x-nepali-date name="date" :value="old('date', $parcelCount->date->toDateString())" :max="now()"
+                    :class="$parcelCount->isClientAssigned() ? 'opacity-60' : ''"
+                    :disabled="$parcelCount->isClientAssigned()" required />
                 @error('date') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
             </div>
 
@@ -44,10 +44,23 @@
                     @error('assigned') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-2">Delivered *</label>
+                    <label class="block text-sm font-medium mb-2">Delivered</label>
                     <input type="number" name="delivered" value="{{ old('delivered', $parcelCount->delivered) }}"
-                        class="input-field" min="0" required>
+                        class="input-field" min="0">
                     @error('delivered') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Start KM *</label>
+                    <input type="number" name="start_km" value="{{ old('start_km', $parcelCount->start_km) }}" class="input-field" min="0" required>
+                    @error('start_km') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">End KM</label>
+                    <input type="number" name="end_km" value="{{ old('end_km', $parcelCount->end_km) }}" class="input-field" min="0">
+                    @error('end_km') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>
 

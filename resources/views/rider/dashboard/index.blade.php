@@ -6,7 +6,7 @@
 <div class="mb-8 animate-fade-up stagger-1">
     <h2 class="font-display text-3xl lg:text-2xl font-bold mb-2">Welcome back,<span class="capitalize"> {{ $rider->name }} !!!</h2>
     <p class="text-[var(--fg-secondary)] text-md">
-        Here's your delivery activity for {{ now()->format('F Y') }}.
+        Here's your delivery activity for {{ bs(now(), 'F Y') }}.
     </p>
 </div>
 
@@ -79,7 +79,7 @@
         <p class="text-[var(--fg-secondary)] text-sm">
             Latest Performance Score
             @if ($stats['latest_performance'])
-                <span class="text-xs">({{ $stats['latest_performance']->period->format('M Y') }})</span>
+                <span class="text-xs">({{ bs($stats['latest_performance']->period, 'M Y') }})</span>
             @endif
         </p>
     </div>
@@ -109,11 +109,11 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-[var(--fg-secondary)]">Started</span>
-                        <span class="font-medium">{{ $assignment->start_date->format('Y-m-d') }}</span>
+                        <span class="font-medium">{{ bs($assignment->start_date, 'Y-m-d') }}</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-[var(--fg-secondary)]">Ends</span>
-                        <span class="font-medium">{{ $assignment->end_date?->format('Y-m-d') ?: 'Ongoing' }}</span>
+                        <span class="font-medium">{{ bs($assignment->end_date, 'Y-m-d') ?: 'Ongoing' }}</span>
                     </div>
                 </div>
                 <a href="{{ route('rider.assignment.index') }}"

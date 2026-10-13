@@ -12,11 +12,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-2">From</label>
-            <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field">
+            <x-nepali-date name="date_from" :value="request('date_from')" class="" />
         </div>
         <div>
             <label class="block text-sm font-medium mb-2">To</label>
-            <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field">
+            <x-nepali-date name="date_to" :value="request('date_to')" class="" />
         </div>
         <div class="flex items-end gap-2">
             <button type="submit" class="btn-primary flex-1 text-center">Filter</button>

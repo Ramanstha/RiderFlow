@@ -26,7 +26,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2">Date *</label>
-                    <input type="date" name="date" value="{{ old('date', $attendance->date->toDateString()) }}" class="input-field" required>
+                    <x-nepali-date name="date" :value="old('date', $attendance->date->toDateString())" required />
                     @error('date') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>

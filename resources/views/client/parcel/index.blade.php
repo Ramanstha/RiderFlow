@@ -21,11 +21,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-2">From</label>
-            <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field">
+            <x-nepali-date name="date_from" :value="request('date_from')" class="" />
         </div>
         <div>
             <label class="block text-sm font-medium mb-2">To</label>
-            <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field">
+            <x-nepali-date name="date_to" :value="request('date_to')" class="" />
         </div>
         <div class="flex items-end gap-2">
             <button type="submit" class="btn-primary flex-1 text-center">Filter</button>
@@ -43,22 +43,28 @@
                     <th class="py-3 pr-4 font-medium">Date</th>
                     <th class="py-3 pr-4 font-medium text-right">Assigned</th>
                     <th class="py-3 pr-4 font-medium text-right">Delivered</th>
+                    <th class="py-3 pr-4 font-medium text-right">Start KM</th>
+                    <th class="py-3 pr-4 font-medium text-right">End KM</th>
+                    <th class="py-3 pr-4 font-medium text-right">KM Run</th>
                     <th class="py-3 font-medium text-right">Success</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($records as $record)
-                    @php($rate = $record->assigned > 0 ? round(($record->delivered / $record->assigned) * 100, 1) : 0)
+                    @php($rate = $record->success_rate)
                     <tr class="border-b border-[var(--border)] last:border-0">
                         <td class="py-3 pr-4 capitalize">{{ $record->rider->name ?? '—' }}</td>
-                        <td class="py-3 pr-4">{{ $record->date->format('d M Y') }}</td>
+                        <td class="py-3 pr-4">{{ bs($record->date, 'd M Y') }}</td>
                         <td class="py-3 pr-4 text-right">
                             {{ number_format($record->assigned) }}
                             @if ($record->isClientAssigned())
                                 <span class="badge badge-success ml-2" title="Assigned by you">Assigned</span>
                             @endif
                         </td>
-                        <td class="py-3 pr-4 text-right text-green-400">{{ number_format($record->delivered) }}</td>
+                        <td class="py-3 pr-4 text-right text-green-400">{{ $record->delivered !== null ? number_format($record->delivered) : '—' }}</td>
+                        <td class="py-3 pr-4 text-right">{{ number_format($record->start_km) }}</td>
+                        <td class="py-3 pr-4 text-right">{{ $record->end_km !== null ? number_format($record->end_km) : '—' }}</td>
+                        <td class="py-3 pr-4 text-right">{{ $record->km_run !== null ? number_format($record->km_run) : '—' }}</td>
                         <td class="py-3 text-right">
                             <span class="badge badge-{{ $rate >= 90 ? 'success' : ($rate >= 70 ? 'warning' : 'danger') }}">
                                 {{ $rate }}%
@@ -67,7 +73,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="py-8 text-center text-[var(--fg-secondary)]">No parcel records found.</td>
+                        <td colspan="8" class="py-8 text-center text-[var(--fg-secondary)]">No parcel records found.</td>
                     </tr>
                 @endforelse
             </tbody>

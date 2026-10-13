@@ -47,7 +47,7 @@
 
 <body>
     <h1>{{ $title }}</h1>
-    <p class="subtitle">Generated {{ now()->format('Y-m-d H:i') }}</p>
+    <p class="subtitle">Generated {{ bs(now(), 'Y-m-d H:i') }}</p>
 
     <table>
         <thead>

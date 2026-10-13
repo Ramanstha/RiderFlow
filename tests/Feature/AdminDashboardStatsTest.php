@@ -76,13 +76,15 @@ class AdminDashboardStatsTest extends TestCase
 
     public function test_the_monthly_trend_buckets_the_month_into_seven_day_blocks(): void
     {
-        Carbon::setTestNow('2026-08-12 09:00:00');
+        // Months are Nepali: Bhadra 2083 runs 17 Aug – 16 Sep 2026 (31 days).
+        Carbon::setTestNow('2026-08-28 09:00:00');
 
-        $this->parcels('2026-08-01', 10, 9);   // Week 1
-        $this->parcels('2026-08-07', 5, 5);    // Week 1
-        $this->parcels('2026-08-08', 12, 11);  // Week 2
-        $this->parcels('2026-08-31', 7, 6);    // Week 5
-        $this->parcels('2026-07-31', 99, 99);  // previous month
+        $this->parcels('2026-08-17', 10, 9);   // Week 1 (1 Bhadra)
+        $this->parcels('2026-08-23', 5, 5);    // Week 1 (7 Bhadra)
+        $this->parcels('2026-08-24', 12, 11);  // Week 2 (8 Bhadra)
+        $this->parcels('2026-09-16', 7, 6);    // Week 5 (31 Bhadra)
+        $this->parcels('2026-08-16', 99, 99);  // previous month (32 Shrawan)
+        $this->parcels('2026-09-17', 99, 99);  // next month (1 Ashwin)
 
         $monthly = $this->dashboard->deliveryTrends()['monthly'];
 

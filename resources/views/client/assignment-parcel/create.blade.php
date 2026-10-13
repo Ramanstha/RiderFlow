@@ -28,7 +28,7 @@
 
             <div>
                 <label class="block text-sm font-medium mb-2">Date *</label>
-                <input type="date" name="date" value="{{ old('date', now()->toDateString()) }}" class="input-field" required>
+                <x-nepali-date name="date" :value="old('date', now()->toDateString())" required />
                 <p class="text-xs text-[var(--fg-secondary)] mt-1">You can assign ahead for an upcoming day.</p>
                 @error('date') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
             </div>

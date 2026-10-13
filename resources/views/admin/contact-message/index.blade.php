@@ -61,7 +61,7 @@
                                 <span class="text-sm text-[var(--fg-secondary)]">{{ Str::limit($message->message, 80) }}</span>
                             </td>
                             <td>
-                                <span class="text-sm text-[var(--fg-secondary)]">{{ $message->created_at?->format('d M Y, h:i A') }}</span>
+                                <span class="text-sm text-[var(--fg-secondary)]">{{ bs($message->created_at, 'd M Y, h:i A') }}</span>
                             </td>
                             <td>
                                 <div class="flex items-center gap-1">

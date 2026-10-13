@@ -59,6 +59,14 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Pay per Day (Rs.)</label>
+                    <input type="number" name="pay" value="{{ old('pay') }}" step="0.01" min="0" class="input-field" placeholder="Enter per-day pay">
+                    @error('pay') <p class="text-sm text-red-400 mt-1">{{ $message }}</p> @enderror
+                </div>
+            </div>
+
             <div class="pt-4 border-t border-[var(--border)]">
                 <p class="text-sm font-semibold mb-1">Rider Portal Credentials</p>
                 <p class="text-xs text-[var(--fg-secondary)] mb-4">

@@ -20,6 +20,8 @@ class DailyParcelCount extends Model
         'assigned',
         'assigned_at',
         'delivered',
+        'start_km',
+        'end_km',
     ];
 
     protected function casts(): array
@@ -53,6 +55,14 @@ class DailyParcelCount extends Model
     }
 
     /**
+     * Riders may only edit a count until its day has passed.
+     */
+    public function isEditableByRider(): bool
+    {
+        return $this->date->gte(today());
+    }
+
+    /**
      * Has the rider reported anything against this assignment yet?
      */
     public function hasRiderReport(): bool
@@ -65,7 +75,20 @@ class DailyParcelCount extends Model
      */
     public function getOutstandingAttribute(): int
     {
-        return max(0, $this->assigned - $this->delivered);
+        return max(0, $this->assigned - ($this->delivered ?? 0));
+    }
+
+    /**
+     * Distance covered for the day, from the odometer readings — null until
+     * the end reading is in.
+     */
+    public function getKmRunAttribute(): ?int
+    {
+        if ($this->end_km === null) {
+            return null;
+        }
+
+        return max(0, $this->end_km - $this->start_km);
     }
 
     public function getSuccessRateAttribute(): float
@@ -74,6 +97,6 @@ class DailyParcelCount extends Model
             return 0.0;
         }
 
-        return round(($this->delivered / $this->assigned) * 100, 2);
+        return round((($this->delivered ?? 0) / $this->assigned) * 100, 2);
     }
 }

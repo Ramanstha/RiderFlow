@@ -35,8 +35,8 @@
                 <option value="{{ $company->id }}" @selected((string) request('company_id') === (string) $company->id)>{{ $company->name }}</option>
             @endforeach
         </select>
-        <input type="date" name="date_from" value="{{ request('date_from') }}" class="input-field w-auto text-sm">
-        <input type="date" name="date_to" value="{{ request('date_to') }}" class="input-field w-auto text-sm">
+        <x-nepali-date name="date_from" :value="request('date_from')" class="w-auto text-sm" />
+        <x-nepali-date name="date_to" :value="request('date_to')" class="w-auto text-sm" />
         <button type="submit" class="btn-secondary text-sm px-5">Filter</button>
     </form>
 </div>
